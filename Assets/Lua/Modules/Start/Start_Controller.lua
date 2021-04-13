@@ -1,18 +1,27 @@
+﻿---
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---              Start_Controller Controller业务逻辑
+---
 
--- ���⽱��
-local BonusLua = {}
+--- 公有字段和方法
+local public = {}
+--- 私有字段和方法
+local private = {}
 
-function BonusLua.Initialize()
-	Bonus.OnTriggerEnter2DLua = BonusLua.OnTriggerEnter2D
+--- Controller模块的初始化，可以在这里做初始化和添加监听等操作
+function public.OnInit()
+
 end
 
--- ��ײ����
-function BonusLua.OnTriggerEnter2D(collison, object)
-	if collison.CompareTag("Player") 
-		-- �������++
+--- Controller模块的销毁，可以在这里做清理工作和取消监听等操作
+function public.OnDestroy()
 
-		UnityEngine.Object.Destroy(object)
-	end
 end
 
-return BonusLua
+--- 测试函数如无需要可以删除
+function private.Test()
+
+end
+
+return public

@@ -1,0 +1,3 @@
+SprotoParser.exe -cs
+
+pause

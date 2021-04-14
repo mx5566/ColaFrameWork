@@ -1,29 +1,14 @@
-local Player = Class("Player")
+local Unit = require("Unit")
+local Player = Class("Player", Unit)
 
 
 function Player:initialize()
-	self.hp = 0
-	self.mp = 0
+	Unit.initialize(self)
+
 	self.gun = {}
 	self.score = 0
 
-	EventMgr.RegisterEvent(1,1, Player:AddScore)
-end
-
-function Player:SetHp(hp)
-	self.hp = hp
-end
-
-function Player:GetHp()
-	return self.hp
-end
-
-function Player:SetMp(mp)
-	self.mp = mp
-end
-
-function Player:GetMp()
-	return self.mp
+    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.NotifyId.EventId.PlayerEventId.ADD_SCORE, Player:AddScore)
 end
 
 function Player:AddScore(score)

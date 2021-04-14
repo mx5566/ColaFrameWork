@@ -6,7 +6,7 @@
 
 local ModuleId = {
     Common = 1 , -- 通用事件
-    Player = 2 , -- 玩家事件
+    Event  = 2 , -- 事件
 
 }
 

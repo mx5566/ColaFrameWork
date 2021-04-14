@@ -58,6 +58,11 @@ function UILoginPanel:onClick(name)
         UIManager.Open(ECEnumType.UIEnum.WorldDialog)
         SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_Girl.prefab", AnimCtrlEnum.CharAnimator, true)
         Ctrl.Login.RequestConnectServer()
+    elseif name == "spaceLoginBtn" then
+        UIManager.Close(ECEnumType.UIEnum.Loading)
+        -- 创建飞机的预制物
+        self.Panel = CommonUtil.InstantiatePrefab("", CommonUtil.GetUIRootTransform())
+
     end
 end
 

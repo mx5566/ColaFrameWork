@@ -5,7 +5,7 @@ local Unit = Class("Unit")
 function Unit:initialize()
 	self.hp = 0
 	self.mp = 0
-	self.type = 1
+	self.type = ECEnumType.NULL
 end
 
 function Unit:SetHp(hp)

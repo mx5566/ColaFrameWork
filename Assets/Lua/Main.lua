@@ -64,6 +64,16 @@ function Main()
         EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
         UIManager.Close(ECEnumType.UIEnum.Loading)
     end)
+
+    -- myspace
+    UIManager.Open(ECEnumType.UIEnum.Loading)
+    CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("spacescene", function(sceneName)
+        -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
+        EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Game_Start)
+
+        UIManager.Close(ECEnumType.UIEnum.Loading)
+    end)
+
 end
 
 --场景切换通知

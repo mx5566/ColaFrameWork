@@ -1,35 +1,37 @@
 local Player = Class("Player")
 
 
-function Player:Initialize()
-	-- body
-	self.Hp = 0
-	self.Mp = 0
-	self.Gun = {}
+function Player:initialize()
+	self.hp = 0
+	self.mp = 0
+	self.gun = {}
+	self.score = 0
+
+	EventMgr.RegisterEvent(1,1, Player:AddScore)
 end
 
 function Player:SetHp(hp)
-	-- body
-	self.Hp = hp
+	self.hp = hp
 end
 
 function Player:GetHp()
-	-- body
-	return self.Hp
+	return self.hp
 end
 
 function Player:SetMp(mp)
-	-- body
-	self.Mp = mp
+	self.mp = mp
 end
 
 function Player:GetMp()
-	-- body
-	return self.Mp
+	return self.mp
+end
+
+function Player:AddScore(score)
+	self.score += score
 end
 
 
-
+--[[
 -- ¶îÍâ½±Àø
 local BonusLua = {}
 
@@ -47,8 +49,6 @@ function BonusLua.OnTriggerEnter2D(collison, object)
 end
 
 return BonusLua
-
-
-
+]]--
 
 return Player

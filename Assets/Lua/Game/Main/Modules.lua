@@ -45,7 +45,7 @@ local PriorityBootList = {
 
 -- 正常启动的Module列表
 local NornamlBootList = {
-
+    "Start"
 }
 
 

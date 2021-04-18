@@ -9,16 +9,14 @@ function LevelMgr:Initialize()
 end
 
 function LevelMgr:TestEvent(name)
-	UnityEngine.Debug("LevelMgr TestEvent".name)	
+	UnityEngine.Debug("LevelMgr TestEvent"..name)	
 end
 
 function LevelMgr:SetLevelClass(level)
-	-- body
 	self.currentLevel = level
 end
 
-function LevelMgr:NextLevel()
-	-- body
+function LevelMgr:Start()
 	local currentFloor = 1
 	if self.currentLevel != nil then
 		currentFloor = self.currentLevel.GetLevel()
@@ -26,14 +24,12 @@ function LevelMgr:NextLevel()
 
 	local nextLevel = self.level + 1
 	local isHave = false
-	if isHave
+	if isHave then
 		-- 初始化关卡数据
 		local cfg = ConfigMgr.GetItem("level", nextLevel)
 		local level = Level:new(cfg)
 		self:SetLevelClass(level)
 		level:Start()
-
-		-- CommonUtil.InstantiatePrefab()
 	end
 end
 

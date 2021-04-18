@@ -1,28 +1,55 @@
--- ¹Ø¿¨
+-- å…³å¡
 local Level = Class("Level")
 
 function Level:initialize(cfg)
 	self.name = cfg.Name
 	self.level = cfg.Level
 	self.cfg = cfg
+
 end
 
 function Level:Start()
 	-- body
-	-- ĞèÒªÈ¥Çı¶¯µ×²ã
-	-- Êı¾İ´«Êä¸øc#²ã
-	local obj = UnityEngine.GameObject.Find("»ñÈ¡¶ÔÏó")
+	-- éœ€è¦å»é©±åŠ¨åº•å±‚
+	-- æ•°æ®ä¼ è¾“ç»™c#å±‚
+	
+	-- è·å–åœºæ™¯é‡Œé¢åŠ¨æ€å¯¹è±¡çš„äº§ç”Ÿé¢„åˆ¶
+	local obj = UnityEngine.GameObject.Find("Game_Controller")
+	if obj == nil then
+		-- local inis = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Player.prefab", nil)
+		obj = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Game_Controller.prefab", nil)
+	end
+
 	local levelC = obj.GetComponent(typeof(LevelController))
-	if levelC = nil then
+	if levelC ~= nil then
+		if levelC.isStart == true then
+		-- already start
+			return
+		end
+	else
 		levelC = obj.AddSingleComponent(typeof(LevelController))
 	end
 
+	local ret = levelC.StratGame()
+	-- åˆ†æç»“æœ
 
-	-- ³õÊ¼»¯LevelController ÀïÃæµÄÊı¾İ
+	-- local spriteAsset = CommonUtil.GetAsset("ç©å®¶é¢„åˆ¶ç‰©", typeof(UnityEngine.Sprite))
+	-- local spriteAsset = CommonUtil.InstantiatePrefab("ç©å®¶é¢„åˆ¶ç‰©", nil)
+	-- 
+
+	--[[
+	local obj = CommonUtil.GetGameObject("path", nil)
+    if nil ~= obj then
+		-- success
+
+    end 
+	]]--
+	
+	-- åˆå§‹åŒ–LevelController é‡Œé¢çš„æ•°æ®
 end
 
 function Level:GetLevel()
-	return self.Level
+	return self.level
 end
 
 

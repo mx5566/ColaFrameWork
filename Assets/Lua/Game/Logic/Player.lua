@@ -9,7 +9,7 @@ function Player:initialize()
 	self.score = 0
 	self.type = ECEnumType.PLAYER
 
-    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.NotifyId.EventId.PlayerEventId.ADD_SCORE, Player:AddScore)
+    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player:AddScore)
 end
 
 function Player:AddScore(score)

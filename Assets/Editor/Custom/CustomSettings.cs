@@ -82,6 +82,7 @@ public static class CustomSettings
         _GT(typeof(DropdownControl)).SetNameSpace(null),
         _GT(typeof(UITableView)).SetNameSpace(null),
         _GT(typeof(UITableViewCell)).SetNameSpace(null),
+        _GT(typeof(Bonus)),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

@@ -13,7 +13,7 @@ local Socket = nil
 local listeners = {}
 local sprotoCoder = nil
 local SPROTO_BYTES_PATH = "SprotoBytes/sproto.bytes"
-local code2ProtoNameMap = {}  -- code 到 ProtoName的映射关系
+local code2ProtoNameMap = {} -- code 到 ProtoName的映射关系
 local DUMMY_MSG = {}
 
 local OnConnectedCallback = nil
@@ -56,7 +56,7 @@ function NetManager.Register(code, callback, instance)
             error("register net event callback is nil! code is: ", code2ProtoNameMap[code])
             return
         end
-        listeners[code] = { inst = instance, cb = callback }
+        listeners[code] = {inst = instance, cb = callback}
     end
 end
 
@@ -72,7 +72,6 @@ end
 
 --- 关闭网络连接
 function NetManager.Close(callback)
-
 end
 
 --- 在这里真正去处理网络消息
@@ -116,12 +115,10 @@ end
 
 --- 处理网络重连
 function NetManager.OnReConnected()
-
 end
 
 --- 处理网络关闭
 function NetManager.OnClosed()
-
 end
 
 --- 连接服务器失败

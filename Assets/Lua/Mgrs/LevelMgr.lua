@@ -18,14 +18,14 @@ end
 
 function LevelMgr:Start()
 	local currentFloor = 1
-	if self.currentLevel != nil then
+	if self.currentLevel ~= nil then
 		currentFloor = self.currentLevel.GetLevel()
 	end
 
 	local nextLevel = self.level + 1
 	local isHave = false
 	if isHave then
-		-- ³õÊ¼»¯¹Ø¿¨Êı¾İ
+		-- åˆå§‹åŒ–å…³å¡æ•°æ®
 		local cfg = ConfigMgr.GetItem("level", nextLevel)
 		local level = Level:new(cfg)
 		self:SetLevelClass(level)

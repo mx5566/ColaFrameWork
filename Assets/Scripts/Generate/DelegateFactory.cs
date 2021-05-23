@@ -43,6 +43,7 @@ public class DelegateFactory
 		dict.Add(typeof(ColaFramework.NetWork.NetMessageCenter.NetMessageAction), factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnScrollCompleted), factory.UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnTableScrolling), factory.UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
+		dict.Add(typeof(System.Action<UnityEngine.Collider2D,Bonus>), factory.System_Action_UnityEngine_Collider2D_Bonus);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
@@ -80,6 +81,7 @@ public class DelegateFactory
 		DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
+		DelegateTraits<System.Action<UnityEngine.Collider2D,Bonus>>.Init(factory.System_Action_UnityEngine_Collider2D_Bonus);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
@@ -117,6 +119,7 @@ public class DelegateFactory
 		TypeTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.Check_ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
+		TypeTraits<System.Action<UnityEngine.Collider2D,Bonus>>.Init(factory.Check_System_Action_UnityEngine_Collider2D_Bonus);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
@@ -154,6 +157,7 @@ public class DelegateFactory
 		StackTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Push = factory.Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction;
 		StackTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted;
 		StackTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnTableScrolling;
+		StackTraits<System.Action<UnityEngine.Collider2D,Bonus>>.Push = factory.Push_System_Action_UnityEngine_Collider2D_Bonus;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
@@ -1787,6 +1791,65 @@ public class DelegateFactory
 	}
 
 	void Push_UnityEngine_UI_Extensions_UITableView_OnTableScrolling(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnTableScrolling o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_Collider2D_Bonus_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_Collider2D_Bonus_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_Collider2D_Bonus_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.Collider2D param0, Bonus param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.Collider2D param0, Bonus param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.Collider2D,Bonus> System_Action_UnityEngine_Collider2D_Bonus(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.Collider2D,Bonus> fn = delegate(UnityEngine.Collider2D param0, Bonus param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_Collider2D_Bonus_Event target = new System_Action_UnityEngine_Collider2D_Bonus_Event(func);
+			System.Action<UnityEngine.Collider2D,Bonus> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_Collider2D_Bonus_Event target = new System_Action_UnityEngine_Collider2D_Bonus_Event(func, self);
+			System.Action<UnityEngine.Collider2D,Bonus> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_Collider2D_Bonus(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.Collider2D,Bonus>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_Collider2D_Bonus(IntPtr L, System.Action<UnityEngine.Collider2D,Bonus> o)
 	{
 		ToLua.Push(L, o);
 	}

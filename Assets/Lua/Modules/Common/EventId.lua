@@ -4,7 +4,7 @@
 ---    Common NotifyId 处理没有模块的通用类型事件
 ---
 local EventId = {
-    PlayerEventId: PlayerId
+    PlayerEventId = PlayerId,
 }
 
 local PlayerId = {

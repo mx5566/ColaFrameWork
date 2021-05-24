@@ -6,7 +6,7 @@ end
 
 
 function BonusLua.OnTriggerEnter2D(collison, object)
-	if collison.CompareTag("Player") 
+	if collison.CompareTag("Player") then
 	
 
 		UnityEngine.Object.Destroy(object)

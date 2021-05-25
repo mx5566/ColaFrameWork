@@ -59,21 +59,23 @@ function Main()
     initParam()
     initialize()
 
-    UIManager.Open(ECEnumType.UIEnum.Loading)
-    CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
-        EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
-        UIManager.Close(ECEnumType.UIEnum.Loading)
-    end)
-
-    -- myspace
-    UIManager.Open(ECEnumType.UIEnum.Loading)
-    CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("spacescene", function(sceneName)
-        -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
-        EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Game_Start)
-
-        UIManager.Close(ECEnumType.UIEnum.Loading)
-    end)
-
+    if false then
+        UIManager.Open(ECEnumType.UIEnum.Loading)
+        CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
+            EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
+            UIManager.Close(ECEnumType.UIEnum.Loading)
+        end)
+    else
+        -- myspace
+        -- 正常应该先切到登录场景
+        -- 账号密码验证通过之后切入到游戏场景
+        UIManager.Open(ECEnumType.UIEnum.Loading)
+        CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("Demo_Scene", function(sceneName)
+            -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
+            EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Game_Start)
+            UIManager.Close(ECEnumType.UIEnum.Loading)
+        end)
+    end
 end
 
 --场景切换通知

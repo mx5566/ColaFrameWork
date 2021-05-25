@@ -24,11 +24,11 @@ function LevelMgr:Start()
 		currentFloor = self.currentLevel.GetLevel()
 	end
 
-	local nextLevel = self.level + 1
+	local nextLevel = currentFloor + 1
 	local isHave = false
 	if isHave then
 		-- 初始化关卡数据
-		local cfg = ConfigMgr.GetItem("level", nextLevel)
+		local cfg = ConfigMgr.GetItem("Level", nextLevel)
 		local level = Level:new(cfg)
 		self:SetLevelClass(level)
 		level:Start()

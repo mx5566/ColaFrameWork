@@ -2,8 +2,8 @@
 local Level = Class("Level")
 
 function Level:initialize(cfg)
-	self.name = cfg.Name
-	self.level = cfg.Level
+	self.name = cfg.name
+	self.level = cfg.level
 	self.cfg = cfg
 
 end
@@ -31,20 +31,7 @@ function Level:Start()
 	end
 
 	local ret = levelC.StratGame()
-	-- 分析结果
 
-	-- local spriteAsset = CommonUtil.GetAsset("玩家预制物", typeof(UnityEngine.Sprite))
-	-- local spriteAsset = CommonUtil.InstantiatePrefab("玩家预制物", nil)
-	-- 
-
-	--[[
-	local obj = CommonUtil.GetGameObject("path", nil)
-    if nil ~= obj then
-		-- success
-
-    end 
-	]]--
-	
 	-- 初始化LevelController 里面的数据
 end
 

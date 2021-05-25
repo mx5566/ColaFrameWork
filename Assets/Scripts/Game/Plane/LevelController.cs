@@ -28,17 +28,34 @@ public class LevelController : MonoBehaviour {
     List<GameObject> planetsList = new List<GameObject>();
 
     Camera mainCamera;   
+	
+	public bool isStart;
+
+    public bool StartGame()
+    {
+        mainCamera = Camera.main;
+        //for each element in 'enemyWaves' array creating coroutine which generates the wave
+        for (int i = 0; i < enemyWaves.Length; i++)
+        {
+            StartCoroutine(CreateEnemyWave(enemyWaves[i].timeToStart, enemyWaves[i].wave));
+        }
+        StartCoroutine(PowerupBonusCreation());
+        StartCoroutine(PlanetsCreation());
+        isStart = true;
+
+        return true;
+    }
 
     private void Start()
     {
-        mainCamera = Camera.main;
+    /*    mainCamera = Camera.main;
         //for each element in 'enemyWaves' array creating coroutine which generates the wave
         for (int i = 0; i<enemyWaves.Length; i++) 
         {
             StartCoroutine(CreateEnemyWave(enemyWaves[i].timeToStart, enemyWaves[i].wave));
         }
         StartCoroutine(PowerupBonusCreation());
-        StartCoroutine(PlanetsCreation());
+        StartCoroutine(PlanetsCreation());*/
     }
     
     //Create a new wave after a delay

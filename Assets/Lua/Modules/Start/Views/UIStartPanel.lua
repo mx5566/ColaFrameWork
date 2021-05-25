@@ -37,7 +37,7 @@ end
 
 function UIStartPanel:onClick(name)
     if name == "game_start_btn" then
-        Ctrl.Start.NextLevel()
+        Ctrl.Start.Start()
     elseif name == "game_restart_btn" then
         
     end

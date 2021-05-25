@@ -2,10 +2,11 @@
 local Unit = Class("Unit")
 
 
-function Unit:initialize()
+function Unit:initialize(data)
 	self.hp = 0
 	self.mp = 0
-	self.type = ECEnumType.NULL
+	self.type = ECEnumType.UnitType.NULL
+	self.id = 1
 end
 
 function Unit:SetHp(hp)

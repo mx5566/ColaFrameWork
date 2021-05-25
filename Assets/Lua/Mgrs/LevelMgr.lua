@@ -1,5 +1,5 @@
 local LevelMgr = {}
-local Level = require("Game.Level")
+local Level = require("Game.Logic.Level")
 
 -- 点号相当于静态方法
 -- 冒号相当于成员方法
@@ -35,3 +35,4 @@ function LevelMgr:Start()
 	end
 end
 
+return LevelMgr

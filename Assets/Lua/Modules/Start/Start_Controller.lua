@@ -4,7 +4,6 @@
 ---              Start_Controller Controller业务逻辑
 ---
 
-local LevelMgr = require("Mgrs.LevelMgr")
 --- 公有字段和方法
 local public = {}
 --- 私有字段和方法
@@ -20,8 +19,8 @@ function public.OnDestroy()
 	
 end
 
-function public:StartNext()
-	LevelMgr.Start(self)
+function public:Start()
+	LevelMgr:Start()
 end
 
 function public:Restart()

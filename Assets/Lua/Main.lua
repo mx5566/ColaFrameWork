@@ -14,6 +14,10 @@ local function initialize()
 
     --UIManager初始化
     UIManager.initialize()
+    --LevelMgr初始化
+    LevelMgr.Initialize(LevelMgr)
+    PlayerMgr.Initialize()
+
     -- 模块开始加载
     Modules.PriorityBoot()
 end
@@ -35,6 +39,9 @@ local function gloablDefine()
     _G.ConfigMgr = require("Mgrs.ConfigMgr")
     _G.Protocol = require("Protocols.Protocol")
     _G.NetManager = require("Core.Net.NetManager")
+    -- 初始化关卡管理器
+    _G.LevelMgr = require("Mgrs.LevelMgr")
+    _G.PlayerMgr = require("Mgrs.PlayerMgr")
     --控制全局变量的新建与访问
     require("Utilitys.LuaGlobalCheck")
 end
@@ -72,6 +79,9 @@ function Main()
         UIManager.Open(ECEnumType.UIEnum.Loading)
         CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("Demo_Scene", function(sceneName)
             -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
+            -- 创建玩家对象
+            PlayerMgr.CreatePlayer({id=1, name= "plane"}, true)
+            
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Game_Start)
             UIManager.Close(ECEnumType.UIEnum.Loading)
         end)

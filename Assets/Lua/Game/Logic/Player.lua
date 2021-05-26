@@ -13,8 +13,7 @@ function Player:initialize(data)
 
 	self.planeInstance = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Player.prefab", nil)
 
-
-    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore)
+    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
 end
 
 function Player.AddScore(self, score)
@@ -29,6 +28,19 @@ end
 function Player:SetFloor(floor)
 	-- body
 	self.currentFloor = floor
+end
+
+function Player:Delete()
+	-- body
+	if self.planeInstance ~= nil then
+		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Player.prefab", self.planeInstance)
+		self.planeInstance = nil
+	end
+end
+
+function Player:GetInstance()
+	-- body
+	return self.planeInstance
 end
 
 return Player

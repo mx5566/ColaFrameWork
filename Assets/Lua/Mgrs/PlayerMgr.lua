@@ -32,5 +32,10 @@ function PlayerMgr:CreatePlayer(data, ismain)
 	return player
 end
 
+function PlayerMgr:GetMainPlayer()
+	-- body
+	return self.mainPlayer
+end
+
 
 return PlayerMgr

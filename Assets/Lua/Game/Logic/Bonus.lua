@@ -8,7 +8,7 @@ end
 function BonusLua:OnTriggerEnter2D(collison, object)
 	if collison.CompareTag("Player") then
 		local mainPlayerPrefab = PlayerMgr:GetMainPlayer():GetInstance()
-		local playerShoot = mainPlayerPrefab:GetComponent(typeof("PlayerShooting"))
+		local playerShoot = mainPlayerPrefab:GetComponent("PlayerShooting")
 		if playerShoot.instance.weaponPower < playerShoot.instance.maxweaponPowerthen then
 			playerShoot.instance.weaponPower = playerShoot.instance.weaponPower + 1
 		end

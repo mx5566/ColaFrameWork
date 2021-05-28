@@ -82,7 +82,7 @@ function Main()
             -- 创建玩家对象
             PlayerMgr.CreatePlayer({id=1, name= "plane"}, true)
             
-            EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Game_Start)
+            EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.GameStart)
             UIManager.Close(ECEnumType.UIEnum.Loading)
         end)
     end

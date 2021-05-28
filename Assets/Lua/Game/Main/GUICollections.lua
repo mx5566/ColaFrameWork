@@ -10,7 +10,7 @@ local GUICollections = {
     [ECEnumType.UIEnum.DebugPanel] = require("Modules.Common.Views.UIDebugPanel"),
     [ECEnumType.UIEnum.WorldDialog] = require("Modules.World.Views.UIWorldDialog"),
     [ECEnumType.UIEnum.UIModel] = require("Modules.Test.Views.UIModelPanel"),
-    [ECEnumType.UIEnum.Game_Start] = require("Modules.Start.Views.UIStartPanel"),
+    [ECEnumType.UIEnum.GameStart] = require("Modules.Start.Views.UIStartPanel"),
 }
 
 return GUICollections

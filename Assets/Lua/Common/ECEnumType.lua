@@ -14,7 +14,7 @@ ECEnumType.UIEnum = {
     DebugPanel = 3, -- Debug信息界面
     WorldDialog = 4, --设置界面
     UIModel = 5, --UGUIModel测试界面
-    Game_Start = 6,  -- 开始游戏的界面
+    GameStart = 6,  -- 开始游戏的界面
 }
 
 -- UI Level逻辑层级

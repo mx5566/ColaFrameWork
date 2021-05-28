@@ -80,7 +80,7 @@ function Main()
         CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("Demo_Scene", function(sceneName)
             -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             -- 创建玩家对象
-            PlayerMgr.CreatePlayer({id=1, name= "plane"}, true)
+            PlayerMgr:CreatePlayer({id=1, name= "plane"}, true)
             
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.GameStart)
             UIManager.Close(ECEnumType.UIEnum.Loading)

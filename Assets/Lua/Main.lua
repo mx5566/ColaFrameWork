@@ -98,3 +98,4 @@ function OnApplicationQuit()
 
 end
 -- https://blog.csdn.net/weixin_34389926/article/details/91939395
+-- 如何利用ndk编译c代码成动态库

@@ -2,7 +2,7 @@ local Unit = require("Unit")
 local Player = Class("Player", Unit)
 
 
-function Player:initialize(data)
+function Player:initialize(data, ismain)
 	Unit.initialize(self, data)
 
 	self.gun = {}
@@ -11,6 +11,7 @@ function Player:initialize(data)
 	-- 玩家的所处的关卡
 	self.currentFloor = 1
 
+	self.isMain = ismain
 	self.planeInstance = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Player.prefab", nil)
 
     EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)

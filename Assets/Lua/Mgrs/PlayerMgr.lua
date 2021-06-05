@@ -22,7 +22,7 @@ function PlayerMgr:CreatePlayer(data, ismain)
 	end
 
 	-- create player
-	local player = Player:new(data)
+	local player = Player:new(data, ismain)
 	self.mapPlayers[data.id] = player
 
 	if ismain then

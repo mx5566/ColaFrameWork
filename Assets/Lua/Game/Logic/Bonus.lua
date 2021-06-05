@@ -1,8 +1,23 @@
 local BonusLua = class("Bonus")
+local common = require("Common.Common")
 
 -- 能量球奖励类 玩家触碰到获取奖励，子弹变异
 function BonusLua:initialize()
 	Bonus.OnTriggerEnter2DLua = BonusLua.OnTriggerEnter2D
+
+	local powerObj = CommonUtil.InstantiatePrefab("Arts/Plane/Animation/Bonuses/Power Up.prefab", nil)
+
+	local mainPlayerPrefab = PlayerMgr:GetMainPlayer():GetInstance()
+	local playerMove = mainPlayerPrefab:GetComponent("PlayerMoving")
+
+	local mainCamera = CommonUtil.GetMainCamera()
+
+	powerObj.transform.position = Vector3.New(common.Random(playerMove.instance.borders.minX, playerMove.instance.borders.maxX),0, 
+		mainCamera:ViewportToWorldPoint(Vector3.up) + powerObj:GetComponent("Renderer").bounds.size.y // 2)
+
+	local bonusC = powerObj:GetComponent("Bonus")
+	-- bind collison 
+	bonusC.OnTriggerEnter2DLua = BonusLua.OnTriggerEnter2D
 end
 
 function BonusLua:OnTriggerEnter2D(collison, object)
@@ -12,7 +27,8 @@ function BonusLua:OnTriggerEnter2D(collison, object)
 		if playerShoot.instance.weaponPower < playerShoot.instance.maxweaponPowerthen then
 			playerShoot.instance.weaponPower = playerShoot.instance.weaponPower + 1
 		end
-
+		
+		-- destroy bonus
 		UnityEngine.Object.Destroy(object)
 	end
 end

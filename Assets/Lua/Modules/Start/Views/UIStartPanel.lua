@@ -34,7 +34,9 @@ end
 function UIStartPanel:OnShow(isShow)
     CommonUtil.PlayMultipleSound("Audio/2d/welcome.mp3")
 end
-
+-- 开始 暂停 继续
+-- 结束
+-- 重开
 function UIStartPanel:onClick(name)
     if name == "game_start_btn" then
         Ctrl.Start.Start()

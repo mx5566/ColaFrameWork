@@ -62,7 +62,7 @@ function UILoginPanel:onClick(name)
         else 
             UIManager.Close(ECEnumType.UIEnum.Loading)
             -- 
-
+            
 
         end
     end

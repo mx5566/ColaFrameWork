@@ -136,6 +136,7 @@ public static class CustomSettings
         _GT(typeof(AsyncOperation)).SetBaseType(typeof(System.Object)),
         _GT(typeof(LightType)),
         _GT(typeof(SleepTimeout)),
+		_GT(typeof(UnityWebRequest)),
 
 #region UGUI组件导出
         _GT(typeof(Text)),

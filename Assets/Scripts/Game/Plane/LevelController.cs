@@ -39,8 +39,8 @@ public class LevelController : MonoBehaviour {
         {
             StartCoroutine(CreateEnemyWave(enemyWaves[i].timeToStart, enemyWaves[i].wave));
         }
-        StartCoroutine(PowerupBonusCreation());
-        StartCoroutine(PlanetsCreation());
+        //StartCoroutine(PowerupBonusCreation());
+        //StartCoroutine(PlanetsCreation());
         isStart = true;
 
         return true;

@@ -12,13 +12,13 @@ public class Bonus : MonoBehaviour {
         {
             OnTriggerEnter2DLua(collision, this);
         }
-        if (collision.CompareTag("Player")) 
+/*      if (collision.CompareTag("Player")) 
         {
             if (PlayerShooting.instance.weaponPower < PlayerShooting.instance.maxweaponPower)
             {
                 PlayerShooting.instance.weaponPower++;
             }
             Destroy(gameObject);
-        }
+        }*/
     }
 }

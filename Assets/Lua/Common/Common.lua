@@ -5,4 +5,9 @@ function M.Random(a,b)
     return math.random(a,b)
 end
 
+function M.GenerateID()
+    LID = LID + 1
+    return LID
+end
+
 return M

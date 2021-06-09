@@ -25,6 +25,9 @@ function Level:initialize(cfg)
 	-- planets
 	self.coroutinePlanets = nil
 	self.timerPlanets = nil
+
+	-- enemys
+	self.enemys = {}
 end
 
 function Level:Start()
@@ -38,14 +41,14 @@ function Level:Start()
 		self.gameControler = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Game_Controller.prefab", nil)
 	end
 
-	local levelC = self.gameControler.GetComponent(typeof(LevelController))
+	local levelC = self.gameControler:GetComponent(typeof(LevelController))
 	if levelC ~= nil then
 		if levelC.isStart == true then
 		-- already start
 			return
 		end
 	else
-		levelC = self.gameControler.AddSingleComponent(typeof(LevelController))
+		levelC = self.gameControler:AddSingleComponent(typeof(LevelController))
 	end
 
 	local ret = levelC.StratGame()
@@ -123,4 +126,3 @@ end
 
 return Level
 
--- https://blog.csdn.net/weixin_30578677/article/details/99053830

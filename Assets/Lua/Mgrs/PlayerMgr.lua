@@ -8,7 +8,7 @@ function PlayerMgr:Initialize()
 	self.mainPlayer = nil
 end
 
-function PlayerMgr:CreatePlayer(data, ismain)
+function PlayerMgr:CreatePlayer(data, ismain, id)
 	if data == nil then
 		return nil
 	end
@@ -22,7 +22,7 @@ function PlayerMgr:CreatePlayer(data, ismain)
 	end
 
 	-- create player
-	local player = Player:new(data, ismain)
+	local player = Player:new(data, ismain, id)
 	self.mapPlayers[data.id] = player
 
 	if ismain then

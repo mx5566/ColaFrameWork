@@ -2,8 +2,8 @@ local Unit = require("Unit")
 local Player = Class("Player", Unit)
 
 
-function Player:initialize(data, ismain)
-	Unit.initialize(self, data)
+function Player:initialize(data, ismain, id)
+	Unit.initialize(self, data, id)
 
 	self.gun = {}
 	self.score = 0
@@ -14,7 +14,9 @@ function Player:initialize(data, ismain)
 	self.isMain = ismain
 	self.planeInstance = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Player.prefab", nil)
 
-    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
+	local p = self.planeInstance:GetComponent(typeof(Player))
+	p.ID = id
+    -- EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
 end
 
 function Player.AddScore(self, score)
@@ -42,6 +44,21 @@ end
 function Player:GetInstance()
 	-- body
 	return self.planeInstance
+end
+
+
+function Player:AddHp(hp)
+	Unit:AddHp(hp)
+	
+	if hp > 0 then
+		local hitEffect = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", self.planeInstance.transform)
+		hitEffect.transform.rotation = Quaternion.identity
+	else 
+		local explosion = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Player Explosion.prefab", nil)
+		explosion.transform.position = self.planeInstance.transform.position
+		explosion.transform.rotation = Quaternion.identity
+		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Player.prefab", self.planeInstance)
+	end
 end
 
 return Player

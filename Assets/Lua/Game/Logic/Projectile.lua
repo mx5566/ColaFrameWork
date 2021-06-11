@@ -38,17 +38,19 @@ end
 
 function Projectile:OnTriggerEnter2D(collison, object)
 	if collison.CompareTag("Player") and self.isEnemy then
-		local mainPlayer = PlayerMgr:GetMainPlayer()
-        mainPlayer:AddHp(-1)
+        local id = collison:GetComponent(typeof(Player)).ID
+        local player = PlayerMgr:GetPlayer(id)
+        player:AddHp(-1)
+        CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Enemy_Straight_Projetile.prefab", self.projectileObj)
 
-        CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Player_Short_Lazer.prefab", self.projectileObj)
+        -- CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Player_Short_Lazer.prefab", self.projectileObj)
     elseif collison.CompareTag("Enemy") and (not self.isEnemy) then
         -- enemy 删除掉
         -- 怎么找到是哪个enemy呢？
         local id = collison:GetComponent(typeof(Enemy)).ID
         
-
-        CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Enemy_Straight_Projetile.prefab", self.projectileObj)
+        CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Player_Short_Lazer.prefab", self.projectileObj)
+        -- CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Enemy_Straight_Projetile.prefab", self.projectileObj)
 	end
 end
 

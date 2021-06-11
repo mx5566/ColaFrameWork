@@ -17,13 +17,13 @@ function PlayerMgr:CreatePlayer(data, ismain, id)
 		return nil
 	end
 
-	if self.mapPlayers[data.id] ~= nil then
-		return self.mapPlayers[data.id]
+	if self.mapPlayers[id] ~= nil then
+		return self.mapPlayers[id]
 	end
 
 	-- create player
 	local player = Player:new(data, ismain, id)
-	self.mapPlayers[data.id] = player
+	self.mapPlayers[id] = player
 
 	if ismain then
 		self.mainPlayer = player
@@ -37,5 +37,8 @@ function PlayerMgr:GetMainPlayer()
 	return self.mainPlayer
 end
 
+function PlayerMgr:GetPlayer(id)
+	return self.mapPlayers[id]
+end
 
 return PlayerMgr

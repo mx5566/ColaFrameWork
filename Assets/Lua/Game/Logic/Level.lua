@@ -1,6 +1,7 @@
 -- 关卡
 local Level = Class("Level")
 local Bonus = require("Game.Logic.Bonus")
+local Wave = require("Game.Logic.Wave")
 local Planet = require("Game.Logic.Planet")
 local common = require("Common.Common")
 
@@ -10,6 +11,15 @@ local pathPlanets = {
 	"Arts/Plane/Prefabs/Planets/Cream-Violet-Planet.prefab",
 	"Arts/Plane/Prefabs/Planets/Purple-Planet-wih-Moon.prefab",
 	"Arts/Plane/Prefabs/Planets/Red-Lines-PLanet.prefab",
+}
+
+local enemyWaves = {
+	"Arts/Plane/Prefabs/EnemyWaves/Wave_1.prefab",
+	"Arts/Plane/Prefabs/EnemyWaves/Wave_2.prefab",
+	"Arts/Plane/Prefabs/EnemyWaves/Wave_3.prefab",
+	"Arts/Plane/Prefabs/EnemyWaves/Wave_4.prefab",
+	"Arts/Plane/Prefabs/EnemyWaves/Wave_5.prefab",
+	"Arts/Plane/Prefabs/EnemyWaves/Wave_6.prefab",
 }
 
 function Level:initialize(cfg)
@@ -53,11 +63,17 @@ function Level:Start()
 
 	local ret = levelC.StratGame()
 
+	-- 敌人浪
+	self.timerWave = nil
+	self.coroutineWave = coroutine.start(self.CreateWave, self)
+	
 	-- 启动一个协程产生bonus预制对象
 	-- ....
+	self.timerBonus = nil
 	self.coroutineBonus = coroutine.start(self.CreateBonus, self)
 
 	-- 启动一个协程产生行星预制对象
+	self.timerPlanets = nil
 	self.coroutinePlanets = coroutine.start(self.CreatePlanets, self)
 
 	-- 初始化LevelController 里面的数据
@@ -65,6 +81,20 @@ end
 
 function Level:GetLevel()
 	return self.level
+end
+
+function Level.CreateWave(self)
+	print('Coroutine wave started')
+
+	self.timerWave = Timer.New(ff, 5, -1, true)
+
+	local ff = function ()
+		Wave:new()
+	end
+
+	self.timerWave:Start()
+
+    print('Coroutine wave ended')
 end
 
 function Level.CreateBonus(self)
@@ -77,11 +107,6 @@ function Level.CreateBonus(self)
 	end
 
 	self.timerBonus:Start()
-
-	-- while true do
-	-- 	coroutine.wait(5)
-	-- 	Bonus:new()
-	-- end
 
     print('Coroutine bonus ended')
 end
@@ -99,11 +124,6 @@ function Level.CreatePlanets(self)
 	end
 
 	self.timerPlanets:Start()
-
-	-- while true do
-	-- 	coroutine.wait(5)
-	-- 	Bonus:new()
-	-- end
 
     print('Coroutine planets ended')
 end

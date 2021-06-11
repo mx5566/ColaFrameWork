@@ -1,6 +1,7 @@
 --主入口函数。从这里开始lua逻辑
 local rawset = rawset
 
+local common = require("Common.Common")
 
 -- 全局函数
 -- 用于声明全局变量
@@ -81,7 +82,7 @@ function Main()
         CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("Demo_Scene", function(sceneName)
             -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             -- 创建玩家对象
-            PlayerMgr:CreatePlayer({id=1, name= "plane"}, true, LID)
+            PlayerMgr:CreatePlayer({id=1, name= "plane"}, true, common.GenerateID())
             
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.GameStart)
             UIManager.Close(ECEnumType.UIEnum.Loading)

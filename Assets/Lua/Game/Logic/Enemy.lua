@@ -12,6 +12,7 @@ local Projectile = require("Game.Logic.Projectile")
 function Enemy:initialize(data, id)
 	Unit.initialize(self, data, id)
 
+	self.baseID = data.id
 	-- 敌机
 	self.enemyObj = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Enemy_straight_projectile.prefab", nil)
 	-- 子弹
@@ -22,8 +23,8 @@ function Enemy:initialize(data, id)
 
 	-- 子弹效果
 	-- self.projectileHitObj = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", nil)
-	local p = self.enemyObj:GetComponent(typeof(Enemy))
-	p.ID = id
+	local e = self.enemyObj:GetComponent(typeof(Enemy))
+	e.ID = id
 
 	self.type = ECEnumType.UnitType.ENEMY
 

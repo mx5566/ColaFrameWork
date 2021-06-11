@@ -13,14 +13,6 @@ local pathPlanets = {
 	"Arts/Plane/Prefabs/Planets/Red-Lines-PLanet.prefab",
 }
 
-local enemyWaves = {
-	"Arts/Plane/Prefabs/EnemyWaves/Wave_1.prefab",
-	"Arts/Plane/Prefabs/EnemyWaves/Wave_2.prefab",
-	"Arts/Plane/Prefabs/EnemyWaves/Wave_3.prefab",
-	"Arts/Plane/Prefabs/EnemyWaves/Wave_4.prefab",
-	"Arts/Plane/Prefabs/EnemyWaves/Wave_5.prefab",
-	"Arts/Plane/Prefabs/EnemyWaves/Wave_6.prefab",
-}
 
 function Level:initialize(cfg)
 	self.name = cfg.name
@@ -86,10 +78,13 @@ end
 function Level.CreateWave(self)
 	print('Coroutine wave started')
 
-	self.timerWave = Timer.New(ff, 5, -1, true)
+	self.timerWave = Timer.New(ff, 2, -1, true)
 
 	local ff = function ()
-		Wave:new()
+		for i = 1, 6 do
+			coroutine.wait(i)
+			Wave:new(i)
+		end	
 	end
 
 	self.timerWave:Start()

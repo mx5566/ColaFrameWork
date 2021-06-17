@@ -48,7 +48,9 @@ function Projectile:OnTriggerEnter2D(collison, object)
         -- enemy 删除掉
         -- 怎么找到是哪个enemy呢？
         local id = collison:GetComponent(typeof(Enemy)).ID
-        
+        local enemy = PlayerMgr:GetPlayer(id)
+        enemy:AddHp(-1)
+
         CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Player_Short_Lazer.prefab", self.projectileObj)
         -- CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Projectiles/Enemy_Straight_Projetile.prefab", self.projectileObj)
 	end

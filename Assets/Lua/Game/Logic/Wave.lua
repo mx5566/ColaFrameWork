@@ -1,4 +1,4 @@
-local WaveLua = class("Wave")
+local WaveLua = Class("Wave")
 local common = require("Common.Common")
 local Enemy = require("Game.Logic.Enemy")
 

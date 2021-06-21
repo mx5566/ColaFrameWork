@@ -1,4 +1,4 @@
-local Planet = class("Planet")
+local Planet = Class("Planet")
 local common = require("Common.Common")
 
 -- 理论上行星应该有一张表来配置

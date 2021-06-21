@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using ColaFramework;
 using ColaFramework.NetWork;
+using UnityEngine.Networking;
 
 public static class CustomSettings
 {
@@ -83,6 +84,7 @@ public static class CustomSettings
         _GT(typeof(UITableView)).SetNameSpace(null),
         _GT(typeof(UITableViewCell)).SetNameSpace(null),
         _GT(typeof(Bonus)),
+        _GT(typeof(Player)),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

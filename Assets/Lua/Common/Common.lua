@@ -6,8 +6,8 @@ function M.Random(a,b)
 end
 
 function M.GenerateID()
-    LID = LID + 1
-    return LID
+    LID.LID = LID.LID + 1
+    return LID.LID
 end
 
 return M

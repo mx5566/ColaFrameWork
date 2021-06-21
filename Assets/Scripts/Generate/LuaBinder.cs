@@ -31,6 +31,7 @@ public static class LuaBinder
 		UnityEngine_UI_Extensions_UITableViewWrap.Register(L);
 		UnityEngine_UI_Extensions_UITableViewCellWrap.Register(L);
 		BonusWrap.Register(L);
+		PlayerWrap.Register(L);
 		LuaProfilerWrap.Register(L);
 		L.RegFunction("UIEventHandler", UIEventHandler);
 		L.RegFunction("UIDragEventHandlerDetail", UIDragEventHandlerDetail);
@@ -85,6 +86,9 @@ public static class LuaBinder
 		UnityEngine_RenderSettingsWrap.Register(L);
 		UnityEngine_ResourcesWrap.Register(L);
 		UnityEngine_AudioBehaviourWrap.Register(L);
+		L.BeginModule("Networking");
+		UnityEngine_Networking_UnityWebRequestWrap.Register(L);
+		L.EndModule();
 		L.BeginModule("UI");
 		UnityEngine_UI_TextWrap.Register(L);
 		UnityEngine_UI_ImageWrap.Register(L);

@@ -17,7 +17,7 @@ local function initialize()
     UIManager.initialize()
     --LevelMgr初始化
     LevelMgr.Initialize(LevelMgr)
-    PlayerMgr.Initialize()
+    PlayerMgr:Initialize()
 
     -- 模块开始加载
     Modules.PriorityBoot()
@@ -43,9 +43,10 @@ local function gloablDefine()
     -- 初始化关卡管理器
     _G.LevelMgr = require("Mgrs.LevelMgr")
     _G.PlayerMgr = require("Mgrs.PlayerMgr")
+    _G.LID = {LID = 0}
     --控制全局变量的新建与访问
     require("Utilitys.LuaGlobalCheck")
-    _G.LID = 0
+    
 end
 
 -- 初始化一些参数

@@ -1,5 +1,5 @@
 -- enemy base
-local Unit = require("Unit")
+local Unit = require("Game.Logic.Unit")
 local Enemy = Class("Enemy", Unit)
 local Common = require("Common.Common")
 local Projectile = require("Game.Logic.Projectile")

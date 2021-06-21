@@ -1,4 +1,4 @@
-local Projectile = class("Projectile")
+local Projectile = Class("Projectile")
 local common = require("Common.Common")
 
 -- 能量球奖励类 玩家触碰到获取奖励，子弹变异

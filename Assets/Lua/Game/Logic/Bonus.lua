@@ -1,4 +1,4 @@
-local BonusLua = class("Bonus")
+local BonusLua = Class("Bonus")
 local common = require("Common.Common")
 
 -- 能量球奖励类 玩家触碰到获取奖励，子弹变异
@@ -11,7 +11,7 @@ function BonusLua:initialize()
 	local mainCamera = CommonUtil.GetMainCamera()
 
 	self.powerObj.transform.position = Vector3.New(common.Random(playerMove.instance.borders.minX, playerMove.instance.borders.maxX),0, 
-		mainCamera:ViewportToWorldPoint(Vector3.up) + self.powerObj:GetComponent("Renderer").bounds.size.y // 2)
+		mainCamera:ViewportToWorldPoint(Vector3.up) + self.powerObj:GetComponent("Renderer").bounds.size.y / 2)
 
 	local bonusC = self.powerObj:GetComponent("Bonus")
 	-- bind collison 

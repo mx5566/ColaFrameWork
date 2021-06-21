@@ -1,4 +1,4 @@
-local Unit = require("Unit")
+local Unit = require("game.Logic.Unit")
 local Player = Class("Player", Unit)
 
 
@@ -14,7 +14,9 @@ function Player:initialize(data, ismain, id)
 	self.isMain = ismain
 	self.planeInstance = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Player.prefab", nil)
 
-	local p = self.planeInstance:GetComponent(typeof(Player))
+	local p = self.planeInstance:GetComponent("Player")
+
+	print(p)
 	p.ID = id
     -- EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
 end

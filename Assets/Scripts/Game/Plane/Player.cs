@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 
     public static Player instance;
 
+    [HideInInspector]
     public int ID;
 
     private void Awake()

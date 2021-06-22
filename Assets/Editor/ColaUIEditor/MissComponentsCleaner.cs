@@ -70,6 +70,9 @@ namespace ColaFramework.ToolKit
                 return;
             }
             PrefabUtility.ReplacePrefab(go, prefabParent, ReplacePrefabOptions.ConnectToPrefab);
+
+            //string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(prefabParent);
+            //PrefabUtility.SaveAsPrefabAsset(go, prefabPath);
         }
     }
 }

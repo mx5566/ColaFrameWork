@@ -15,7 +15,7 @@ function Player:initialize(data, ismain, id)
 	self.planeInstance = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Player.prefab", nil)
 
 	if self.isMain then
-		CommonUtil.GetMainCamera()
+		CommonUtil.GetMainCamera().orthographic = true
 	end
 
 	local p = self.planeInstance:GetComponent("Player")

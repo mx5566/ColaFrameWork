@@ -43,7 +43,7 @@ function Level:Start()
 		self.gameControler = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Game_Controller.prefab", nil)
 	end
 
-	local levelC = self.gameControler:GetComponent(typeof(LevelController))
+--[[local levelC = self.gameControler:GetComponent(typeof(LevelController))
 	if levelC ~= nil then
 		if levelC.isStart == true then
 		-- already start
@@ -54,7 +54,7 @@ function Level:Start()
 	end
 
 	local ret = levelC.StratGame()
-
+]]--
 	-- 敌人浪
 	self.timerWave = nil
 	self.coroutineWave = coroutine.start(self.CreateWave, self)
@@ -68,7 +68,6 @@ function Level:Start()
 	self.timerPlanets = nil
 	self.coroutinePlanets = coroutine.start(self.CreatePlanets, self)
 
-	-- 初始化LevelController 里面的数据
 end
 
 function Level:GetLevel()
@@ -135,6 +134,11 @@ function Level:Destroy()
 	if self.coroutinePlanets ~= nil then
 		self.timerPlanets.Stop()
 		coroutine.stop(self.coroutinePlanets)
+	end
+
+	if self.timerWave ~= nil then
+		self.timerWave.Stop()
+		coroutine.stop(self.timerWave)
 	end
 end
 

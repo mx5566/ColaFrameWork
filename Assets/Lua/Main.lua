@@ -81,6 +81,7 @@ function Main()
         -- 账号密码验证通过之后切入到游戏场景
         UIManager.Open(ECEnumType.UIEnum.Loading)
         CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("Demo_Scene", function(sceneName)
+            Modules.Boot()
             -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             -- 创建玩家对象
             PlayerMgr:CreatePlayer({id=1, name= "plane"}, true, common.GenerateID())

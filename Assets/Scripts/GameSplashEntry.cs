@@ -74,7 +74,7 @@ namespace ColaFramework
         private void PlayVideo(string name)
         {
             videoPlayer.Stop();
-            videoPlayer.source = VideoSource.Url;
+            videoPlayer.source = VideoSource.VideoClip;
             videoPlayer.url = GetFilePath(name);
 
             videoPlayer.isLooping = false;

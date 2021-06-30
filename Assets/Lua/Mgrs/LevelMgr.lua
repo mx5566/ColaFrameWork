@@ -20,6 +20,8 @@ end
 
 function LevelMgr:Start()
 	local currentFloor = 1
+	local m = PlayerMgr:GetMainPlayer()
+
 	if self.currentLevel ~= nil then
 		currentFloor = self.currentLevel.GetLevel()
 	end
@@ -32,7 +34,16 @@ function LevelMgr:Start()
 		local level = Level:new(cfg)
 		self:SetLevelClass(level)
 		level:Start()
+		m:SetFloor(nextLevel)
 	end
+end
+
+function LevelMgr:End()
+	if self.currentLevel == nil then
+		return
+	end
+
+	self.currentLevel.Destroy()
 end
 
 return LevelMgr

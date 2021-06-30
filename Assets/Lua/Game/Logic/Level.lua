@@ -30,9 +30,15 @@ function Level:initialize(cfg)
 
 	-- enemys
 	self.enemys = {}
+
+	self.isStart = false
 end
 
+
 function Level:Start()
+	if self.isStart then
+		return
+	end
 	-- body
 	-- 需要去驱动底层
 	-- 数据传输给c#层
@@ -43,7 +49,7 @@ function Level:Start()
 		self.gameControler = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Game_Controller.prefab", nil)
 	end
 
-	local levelC = self.gameControler:GetComponent(typeof(LevelController))
+--[[local levelC = self.gameControler:GetComponent(typeof(LevelController))
 	if levelC ~= nil then
 		if levelC.isStart == true then
 		-- already start
@@ -54,7 +60,7 @@ function Level:Start()
 	end
 
 	local ret = levelC.StratGame()
-
+]]--
 	-- 敌人浪
 	self.timerWave = nil
 	self.coroutineWave = coroutine.start(self.CreateWave, self)
@@ -68,12 +74,14 @@ function Level:Start()
 	self.timerPlanets = nil
 	self.coroutinePlanets = coroutine.start(self.CreatePlanets, self)
 
-	-- 初始化LevelController 里面的数据
+	self.isStart = true
 end
+
 
 function Level:GetLevel()
 	return self.level
 end
+
 
 function Level.CreateWave(self)
 	print('Coroutine wave started')
@@ -91,6 +99,7 @@ function Level.CreateWave(self)
 
     print('Coroutine wave ended')
 end
+
 
 function Level.CreateBonus(self)
 	print('Coroutine bonus started')
@@ -125,6 +134,8 @@ end
 
 
 function Level:Destroy()
+	self.isStart = false
+
 	CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Game_Controller.prefab", self.gameControler)
 
 	if self.coroutineBonus ~= nil then
@@ -136,7 +147,13 @@ function Level:Destroy()
 		self.timerPlanets.Stop()
 		coroutine.stop(self.coroutinePlanets)
 	end
+
+	if self.timerWave ~= nil then
+		self.timerWave.Stop()
+		coroutine.stop(self.timerWave)
+	end
 end
+
 
 
 return Level

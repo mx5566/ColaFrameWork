@@ -27,6 +27,7 @@ function PlayerMgr:CreatePlayer(data, ismain, id)
 
 	if ismain then
 		self.mainPlayer = player
+		
 	end
 
 	return player

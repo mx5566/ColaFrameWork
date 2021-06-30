@@ -39,7 +39,7 @@ end
 -- 重开
 function UIStartPanel:onClick(name)
     if name == "game_start_btn" then
-        Ctrl.Start.Start()
+        Ctrl.Start:Start()
     elseif name == "game_restart_btn" then
         
     end

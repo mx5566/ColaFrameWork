@@ -71,7 +71,7 @@ function Main()
 
     if true then
         UIManager.Open(ECEnumType.UIEnum.Loading)
-        CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
+        CommonUtil.GetSceneMgr():LoadSceneAsync("xinshoucun", function(sceneName)
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             UIManager.Close(ECEnumType.UIEnum.Loading)
         end)
@@ -80,7 +80,7 @@ function Main()
         -- 正常应该先切到登录场景
         -- 账号密码验证通过之后切入到游戏场景
         UIManager.Open(ECEnumType.UIEnum.Loading)
-        CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("Demo_Scene", function(sceneName)
+        CommonUtil.GetSceneMgr():LoadSceneAsync("Demo_Scene", function(sceneName)
             Modules.Boot()
             -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             -- 创建玩家对象

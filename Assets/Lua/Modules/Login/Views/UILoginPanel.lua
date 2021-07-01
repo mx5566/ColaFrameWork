@@ -57,7 +57,7 @@ function UILoginPanel:onClick(name)
         UIManager.Close(ECEnumType.UIEnum.Loading)
         UIManager.Open(ECEnumType.UIEnum.WorldDialog)
         if true then
-            SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_Girl.prefab", AnimCtrlEnum.CharAnimator, true)
+            local a = SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_Girl.prefab", AnimCtrlEnum.CharAnimator, true)
             Ctrl.Login.RequestConnectServer()
         else 
             UIManager.Close(ECEnumType.UIEnum.Loading)

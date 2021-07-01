@@ -21,7 +21,7 @@ end
 function LevelMgr:Start()
 	if self.currentLevel ~= nil then
 		return
-		currentFloor = self.currentLevel.GetLevel()
+		
 	end 
 
 	local currentFloor = 1

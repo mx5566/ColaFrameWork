@@ -428,6 +428,9 @@ namespace LuaInterface
                         return obj == null ? true : type == obj.GetType();
                     }
                     return false;
+                case LuaTypes.LUA_TFUNCTION:
+                    Type t = GetNullableType(type);
+                    return t == typeof(LuaFunction);
                 default:
                     return false;
             }

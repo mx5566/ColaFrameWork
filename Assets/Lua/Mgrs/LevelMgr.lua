@@ -19,14 +19,15 @@ function LevelMgr:SetLevelClass(level)
 end
 
 function LevelMgr:Start()
+	if self.currentLevel ~= nil then
+		return
+		currentFloor = self.currentLevel.GetLevel()
+	end 
+
 	local currentFloor = 1
 	local m = PlayerMgr:GetMainPlayer()
 
-	if self.currentLevel ~= nil then
-		currentFloor = self.currentLevel.GetLevel()
-	end
-
-	local nextLevel = currentFloor + 1
+	local nextLevel = m:GetFloor() + 1
 	local isHave = false
 	if isHave then
 		-- 初始化关卡数据
@@ -34,7 +35,7 @@ function LevelMgr:Start()
 		local level = Level:new(cfg)
 		self:SetLevelClass(level)
 		level:Start()
-		m:SetFloor(nextLevel)
+		-- m:SetFloor(nextLevel)
 	end
 end
 

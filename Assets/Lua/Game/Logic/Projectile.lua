@@ -1,7 +1,7 @@
 local Projectile = Class("Projectile")
 local common = require("Common.Common")
 
--- 能量球奖励类 玩家触碰到获取奖励，子弹变异
+
 function Projectile:initialize(isenemy, id)
 
     -- 根据id可以得到各种数据

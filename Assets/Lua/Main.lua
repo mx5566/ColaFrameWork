@@ -69,7 +69,7 @@ function Main()
     initParam()
     initialize()
 
-    if false then
+    if true then
         UIManager.Open(ECEnumType.UIEnum.Loading)
         CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)

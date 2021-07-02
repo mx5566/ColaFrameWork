@@ -80,7 +80,7 @@ public class SceneMgr : MonoBehaviour
     /// </summary>
     /// <param name="sceneIndex"></param>
     /// <param name="onSceneChanged"></param>
-    public void LoadSceneAsync(int sceneIndex, OnSceneIndexChanged onSceneChanged)
+    public void LoadSceneAsyncIndex(int sceneIndex, OnSceneIndexChanged onSceneChanged)
     {
         StartCoroutine(LoadTargetSceneAsync(sceneIndex, onSceneChanged));
     }

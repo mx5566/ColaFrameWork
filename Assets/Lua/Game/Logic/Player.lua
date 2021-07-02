@@ -16,6 +16,7 @@ function Player:initialize(data, ismain, id)
 
 	if self.isMain then
 		CommonUtil.GetMainCamera().orthographic = true
+		CommonUtil.GetMainCamera().nearClipPlane = -2
 	end
 
 	local p = self.planeInstance:GetComponent("Player")

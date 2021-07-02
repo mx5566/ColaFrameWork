@@ -429,7 +429,7 @@ namespace LuaInterface
                     }
                     return false;
                case LuaTypes.LUA_TFUNCTION:
-                    int udata1 = LuaDLL.tolua_rawnetobj(L, pos);
+                    /*int udata1 = LuaDLL.tolua_rawnetobj(L, pos);
 
                     if (udata1 != -1)
                     {
@@ -459,28 +459,30 @@ namespace LuaInterface
                             return true;
                         }
                     }
-                    return false;
-                    /*return LuaDLL.luaL_checktype
+                    return false;*/
+                    //return LuaDLL.luaL_checktype
                     LuaFunction func = ToLua.ToLuaFunction(L, pos);
-                    DelegateFactory.CreateDelegate(type, func);
+                    Delegate del =  DelegateFactory.CreateDelegate(type, func);
+                    DelegateFactory.RemoveDelegate(del, func);
 
+                    return true;
                     
 
                     //LuaFunction func = ToLua.ToLuaFunction(L, pos);
-                    object oo = ToLua.ToObject(L, pos);
+                    //object oo = ToLua.ToObject(L, pos);
 
 
                     //ToLua.CheckDelegate<OnSceneNameChanged>(L, pos);
 
                     //Delegate.Equals();
-                    return oo.GetType() == type;
+                    //return oo.GetType() == type;
 
                     //ToLua.CheckDelegate
                     //DelegateTraits<type>.Create(func);
                     //OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.CheckDelegate<OnSceneNameChanged>(L, pos);
 
                     //Type t = GetNullableType(type);
-                    //return t == typeof(LuaFunction);*/
+                    //return t == typeof(LuaFunction);
                 default:
                     return false;
             }

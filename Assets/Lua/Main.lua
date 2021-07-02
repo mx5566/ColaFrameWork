@@ -69,9 +69,10 @@ function Main()
     initParam()
     initialize()
 
-    if true then
+    if false then
         UIManager.Open(ECEnumType.UIEnum.Loading)
         CommonUtil.GetSceneMgr():LoadSceneAsync("xinshoucun", function(sceneName)
+            print("------>LoadSceneAsync  xinshoucun finished")
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             UIManager.Close(ECEnumType.UIEnum.Loading)
         end)

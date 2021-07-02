@@ -24,11 +24,11 @@ end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UIDebugPanel:OnCreate()
-    --self.DebugText = self.Panel:FindChildByPath("ScrollView/Viewport/Text"):GetComponent("UnityEngine.UI.Text")
-    --if self.DebugText then
-    --    CommonUtils.AttachScreenText(self.DebugText)
-    --end
-    CommonUtil.AttachScreenText(self.m_Text)
+    self.DebugText = self.Panel:FindChildByPath("ScrollView/Viewport/Text"):GetComponent("UnityEngine.UI.Text")
+    if self.DebugText then
+        CommonUtil.AttachScreenText(self.DebugText)
+    end
+    -- CommonUtil.AttachScreenText(self.m_Text)
 end
 
 -- 界面可见性变化的时候触发

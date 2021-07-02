@@ -27,7 +27,7 @@ namespace ColaFramework.Foundation.DownLoad
 
             UnityWebRequest request = UnityWebRequest.Get(url);
             // 设置10s超时
-            TimeoutAsyncOperation asynOpr = new TimeoutAsyncOperation(request.Send(), timeout);
+            TimeoutAsyncOperation asynOpr = new TimeoutAsyncOperation(request.SendWebRequest(), timeout);
 
             yield return asynOpr;
 

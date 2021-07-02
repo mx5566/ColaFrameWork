@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace ColaFramework.Foundation.DownLoad
 {
-    public delegate void ProgressHandler(float progress, int index, int count, int diff);           // 进度回调
+    public delegate void ProgressHandler(float progress, ulong index, ulong count, int diff);           // 进度回调
     public delegate void CompletedHandler(ErrorCode code, string msg, byte[] bytes);    // 完成回调
     public delegate void CompletedTextHandler(ErrorCode code, string msg, string text); // 完成回调
     public delegate void LaunchConfirmHandler(string strDesc, string strBtn, System.Action onConfirm, bool contactGM);
@@ -73,13 +73,14 @@ namespace ColaFramework.Foundation.DownLoad
                 // 是写到文件的情况开启断点续传
                 m_downloadHandler = new DownloaderHandler(m_strPath, OnProgress, OnCompleted);
 
-                m_request.chunkedTransfer = true;
+                //m_request.chunkedTransfer = true;
                 m_request.disposeDownloadHandlerOnDispose = true;
                 m_request.SetRequestHeader("Range", "bytes=" + m_downloadHandler.DownedLength + "-");
                 m_request.downloadHandler = m_downloadHandler;
             }
 
-            m_request.Send();
+            //m_request.Send();
+            m_request.SendWebRequest();
             Debug.LogFormat("Downloader: {0} => {1}", m_strUrl, m_strPath);
         }
 
@@ -133,7 +134,7 @@ namespace ColaFramework.Foundation.DownLoad
             }
         }
 
-        void OnProgress(float progress, int index, int count, int diff)
+        void OnProgress(float progress, ulong index, ulong count, int diff)
         {
             if (m_onProgress != null)
             {
@@ -159,9 +160,9 @@ namespace ColaFramework.Foundation.DownLoad
         private FileStream m_stream;
 
         //要下载的文件总长度
-        private int m_totalLength = 0;
-        private int m_contentLength = 0;
-        private int m_downedLength = 0;
+        private ulong m_totalLength = 0;
+        private ulong m_contentLength = 0;
+        private ulong m_downedLength = 0;
 
         CompletedHandler m_onCompleted;
         ProgressHandler m_onProgress;
@@ -179,12 +180,12 @@ namespace ColaFramework.Foundation.DownLoad
             FileHelper.EnsureParentDirExist(m_pathTemp);
             m_stream = new FileStream(m_pathTemp, FileMode.OpenOrCreate);
 
-            m_downedLength = (int)m_stream.Length;
-            m_stream.Position = m_downedLength;
+            m_downedLength = (ulong)m_stream.Length;
+            m_stream.Position = (long)m_downedLength;
         }
 
         // 已下载的长度
-        public int DownedLength
+        public ulong DownedLength
         {
             get
             {
@@ -242,7 +243,7 @@ namespace ColaFramework.Foundation.DownLoad
         }
 
         // 接收到要下载的长度
-        protected override void ReceiveContentLength(int contentLength)
+        protected override void ReceiveContentLengthHeader(ulong contentLength)
         {
             Debug.LogFormat("已下载：{0}, ReceiveContentLength {1}", m_downedLength, contentLength);
 
@@ -264,7 +265,7 @@ namespace ColaFramework.Foundation.DownLoad
             }
 
             m_stream.Write(data, 0, dataLength);
-            m_downedLength += dataLength;
+            m_downedLength += (ulong)dataLength;
 
             if (m_onProgress != null)
             {

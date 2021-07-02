@@ -428,9 +428,53 @@ namespace LuaInterface
                         return obj == null ? true : type == obj.GetType();
                     }
                     return false;
-                case LuaTypes.LUA_TFUNCTION:
-                    Type t = GetNullableType(type);
-                    return t == typeof(LuaFunction);
+               case LuaTypes.LUA_TFUNCTION:
+                    int udata1 = LuaDLL.tolua_rawnetobj(L, pos);
+
+                    if (udata1 != -1)
+                    {
+                        ObjectTranslator translator = ObjectTranslator.Get(L);
+                        object obj = translator.GetObject(udata1);
+                        //return obj == null ? true : type == obj.GetType();
+
+                        if (obj != null)
+                        {
+                            if (obj is Delegate)
+                            {
+                                Delegate dd = (Delegate)obj;
+
+                                return dd.GetHashCode() == type.GetHashCode() ? true : false;
+                                //return obj == type;
+                                //return (Delegate)obj;
+                            }
+                        } 
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                    /*return LuaDLL.luaL_checktype
+                    LuaFunction func = ToLua.ToLuaFunction(L, pos);
+                    DelegateFactory.CreateDelegate(type, func);
+
+                    
+
+                    //LuaFunction func = ToLua.ToLuaFunction(L, pos);
+                    object oo = ToLua.ToObject(L, pos);
+
+
+                    //ToLua.CheckDelegate<OnSceneNameChanged>(L, pos);
+
+                    //Delegate.Equals();
+                    return oo.GetType() == type;
+
+                    //ToLua.CheckDelegate
+                    //DelegateTraits<type>.Create(func);
+                    //OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.CheckDelegate<OnSceneNameChanged>(L, pos);
+
+                    //Type t = GetNullableType(type);
+                    //return t == typeof(LuaFunction);*/
                 default:
                     return false;
             }

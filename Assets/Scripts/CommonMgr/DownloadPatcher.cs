@@ -514,7 +514,7 @@ namespace ColaFramework
         }
 
         // 下载
-        private void OnDownloadFileProgress(float progress, int downedSize, int totleSize, int diff)
+        private void OnDownloadFileProgress(float progress, ulong downedSize, ulong totleSize, int diff)
         {
             lock (m_lockProgress)
             {

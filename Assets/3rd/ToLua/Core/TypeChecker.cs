@@ -439,11 +439,17 @@ namespace LuaInterface
 
                         if (obj != null)
                         {
-                            if (obj is Delegate)
+                            if (obj is Delegate dd)
                             {
-                                Delegate dd = (Delegate)obj;
+                                int a = dd.Method.GetHashCode();
+                                int ddc = dd.GetHashCode();
+                                int tc = type.GetHashCode();
+                                
 
-                                return dd.GetHashCode() == type.GetHashCode() ? true : false;
+                                // dd.Target
+                                // type.IsEquivalentTo(dd.GetType());
+
+                                return ddc == tc ? true : false;
                                 //return obj == type;
                                 //return (Delegate)obj;
                             }

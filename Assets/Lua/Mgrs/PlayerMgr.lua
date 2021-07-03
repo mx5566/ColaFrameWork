@@ -13,9 +13,9 @@ function PlayerMgr:CreatePlayer(data, ismain, id)
 		return nil
 	end
 
-	if data.id == nil then
-		return nil
-	end
+	-- if data.id == nil then
+	-- 	return nil
+	-- end
 
 	if self.mapPlayers[id] ~= nil then
 		return self.mapPlayers[id]

@@ -1,4 +1,4 @@
-local WaveLua = Class("Wave")
+local WaveLua = class("Wave")
 local common = require("Common.Common")
 local Enemy = require("Game.Logic.Enemy")
 
@@ -43,7 +43,7 @@ function WaveLua:CreateEnemyWave()
     for i = 1, 5 do
         -- 不同敌人不同样式 固定写死
         local ene = Enemy:new({{id=i, name= "enemy"..i}}, common.GenerateID()) 
-          
+        
     end
 end
 

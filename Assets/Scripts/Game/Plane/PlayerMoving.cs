@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ColaFramework;
 
 /// <summary>
 /// This script defines the borders of ‘Player’s’ movement. Depending on the chosen handling type, it moves the ‘Player’ together with the pointer.
@@ -31,7 +32,7 @@ public class PlayerMoving : MonoBehaviour {
 
     private void Start()
     {
-        mainCamera = Camera.main;
+        mainCamera = GUIHelper.GetMainCamera();
         ResizeBorders();                //setting 'Player's' moving borders deending on Viewport's size
     }
 

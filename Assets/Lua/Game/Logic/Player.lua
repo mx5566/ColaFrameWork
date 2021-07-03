@@ -19,11 +19,23 @@ function Player:initialize(data, ismain, id)
 		CommonUtil.GetMainCamera().nearClipPlane = -2
 	end
 
+	
 	local p = self.planeInstance:GetComponent("Player")
 
 	print(p)
 	p.ID = id
-    -- EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
+
+	-- update bind
+	ColaHelper.Update = self.Update
+	-- 
+    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
+end
+
+function Player:Update(delta)
+	-- body
+	print("player update1..."..dump(self))
+
+	print("player update2..."..delta)
 end
 
 function Player.AddScore(self, score)

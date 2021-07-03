@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ColaFramework;
 
 /// <summary>
 /// This script defines the size of the ‘Boundary’ depending on Viewport. When objects go beyond the ‘Boundary’, they are destroyed or deactivated.
@@ -18,8 +19,8 @@ public class Boundary : MonoBehaviour {
 
     //changing the collider's size up to Viewport's size multiply 1.5
     void ResizeCollider() 
-    {        
-        Vector2 viewportSize = Camera.main.ViewportToWorldPoint(new Vector2(1, 1)) * 2;
+    {
+        Vector2 viewportSize = GUIHelper.GetMainCamera().ViewportToWorldPoint(new Vector2(1, 1)) * 2;
         viewportSize.x *= 1.5f;
         viewportSize.y *= 1.5f;
         boundareCollider.size = viewportSize;

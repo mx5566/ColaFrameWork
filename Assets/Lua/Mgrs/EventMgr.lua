@@ -58,6 +58,7 @@ function EventMgr.AddEventListener(eventId, func, inst, param)
     --过滤掉已经注册过的消息，防止重复注册
     for _, v in pairs(listeners) do
         if (v and v.f == func) then
+            print("repeat register event"..func)
             return
         end
     end

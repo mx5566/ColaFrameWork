@@ -75,6 +75,11 @@ function Level:Start()
 	self.coroutinePlanets = coroutine.start(self.CreatePlanets, self)
 
 	self.isStart = true
+
+	-- 开始游戏触发玩家释放子弹
+	local m = PlayerMgr:GetMainPlayer()
+	
+
 end
 
 

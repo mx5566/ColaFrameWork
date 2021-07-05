@@ -26,9 +26,26 @@ function Enemy:initialize(data, id)
 	local e = self.enemyObj:GetComponent(typeof(Enemy))
 	e.ID = id
 
+	self.waveID = 0
+	-- 从表里查数据根据waveID
+	self.waveData = nil
+	self.nextFire = int64.new(ngx.now() * 1000)	
+
 	self.type = ECEnumType.UnitType.ENEMY
 
-	self.tim = timer.New(self:ActivateShooting(), 1, 1, true)	
+	-- self.tim = timer.New(self:ActivateShooting(), 1, 1, true)
+end
+
+function Enemy:Update(delta)
+	local shotTimeMin = 1000.0
+	local shotTimeMax = 5000.0
+	local t = Common.Random(shotTimeMin, shotTimeMax) 
+	local tt = int64.new(ngx.now() * 1000)
+	if  tt > self.nextFire then
+		self:ActivateShooting()
+	end
+
+	self.nextFire = int64.new(t + tt)
 end
 
 function Enemy:GetObj()
@@ -50,9 +67,11 @@ function Enemy:AddHp(hp)
 			local explosion = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Enemy Explosion.prefab", nil)
 			explosion.transform.position = self.enemyObj.transform.position
 			explosion.transform.rotation = Quaternion.identity
-			CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Enemy_straight_projectile.prefab", self.enemyObj)
+			
+			self.Destroy()
 		elseif self.hp > 0 then
 			local hitEffect = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", self.enemyObj.transform)
+			hitEffect.transform.position = self.enemyObj.transform.position
 			hitEffect.transform.rotation = Quaternion.identity
 		end
 	end
@@ -67,6 +86,10 @@ end
 
 function Enemy:Destroy()
 	self.tim:Stop()
+	if self.enemyObj ~= nil then
+		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Enemy_straight_projectile.prefab", self.enemyObj)
+		self.enemyObj = nil
+	end
 end
 
 

@@ -61,7 +61,7 @@ function WaveLua.CreateEnemyWave(self)
     for i = 1, 5 do
         -- 不同敌人不同样式 固定写死 配表就是策划的事情了根据id得到基础数据
         -- TODO:
-        local ene = Enemy:new({{id=i, name= "enemy"..i}}, common.GenerateID())
+        local ene = Enemy:new({id=i, name= "enemy"..i}, common.GenerateID())
         local eneObj = ene:GetObj()
         local followComponent = eneObj:GetComponent(typeof(FollowThePath))
         followComponent.path = 0
@@ -69,6 +69,8 @@ function WaveLua.CreateEnemyWave(self)
         followComponent.rotationByPath = false
         followComponent.loop = false
         followComponent:SetPath()
+
+        ene.waveID = self.id
 
         -- active
         eneObj:SetActive(true)
@@ -80,7 +82,9 @@ function WaveLua.CreateEnemyWave(self)
 end
 
 function WaveLua:Destroy()
-    
+    CommonUtil.ReleaseGameObject(enemyWaves[self.id], self.planeInstance)
+    self.id = 0
+    self.waveObj = nil
 end
 
 return WaveLua

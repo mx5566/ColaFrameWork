@@ -67,14 +67,30 @@ function Enemy:AddHp(hp)
 			local explosion = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Enemy Explosion.prefab", nil)
 			explosion.transform.position = self.enemyObj.transform.position
 			explosion.transform.rotation = Quaternion.identity
+			-- 何时销毁效果呢？
+			local t = CommonUtil.ParticleSystemLength(explosion.transform)
+						
+			local ff = function ()
+				CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Enemy_straight_projectile.prefab", explosion)
+			end
+
+			self.timerWave = Timer.New(ff, t, 1, true)
 			
+			local ps = explosion:GetComponent(typeof(ParticleSystem))
+
 			self.Destroy()
 		elseif self.hp > 0 then
 			local hitEffect = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", self.enemyObj.transform)
 			hitEffect.transform.position = self.enemyObj.transform.position
 			hitEffect.transform.rotation = Quaternion.identity
+			-- 何时销毁效果呢？
+
 		end
 	end
+end
+
+function Enemy:DestroyEffect()
+	
 end
 
 function Enemy:OnTriggerEnter2D(collison, object)

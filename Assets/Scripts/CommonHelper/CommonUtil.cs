@@ -870,5 +870,36 @@ public static class CommonUtil
         }
         _transformList.Clear();
     }
+
+    public static float ParticleSystemLength(Transform transform)
+    {
+        var pts = transform.GetComponentsInChildren<ParticleSystem>();
+        float maxDuration = 0f;
+        foreach (var p in pts)
+        {
+            if (p.emission.enabled)
+            {
+                if (p.main.loop)
+                {
+                    return -1f;
+                }
+                float dunration = 0f;
+                if (p.emission.rateOverTime.constant <= 0)
+                {
+                    dunration = p.main.startDelay.constant + p.main.startLifetime.constant;
+                }
+                else
+                {
+                    dunration = p.main.startDelay.constant + Mathf.Max(p.main.duration, p.main.startLifetime.constant);
+                }
+                if (dunration > maxDuration)
+                {
+                    maxDuration = dunration;
+                }
+            }
+        }
+        return maxDuration;
+    }
+
 }
 

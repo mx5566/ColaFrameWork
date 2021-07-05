@@ -85,7 +85,7 @@ function Main()
             Modules.Boot()
             -- EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
             -- 创建玩家对象
-            PlayerMgr:CreatePlayer({id=1, name= "plane"}, true, common.GenerateID())
+            Time.timeScale = 0
             PlayerMgr:CreatePlayer({id=1, name= "plane"}, true, common.GenerateID())
             
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.GameStart)

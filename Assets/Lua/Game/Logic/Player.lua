@@ -25,8 +25,6 @@ function Player:initialize(data, ismain, id)
 	print(p)
 	p.ID = id
 
-	-- update bind
-	ColaHelper.Update = self.Update
 	-- 
     EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
 end

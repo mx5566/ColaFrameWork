@@ -8,6 +8,10 @@ function PlayerMgr:Initialize()
 	self.mainPlayer = nil
 end
 
+function PlayerMgr:Update(delta)
+	self.mainPlayer.Update(delta)
+end
+
 function PlayerMgr:CreatePlayer(data, ismain, id)
 	if data == nil then
 		return nil

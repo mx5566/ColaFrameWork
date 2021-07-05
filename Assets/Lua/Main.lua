@@ -94,6 +94,10 @@ function Main()
     end
 end
 
+function Update(delta)
+    PlayerMgr:Update(delta)
+end
+
 --场景切换通知
 function OnLevelWasLoaded(level)
     collectgarbage("collect")

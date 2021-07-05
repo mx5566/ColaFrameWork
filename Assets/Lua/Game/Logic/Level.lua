@@ -95,7 +95,7 @@ function Level.CreateWave(self)
 
 	local ff = function ()
 		for i = 1, 6 do
-			coroutine.wait(i)
+			-- coroutine.wait(i)
 			Wave:new(i)
 		end	
 	end
@@ -144,17 +144,17 @@ function Level:Destroy()
 	CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Game_Controller.prefab", self.gameControler)
 
 	if self.coroutineBonus ~= nil then
-		self.timerBonus.Stop() -- 终止能量球定时器
+		self.timerBonus:Stop() -- 终止能量球定时器
 		coroutine.stop(self.coroutineBonus)
 	end
 
 	if self.coroutinePlanets ~= nil then
-		self.timerPlanets.Stop()
+		self.timerPlanets:Stop()
 		coroutine.stop(self.coroutinePlanets)
 	end
 
-	if self.timerWave ~= nil then
-		self.timerWave.Stop()
+	if self.coroutineWave ~= nil then
+		self.timerWave:Stop()
 		coroutine.stop(self.timerWave)
 	end
 end

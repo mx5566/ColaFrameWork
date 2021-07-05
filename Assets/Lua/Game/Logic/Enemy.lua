@@ -28,7 +28,11 @@ function Enemy:initialize(data, id)
 
 	self.type = ECEnumType.UnitType.ENEMY
 
-	local tim = timer.New(self:ActivateShooting(), 1, 1, true)	
+	self.tim = timer.New(self:ActivateShooting(), 1, 1, true)	
+end
+
+function Enemy:GetObj()
+	return self.enemyObj
 end
 
 function Enemy:ActivateShooting()
@@ -62,7 +66,7 @@ function Enemy:OnTriggerEnter2D(collison, object)
 end
 
 function Enemy:Destroy()
-	
+	self.tim:Stop()
 end
 
 

@@ -1,4 +1,4 @@
-local WaveLua = class("Wave")
+local WaveLua = Class("Wave")
 local common = require("Common.Common")
 local Enemy = require("Game.Logic.Enemy")
 
@@ -9,6 +9,10 @@ local enemyWaves = {
 	"Arts/Plane/Prefabs/EnemyWaves/Wave_4.prefab",
 	"Arts/Plane/Prefabs/EnemyWaves/Wave_5.prefab",
 	"Arts/Plane/Prefabs/EnemyWaves/Wave_6.prefab",
+}
+
+local enemyPath = {
+    "Arts/Plane/Prefabs/Enemies/Enemy_straight_projectile.prefab"
 }
 
 --[[
@@ -33,18 +37,50 @@ function WaveLua:initialize(id)
 	-- self.powerObj = CommonUtil.InstantiatePrefab("Arts/Plane/Animation/Bonuses/Power Up.prefab", nil)
     -- 读取配置文件 目前没有
     local path = enemyWaves[id]
+    self.id = id
     self.waveObj = CommonUtil.InstantiatePrefab(path, nil)
+    -- 根据id从表里面读取wave的配置数据
+    -- 敌人的资源路径
+    -- 敌人的个数
+    -- wave speed
+    -- 每个wave中敌人产生的间隔
+    -- 路径点
+    -- 是否旋转
+    -- wave是否重复
+    -- 编辑器静态显示的路径颜色
+    -- wave射击目标的概率
+    -- 每个敌人射击目标的最短和最长时间
     
-    self:CreateEnemyWave()
+    self.CoroutineWaveEnemy = coroutine.create(self.CreateEnemyWave, self)
 end
 
-function WaveLua:CreateEnemyWave()
+function WaveLua.CreateEnemyWave(self)
+    print("Coroutine wave enemy started")
+
     local count = 5
     for i = 1, 5 do
-        -- 不同敌人不同样式 固定写死
-        local ene = Enemy:new({{id=i, name= "enemy"..i}}, common.GenerateID()) 
+        -- 不同敌人不同样式 固定写死 配表就是策划的事情了根据id得到基础数据
+        -- TODO:
+        local ene = Enemy:new({{id=i, name= "enemy"..i}}, common.GenerateID())
+        local eneObj = ene:GetObj()
+        local followComponent = eneObj:GetComponent(typeof(FollowThePath))
+        followComponent.path = 0
+        followComponent.speed = 1
+        followComponent.rotationByPath = false
+        followComponent.loop = false
+        followComponent:SetPath()
+
+        -- active
+        eneObj:SetActive(true)
         
+        coroutine.wait(1) 
     end
+
+    print("Coroutine wave enemy ended")
+end
+
+function WaveLua:Destroy()
+    
 end
 
 return WaveLua

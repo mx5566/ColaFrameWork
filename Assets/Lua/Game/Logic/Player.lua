@@ -26,7 +26,7 @@ function Player:initialize(data, ismain, id)
 	p.ID = id
 
 	-- 
-    EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
+    -- EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.notifyId.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
 end
 
 function Player:Update(delta)

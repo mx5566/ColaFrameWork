@@ -20,10 +20,9 @@ end
 
 function BonusLua:OnTriggerEnter2D(collison, object)
 	if collison.CompareTag("Player") then
-		local mainPlayerPrefab = PlayerMgr:GetMainPlayer():GetInstance()
-		local playerShoot = mainPlayerPrefab:GetComponent("PlayerShooting")
-		if playerShoot.instance.weaponPower < playerShoot.instance.maxweaponPowerthen then
-			playerShoot.instance.weaponPower = playerShoot.instance.weaponPower + 1
+		local player = PlayerMgr:GetMainPlayer()
+		if player.weaponPower < 4 then
+			player.weaponPower = player.weaponPower + 1			
 		end
 		
 		-- destroy bonus

@@ -1,5 +1,7 @@
 local Unit = require("game.Logic.Unit")
 local Player = Class("Player", Unit)
+local socket = require "socket"
+local project = require("Game.Logic.Projectile")
 
 
 function Player:initialize(data, ismain, id)
@@ -24,16 +26,57 @@ function Player:initialize(data, ismain, id)
 
 	print(p)
 	p.ID = id
+	self.isActiveShoot = false
+	self.nextFire = socket.gettime()
+	self.weaponPower = 1
 
-	-- 
-    -- EventMgr.RegisterEvent(Modules.moduleId.Event, Modules.notifyId.EventId.PlayerEventId.ADD_SCORE, Player.AddScore, self)
+	-- 获取飞机身上的枪的对象
+	self.guns = { 	
+		["left"] = nil, ["center"] = nil, ["right"] = nil, 
+		["leftVfx"] = nil, ["centerVfx"] = nil, ["rightVfx"] = nil 
+	}
+
+
+
 end
 
 function Player:Update(delta)
-	-- body
+	if self.isActiveShoot then
+		local t = socket.gettime()
+		if t > self.nextFire then
+			self:Shoot()
+			self.nextFire =  t + 1/10
+		end
+	end
+
 	print("player update1..."..dump(self))
 
 	print("player update2..."..delta)
+end
+
+function Player:Shoot()
+	local switch = {  
+		[1] = function()
+			projcet:new(false, 1)
+		end,  
+		[2] = function()
+			project:new(false, 2)
+		end,
+		[3] = function()
+			project:new(false, 3)
+		end,
+		[4] = function()
+			project:new(false, 4)
+		end,  
+	}
+	
+	local fSwitch = switch[self.weaponPower] 
+	  
+	if fSwitch then 
+		fSwitch() 
+	else 
+		print("player weapon > maxweapon")
+	end  
 end
 
 function Player.AddScore(self, score)
@@ -41,17 +84,14 @@ function Player.AddScore(self, score)
 end
 
 function Player:GetFloor()
-	-- body
 	return self.currentFloor
 end
 
 function Player:SetFloor(floor)
-	-- body
 	self.currentFloor = floor
 end
 
 function Player:Delete()
-	-- body
 	if self.planeInstance ~= nil then
 		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Player.prefab", self.planeInstance)
 		self.planeInstance = nil
@@ -59,7 +99,6 @@ function Player:Delete()
 end
 
 function Player:GetInstance()
-	-- body
 	return self.planeInstance
 end
 
@@ -70,12 +109,35 @@ function Player:AddHp(hp)
 	if hp > 0 then
 		local hitEffect = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", self.planeInstance.transform)
 		hitEffect.transform.rotation = Quaternion.identity
+
+		-- 何时销毁效果呢？
+		local t = CommonUtil.ParticleSystemLength(hitEffect.transform)
+
+		local ff = function ()
+			CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", hitEffect)
+		end
+		-- 执行一次
+		Timer.New(ff, t, 1, true)
 	else 
 		local explosion = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Player Explosion.prefab", nil)
 		explosion.transform.position = self.planeInstance.transform.position
 		explosion.transform.rotation = Quaternion.identity
-		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Player.prefab", self.planeInstance)
+
+		-- 何时销毁效果呢？
+		local t = CommonUtil.ParticleSystemLength(explosion.transform)
+
+		local ff = function ()
+			CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Player Explosion.prefab", explosion)
+		end
+		-- 执行一次
+		Timer.New(ff, t, 1, true)
+
+		self:Destroy()
 	end
+end
+
+function Player:Destroy()
+	self:Delete()
 end
 
 return Player

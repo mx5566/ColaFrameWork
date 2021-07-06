@@ -78,7 +78,7 @@ function Level:Start()
 
 	-- 开始游戏触发玩家释放子弹
 	local m = PlayerMgr:GetMainPlayer()
-	
+	m.isActiveShoot = true
 
 end
 
@@ -91,11 +91,10 @@ end
 function Level.CreateWave(self)
 	print('Coroutine wave started')
 
-	self.timerWave = Timer.New(ff, 2, -1, true)
+	self.timerWave = Timer.New(ff, 2, 6, true)
 
 	local ff = function ()
 		for i = 1, 6 do
-			-- coroutine.wait(i)
 			Wave:new(i)
 		end	
 	end

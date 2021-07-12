@@ -112,12 +112,15 @@ function Player:AddHp(hp)
 
 		-- 何时销毁效果呢？
 		local t = CommonUtil.ParticleSystemLength(hitEffect.transform)
+		if t > 0 then
+			-- 执行一次
+			Timer.New(ff, t, 1, true)
+		end
 
 		local ff = function ()
 			CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", hitEffect)
 		end
-		-- 执行一次
-		Timer.New(ff, t, 1, true)
+
 	else 
 		local explosion = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Player Explosion.prefab", nil)
 		explosion.transform.position = self.planeInstance.transform.position
@@ -125,12 +128,14 @@ function Player:AddHp(hp)
 
 		-- 何时销毁效果呢？
 		local t = CommonUtil.ParticleSystemLength(explosion.transform)
+		if t > 0 then
+			-- 执行一次
+			Timer.New(ff, t, 1, true)
+		end
 
 		local ff = function ()
 			CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Player Explosion.prefab", explosion)
 		end
-		-- 执行一次
-		Timer.New(ff, t, 1, true)
 
 		self:Destroy()
 	end

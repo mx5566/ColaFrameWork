@@ -78,6 +78,8 @@ function WaveLua.CreateEnemyWave(self)
         coroutine.wait(1) 
     end
 
+    self:Desroy()
+
     print("Coroutine wave enemy ended")
 end
 

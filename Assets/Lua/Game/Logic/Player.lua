@@ -106,7 +106,7 @@ end
 function Player:AddHp(hp)
 	Unit:AddHp(hp)
 	
-	if hp > 0 then
+	if self.hp > 0 then
 		local hitEffect = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", self.planeInstance.transform)
 		hitEffect.transform.rotation = Quaternion.identity
 

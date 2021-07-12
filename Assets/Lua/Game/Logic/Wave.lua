@@ -64,6 +64,9 @@ function WaveLua.CreateEnemyWave(self)
         local ene = Enemy:new({id=i, name= "enemy"..i}, common.GenerateID())
         local eneObj = ene:GetObj()
         local followComponent = eneObj:GetComponent(typeof(FollowThePath))
+        -- 路径根据wave预制里面的预制点对象动态获取
+        local co = self.waveObj:GetComponent("")
+        
         followComponent.path = 0
         followComponent.speed = 1
         followComponent.rotationByPath = false

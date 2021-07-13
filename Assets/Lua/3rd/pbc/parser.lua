@@ -255,7 +255,7 @@ local function _fix_field(namespace , field, all)
 		return
 	end
 
-	local full_name = assert(_match_name(namespace, field.type_name, all) , field.type_name , all)
+	local full_name = assert(_match_name(namespace, field.type_name, all) , field.type_name)
 
 	field.type_name = full_name
 	field.type = all[full_name]

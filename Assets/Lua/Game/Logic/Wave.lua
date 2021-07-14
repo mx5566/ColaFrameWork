@@ -67,7 +67,9 @@ function WaveLua.CreateEnemyWave(self)
         -- 路径根据wave预制里面的预制点对象动态获取
         local co = self.waveObj:GetComponent("")
         
-        
+        if true then
+            print("log print debug...")
+        end
 
         followComponent.path = 0
         followComponent.speed = 1
@@ -76,7 +78,7 @@ function WaveLua.CreateEnemyWave(self)
         followComponent:SetPath()
 
         ene.waveID = self.id
-
+        
         -- active
         eneObj:SetActive(true)
         

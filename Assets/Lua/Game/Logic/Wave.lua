@@ -88,7 +88,9 @@ end
 function WaveLua:GetPoints()
     local objs = GameObject:FindGameObjectsWithTag("points");
     if objs ~= nil then
-
+        for i=1, #objs do
+            objs[i].
+        end
     end
 end
 

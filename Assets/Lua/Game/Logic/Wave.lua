@@ -86,10 +86,11 @@ function WaveLua.CreateEnemyWave(self)
 end
 
 function WaveLua:GetPoints()
+    local arr = {}
     local objs = GameObject:FindGameObjectsWithTag("points");
     if objs ~= nil then
         for i=1, #objs do
-            objs[i].
+            table.insert(arr, objs[i].transform)
         end
     end
 end

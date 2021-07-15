@@ -65,13 +65,8 @@ function WaveLua.CreateEnemyWave(self)
         local eneObj = ene:GetObj()
         local followComponent = eneObj:GetComponent(typeof(FollowThePath))
         -- 路径根据wave预制里面的预制点对象动态获取
-        local co = self.waveObj:GetComponent("")
-        
-        if true then
-            print("log print debug...")
-        end
 
-        followComponent.path = 0
+        followComponent.path = self:GetPoints()
         followComponent.speed = 1
         followComponent.rotationByPath = false
         followComponent.loop = false
@@ -88,6 +83,13 @@ function WaveLua.CreateEnemyWave(self)
     self:Desroy()
 
     print("Coroutine wave enemy ended")
+end
+
+function WaveLua:GetPoints()
+    local objs = GameObject:FindGameObjectsWithTag("points");
+    if objs ~= nil then
+
+    end
 end
 
 function WaveLua:Destroy()

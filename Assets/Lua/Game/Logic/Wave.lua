@@ -67,7 +67,7 @@ function WaveLua.CreateEnemyWave(self)
         -- 路径根据wave预制里面的预制点对象动态获取
 
         followComponent.path = self:GetPoints()
-        followComponent.speed = 1
+        followComponent.speed = 30.0
         followComponent.rotationByPath = false
         followComponent.loop = false
         followComponent:SetPath()

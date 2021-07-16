@@ -54,10 +54,11 @@ function Player:Update(delta)
 	print("player update2..."..delta)
 end
 
+-- 不同的能量对应不同的子弹预制 对应不同的效果(例子特效)
 function Player:Shoot()
 	local switch = {  
 		[1] = function()
-			projcet:new(false, 1)
+			project:new(false, 1)
 		end,  
 		[2] = function()
 			project:new(false, 2)

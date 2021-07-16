@@ -9,6 +9,9 @@ function Planet:initialize(path)
 
 	-- 后面把DirectMoving 这个组件lua化
 	self.planetObj:GetComponent("DirectMoving").speed = 1.0;
+
+	-- 边界销毁
+	self.planetObj:AddSingleComponent(typeof(Boundary))
 end
 
 

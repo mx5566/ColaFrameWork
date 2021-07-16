@@ -93,6 +93,8 @@ function WaveLua:GetPoints()
             table.insert(arr, objs[i].transform)
         end
     end
+
+    return arr
 end
 
 function WaveLua:Destroy()

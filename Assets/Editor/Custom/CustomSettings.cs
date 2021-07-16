@@ -85,6 +85,7 @@ public static class CustomSettings
         _GT(typeof(UITableViewCell)).SetNameSpace(null),
         _GT(typeof(Bonus)),
         _GT(typeof(Player)),
+        _GT(typeof(Boundary)),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

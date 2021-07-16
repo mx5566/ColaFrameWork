@@ -36,6 +36,9 @@ public class Boundary : MonoBehaviour {
         else if (collision.tag == "Bonus")
         {
             Destroy(collision.gameObject);
+        } else if (collision.tag == "1")
+        {
+            Destroy(collision.gameObject);
         }
     }
 

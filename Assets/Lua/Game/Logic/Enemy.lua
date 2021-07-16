@@ -33,15 +33,17 @@ function Enemy:initialize(data, id)
 
 	self.type = ECEnumType.UnitType.ENEMY
 
+
+	self.shotTimeMin = 1000.0
+	self.shotTimeMax = 5000.0
+	self.shotChance = 50.0
 	-- self.tim = timer.New(self:ActivateShooting(), 1, 1, true)
 end
 
 function Enemy:Update(delta)
-	local shotTimeMin = 1000.0
-	local shotTimeMax = 5000.0
-	local t = Common.Random(shotTimeMin, shotTimeMax) 
+	local t = Common.Random(self.shotTimeMin, self.shotTimeMax) 
 	local tt = int64.new(ngx.now() * 1000)
-	if  tt > self.nextFire then
+	if int64.__lt(tt, self.nextFire) then
 		self:ActivateShooting()
 	end
 
@@ -53,7 +55,7 @@ function Enemy:GetObj()
 end
 
 function Enemy:ActivateShooting()
-	if Common.Random(0,1) < 50 / 100 then
+	if Common.Random(0,1) < self.shotChance / 100 then
 		local pro = Projectile:new(true, 1)
 		pro:SetPosition(self.enemyObj.transform.position)
 	end

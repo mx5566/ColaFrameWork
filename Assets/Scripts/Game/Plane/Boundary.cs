@@ -10,17 +10,19 @@ public class Boundary : MonoBehaviour {
 
     BoxCollider2D boundareCollider;
 
+    Camera mainCamera;
     //receiving collider's component and changing boundary borders
     private void Start()
     {
         boundareCollider = GetComponent<BoxCollider2D>();
+        mainCamera = GUIHelper.GetMainCamera();
         ResizeCollider();
     }
 
     //changing the collider's size up to Viewport's size multiply 1.5
     void ResizeCollider() 
     {
-        Vector2 viewportSize = GUIHelper.GetMainCamera().ViewportToWorldPoint(new Vector2(1, 1)) * 2;
+        Vector2 viewportSize = mainCamera.ViewportToWorldPoint(new Vector2(1, 1)) * 2;
         viewportSize.x *= 1.5f;
         viewportSize.y *= 1.5f;
         boundareCollider.size = viewportSize;
@@ -36,10 +38,8 @@ public class Boundary : MonoBehaviour {
         else if (collision.tag == "Bonus")
         {
             Destroy(collision.gameObject);
-        } else if (collision.tag == "1")
-        {
-            Destroy(collision.gameObject);
         }
     }
+
 
 }

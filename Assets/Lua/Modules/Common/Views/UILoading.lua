@@ -21,4 +21,12 @@ function UILoading.Instance()
     return _instance
 end
 
+function UILoading:OnCreate()
+    print("UILoading OnCreate...")
+end
+
+function UILoading:OnDestroy()
+    print("UILoading OnDestroy...")
+end
+
 return UILoading

@@ -8,7 +8,9 @@ function EnemyMgr:Initialize()
 end
 
 function EnemyMgr:Update(delta)
-	
+	for k, v in pairs(self.mapEnemys) do
+		v.Update(delta)
+	end
 end
 
 function EnemyMgr:CreateEnemy(data, id)

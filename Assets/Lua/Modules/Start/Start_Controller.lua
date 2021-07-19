@@ -27,5 +27,9 @@ function public:Restart()
 
 end
 
+function public:CloseApplication()
+	
+end
+
 
 return public

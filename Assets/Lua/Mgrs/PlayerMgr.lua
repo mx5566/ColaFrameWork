@@ -9,7 +9,9 @@ function PlayerMgr:Initialize()
 end
 
 function PlayerMgr:Update(delta)
-	self.mainPlayer.Update(delta)
+	if self.mainPlayer ~= nil then
+		self.mainPlayer.Update(delta)
+	end
 end
 
 function PlayerMgr:CreatePlayer(data, ismain, id)

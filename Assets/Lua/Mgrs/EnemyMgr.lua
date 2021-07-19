@@ -8,7 +8,7 @@ function EnemyMgr:Initialize()
 end
 
 function EnemyMgr:Update(delta)
-	self.mainPlayer.Update(delta)
+	
 end
 
 function EnemyMgr:CreateEnemy(data, id)

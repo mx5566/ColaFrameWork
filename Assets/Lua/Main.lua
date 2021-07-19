@@ -92,6 +92,8 @@ function Main()
             UIManager.Close(ECEnumType.UIEnum.Loading)
         end)
     end
+
+    ColaHelper.Update = Update
 end
 
 function Update(delta)

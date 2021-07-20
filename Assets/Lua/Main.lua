@@ -93,7 +93,9 @@ function Main()
         end)
     end
 
+    -- 绑定update
     ColaHelper.Update = Update
+    -- 绑定OnApplicationQuit
 end
 
 function Update(delta)

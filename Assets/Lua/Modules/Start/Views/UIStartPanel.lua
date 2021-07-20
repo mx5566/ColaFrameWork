@@ -43,7 +43,7 @@ function UIStartPanel:onClick(name)
     elseif name == "game_restart_btn" then
         Ctrl.Start:Start()
     elseif name == "game_close" then
-        Ctrl.Start:Close()
+        Ctrl.Start:CloseApplication()
     end
 end
 

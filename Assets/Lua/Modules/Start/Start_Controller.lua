@@ -28,7 +28,7 @@ function public:Restart()
 end
 
 function public:CloseApplication()
-	
+	Application.Quit();
 end
 
 

@@ -53,6 +53,8 @@ public class Wave : MonoBehaviour {
     private void Start()
     {
         StartCoroutine(CreateEnemyWave()); 
+
+        // 获得子对象的points
     }
 
     IEnumerator CreateEnemyWave() //depending on chosed parameters generating enemies and defining their parameters
@@ -110,7 +112,7 @@ public class Wave : MonoBehaviour {
 
     Vector3 Interpolate(Vector3[] path, float t) 
     {
-        int numSections = path.Length - 3;
+        int numSections = path.Length - Math.Min(path.Length, 3);
         int currPt = Mathf.Min(Mathf.FloorToInt(t * numSections), numSections - 1);
         float u = t * numSections - currPt;
         Vector3 a = path[currPt];

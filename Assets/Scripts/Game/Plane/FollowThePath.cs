@@ -62,7 +62,7 @@ public class FollowThePath : MonoBehaviour {
 
     Vector3 Interpolate(Vector3[] path, float t) 
     {
-        int numSections = path.Length - 3;
+        int numSections = path.Length - Math.Min(path.Length, 3);
         int currPt = Mathf.Min(Mathf.FloorToInt(t * numSections), numSections - 1);
         float u = t * numSections - currPt;
         Vector3 a = path[currPt];

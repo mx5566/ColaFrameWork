@@ -91,7 +91,7 @@ end
 function Level.CreateWave(self)
 	print('Coroutine wave started')
 
-	self.timerWave = Timer.New(ff, 2, 6, true)
+	self.timerWave = Timer.New(ff, common.Random(1, 4), 1, true)
 
 	-- self.cfg拿到敌群的配置
 

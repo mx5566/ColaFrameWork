@@ -252,8 +252,10 @@ namespace Xls2Lua
                                 }
                             }
 
+                            tmpBuilder.Append("}");
+
                             oneRowBuilder.Append(tmpBuilder);
-                            oneRowBuilder.Append("}");
+                            //oneRowBuilder.Append("}");
                         }
                     }
                     else

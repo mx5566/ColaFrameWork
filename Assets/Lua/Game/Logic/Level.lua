@@ -93,6 +93,8 @@ function Level.CreateWave(self)
 
 	self.timerWave = Timer.New(ff, 2, 6, true)
 
+	-- self.cfg拿到敌群的配置
+
 	local ff = function ()
 		for i = 1, 6 do
 			Wave:new(i)

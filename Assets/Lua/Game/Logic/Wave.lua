@@ -57,8 +57,10 @@ end
 function WaveLua.CreateEnemyWave(self)
     print("Coroutine wave enemy started")
 
-    local count = 5
-    for i = 1, 5 do
+    local cc = ConfigMgr.GetItem("Wave", self.id)
+    
+    local count = cc.num
+    for i = 1, count do
         -- 不同敌人不同样式 固定写死 配表就是策划的事情了根据id得到基础数据
         -- TODO:
         local ene = Enemy:new({id=i, name= "enemy"..i}, common.GenerateID())
@@ -67,9 +69,9 @@ function WaveLua.CreateEnemyWave(self)
         -- 路径根据wave预制里面的预制点对象动态获取
 
         followComponent.path = self:GetPoints()
-        followComponent.speed = 30.0
-        followComponent.rotationByPath = false
-        followComponent.loop = false
+        followComponent.speed = cc.speed --30.0
+        followComponent.rotationByPath = cc.isrotation --false
+        followComponent.loop = cc.isloop --false
         followComponent:SetPath()
 
         ene.waveID = self.id
@@ -77,7 +79,7 @@ function WaveLua.CreateEnemyWave(self)
         -- active
         eneObj:SetActive(true)
         
-        coroutine.wait(1) 
+        coroutine.wait(1)
     end
 
     self:Desroy()

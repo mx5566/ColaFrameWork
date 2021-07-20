@@ -154,7 +154,7 @@ function Level:Destroy()
 
 	if self.coroutineWave ~= nil then
 		self.timerWave:Stop()
-		coroutine.stop(self.timerWave)
+		coroutine.stop(self.coroutineWave)
 	end
 end
 

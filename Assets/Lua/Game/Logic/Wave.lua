@@ -98,9 +98,13 @@ function WaveLua:GetPoints()
 end
 
 function WaveLua:Destroy()
-    CommonUtil.ReleaseGameObject(enemyWaves[self.id], self.planeInstance)
+    CommonUtil.ReleaseGameObject(enemyWaves[self.id], self.waveObj)
     self.id = 0
     self.waveObj = nil
+
+    if self.CoroutineWaveEnemy ~= nil then
+		coroutine.stop(self.CoroutineWaveEnemy)
+	end
 end
 
 return WaveLua

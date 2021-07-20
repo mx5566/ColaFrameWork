@@ -66,37 +66,32 @@ function Enemy:AddHp(hp)
 	
 	if hp < 0 then
 		if self.hp == 0 then
-			local explosion = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Enemy Explosion.prefab", nil)
-			explosion.transform.position = self.enemyObj.transform.position
-			explosion.transform.rotation = Quaternion.identity
-			-- 何时销毁效果呢？
-			local t = CommonUtil.ParticleSystemLength(explosion.transform)
-						
-			local ff = function ()
-				CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Enemy Explosion.prefab", explosion)
-			end
-
-			Timer.New(ff, t, 1, true)
-			
+			self:Effect("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", false)
 			self.Destroy()
 		elseif self.hp > 0 then
-			local hitEffect = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", self.enemyObj.transform)
-			hitEffect.transform.position = self.enemyObj.transform.position
-			hitEffect.transform.rotation = Quaternion.identity
-			-- 何时销毁效果呢？
-			local t = CommonUtil.ParticleSystemLength(hitEffect.transform)
-			
-			local ff = function ()
-				CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", hitEffect)
-			end
-			-- 执行一次
-			Timer.New(ff, t, 1, true)
+			self:Effect("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", true)
 		end
 	end
 end
 
-function Enemy:DestroyEffect()
+function Enemy:Effect(path, isparent)
+	local effect = nil
+	if isparent then
+		effect = CommonUtil.InstantiatePrefab(path, self.enemyObj.transform)
+	else
+		effect = CommonUtil.InstantiatePrefab(path, nil)
+	end
+
+	effect.transform.position = self.enemyObj.transform.position
+	effect.transform.rotation = Quaternion.identity
+	-- 何时销毁效果呢？
+	local t = CommonUtil.ParticleSystemLength(effect.transform)
 	
+	local ff = function ()
+		CommonUtil.ReleaseGameObject(path, effect)
+	end
+	-- 执行一次
+	Timer.New(ff, t, 1, true)
 end
 
 function Enemy:OnTriggerEnter2D(collison, object)

@@ -32,6 +32,13 @@ namespace Xls2Lua
             {
                 if (info is DirectoryInfo)
                 {
+                    Console.WriteLine("清空目录：" + info.Name);
+
+                    if (info.Name == "i18n")
+                    {
+                        continue;
+                    }
+
                     DirectoryInfo subDir = new DirectoryInfo(info.FullName);
                     try
                     {

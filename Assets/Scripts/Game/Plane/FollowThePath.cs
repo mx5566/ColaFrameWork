@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
+// https://my.oschina.net/kkkkkkkkkkkkk/blog/1511638
+// https://blog.csdn.net/yu1368072332/article/details/82531891?utm_source=blogxgwz9
 /// <summary>
 /// This script moves the ‘Enemy’ along the defined path.
 /// </summary>

@@ -63,7 +63,8 @@ function WaveLua.CreateEnemyWave(self)
     for i = 1, count do
         -- 不同敌人不同样式 固定写死 配表就是策划的事情了根据id得到基础数据
         -- TODO:
-        local ene = Enemy:new({id=i, name= "enemy"..i}, common.GenerateID())
+        
+        local ene = Enemy:new({id=cc.enemys[i] --[[获得敌人的id]]}, common.GenerateID())
         local eneObj = ene:GetObj()
         local followComponent = eneObj:GetComponent(typeof(FollowThePath))
         -- 路径根据wave预制里面的预制点对象动态获取

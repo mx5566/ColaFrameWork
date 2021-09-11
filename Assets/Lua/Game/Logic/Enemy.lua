@@ -33,6 +33,7 @@ function Enemy:initialize(data, id)
 
 	self.type = ECEnumType.UnitType.ENEMY
 
+	-- 敌人的分类 boss 小型 中型  大型
 
 	self.shotTimeMin = 1000.0
 	self.shotTimeMax = 5000.0

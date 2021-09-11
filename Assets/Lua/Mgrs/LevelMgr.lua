@@ -44,7 +44,13 @@ function LevelMgr:End()
 		return
 	end
 
-	self.currentLevel.Destroy()
+	self.currentLevel:Destroy()
+end
+
+function LevelMgr:Update(delta)
+	if self.currentLevel ~= nil then
+		self.currentLevel:Update(delta)
+	end
 end
 
 return LevelMgr

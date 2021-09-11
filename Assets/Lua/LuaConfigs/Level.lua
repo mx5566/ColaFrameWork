@@ -2,7 +2,8 @@
 local fieldIdx = {}
 fieldIdx.level = 1
 fieldIdx.name = 2
-fieldIdx.mid = 4
+fieldIdx.mid = 3
+fieldIdx.wave = 4
 local data = {
 {1,[[零]],1,{1,2}},
 {2,[[一]],1,{1}},

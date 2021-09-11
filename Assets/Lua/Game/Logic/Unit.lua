@@ -7,6 +7,7 @@ function Unit:initialize(data, id)
 	self.mp = 0
 	self.type = ECEnumType.UnitType.NULL
 	self.id = id
+	self.data = data
 end
 
 function Unit:SetHp(hp)

@@ -80,6 +80,7 @@ function Level:Start()
 	local m = PlayerMgr:GetMainPlayer()
 	m.isActiveShoot = true
 
+	self.startTime = int64.New(socket.gettime()*1000)
 end
 
 
@@ -159,7 +160,20 @@ function Level:Destroy()
 	end
 end
 
-
+function Level:Update(delta)
+	-- 不同时间来产生不同数量的敌人
+	if self.cfg.type == 1 then -- 时间
+		-- body
+	elseif self.cfg.type == 2 then -- 分数
+		-- body
+	elseif self.cfg.type == 3 then -- 固定的敌人n个
+		-- body
+	elseif self.cfg.type == 4 then -- 时间 + 分数
+		-- body
+	elseif self.cfg.type == 5 then -- 时间 + 分数 + 固定的敌人n个
+		-- body
+	end
+end
 
 return Level
 

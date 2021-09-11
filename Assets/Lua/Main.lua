@@ -43,6 +43,7 @@ local function gloablDefine()
     -- 初始化关卡管理器
     _G.LevelMgr = require("Mgrs.LevelMgr")
     _G.PlayerMgr = require("Mgrs.PlayerMgr")
+    _G.EnemyMgr = require("Mgrs.EnemyMgr")
     _G.LID = {LID = 0}
     --控制全局变量的新建与访问
     require("Utilitys.LuaGlobalCheck")
@@ -100,6 +101,7 @@ end
 
 function Update(delta)
     PlayerMgr:Update(delta)
+    EnemyMgr:Update(delta)
 end
 
 --场景切换通知

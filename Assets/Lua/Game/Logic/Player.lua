@@ -43,7 +43,7 @@ end
 function Player:Update(delta)
 	if self.isActiveShoot then
 		local t = int64.New(socket.gettime()*1000)
-		if t > self.nextFire then
+		if int64.__lt(self.nextFire, t) then
 			self:Shoot()
 			self.nextFire =  int64.New(t + 100) -- delay 100ms
 		end

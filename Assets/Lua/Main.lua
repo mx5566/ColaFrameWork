@@ -3,6 +3,8 @@ local rawset = rawset
 
 local common = require("Common.Common")
 
+local socket = require "socket"
+
 -- 全局函数
 -- 用于声明全局变量
 function define(name, value)
@@ -89,6 +91,22 @@ function Main()
             Time.timeScale = 0
             PlayerMgr:CreatePlayer({id=1, name= "plane"}, true, common.GenerateID())
             
+            local a = 9223372036854775807
+            local b = 9223372036854775805
+            print("---------------------------------")
+            print(a)
+            print(b-a)
+            if b < a then
+                print("b < a")
+            end
+
+            local t = int64.New(socket.gettime()*1000)
+            print(t)
+            if int64.__lt(10000, t) then
+                print(int64.New(t + 100)) -- delay 100ms
+            end
+            print("---------------------------------")
+
             EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.GameStart)
             UIManager.Close(ECEnumType.UIEnum.Loading)
         end)

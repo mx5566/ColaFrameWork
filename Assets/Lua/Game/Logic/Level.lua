@@ -163,6 +163,11 @@ end
 function Level:Update(delta)
 	-- 不同时间来产生不同数量的敌人
 	if self.cfg.type == 1 then -- 时间
+		local current = int64.New(socket.gettime()*1000)
+		local tDelta = int64.New(current - self.startTime)
+		if int64.__lt(0, tDelta) then
+			
+		end
 		-- body
 	elseif self.cfg.type == 2 then -- 分数
 		-- body

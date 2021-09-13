@@ -138,6 +138,9 @@ function Player:AddHp(hp)
 			CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/VFX/Player Explosion.prefab", explosion)
 		end
 
+		-- 死亡触发结束事件给UI
+		-- TODO
+
 		self:Destroy()
 	end
 end

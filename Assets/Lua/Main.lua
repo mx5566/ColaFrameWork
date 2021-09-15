@@ -100,7 +100,7 @@ function Main()
                 print("b < a")
             end
 
-            local t = int64.New(socket.gettime()*1000)
+            local t = int64.New(tostring(9223372036854775.807*1000))
             print(t)
             if int64.__lt(10000, t) then
                 print(int64.New(t + 100)) -- delay 100ms

@@ -27,7 +27,7 @@ function Player:initialize(data, ismain, id)
 	print(p)
 	p.ID = id
 	self.isActiveShoot = false
-	self.nextFire = int64.New(socket.gettime() * 1000)
+	self.nextFire = int64.new(int64.tonum2(socket.gettime() * 1000))
 	self.weaponPower = 1
 
 	-- 获取飞机身上的枪的对象
@@ -42,10 +42,10 @@ end
 
 function Player:Update(delta)
 	if self.isActiveShoot then
-		local t = int64.New(socket.gettime()*1000)
+		local t = int64.new(int64.tonum2(socket.gettime()*1000))
 		if int64.__lt(self.nextFire, t) then
 			self:Shoot()
-			self.nextFire =  int64.New(t + 100) -- delay 100ms
+			self.nextFire =  int64.__add(t, 100) -- delay 100ms
 		end
 	end
 

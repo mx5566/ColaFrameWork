@@ -24,7 +24,7 @@ function Enemy:initialize(data, id)
 	self.waveID = 0
 	-- 从表里查数据根据waveID
 	self.waveData = nil
-	self.nextFire = int64.new(ngx.now() * 1000)	
+	self.nextFire = int64.new(int64.tonum2(ngx.now() * 1000))	
 
 	self.type = ECEnumType.UnitType.ENEMY
 
@@ -38,12 +38,12 @@ end
 
 function Enemy:Update(delta)
 	local t = Common.Random(self.shotTimeMin, self.shotTimeMax) 
-	local tt = int64.new(ngx.now() * 1000)
+	local tt = int64.new(int64.tonum2(ngx.now() * 1000))
 	if int64.__lt(tt, self.nextFire) then
 		self:ActivateShooting()
 	end
 
-	self.nextFire = int64.new(t + tt)
+	self.nextFire = int64.__add(t, tt)
 end
 
 function Enemy:GetObj()

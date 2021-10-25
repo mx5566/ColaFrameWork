@@ -100,10 +100,15 @@ function Main()
                 print("b < a")
             end
 
-            local t = int64.New(tostring(9223372036854775.807*1000))
+            local low, high = int64.tonum2(9223372036854775.807*1000)
+            
+            print("low: "..low)
+            print("low: "..high)
+            
+            local t = int64.new(low, high)
             print(t)
             if int64.__lt(10000, t) then
-                print(int64.New(t + 100)) -- delay 100ms
+                print(int64.__add(t, 100)) -- delay 100ms
             end
             print("---------------------------------")
 

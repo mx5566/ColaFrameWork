@@ -58,16 +58,16 @@ end
 function Player:Shoot()
 	local switch = {  
 		[1] = function()
-			project:new(false, 1)
+			project:new(false, 1, self.id)
 		end,  
 		[2] = function()
-			project:new(false, 2)
+			project:new(false, 2, self.id)
 		end,
 		[3] = function()
-			project:new(false, 3)
+			project:new(false, 3, self.id)
 		end,
 		[4] = function()
-			project:new(false, 4)
+			project:new(false, 4, self.id)
 		end,  
 	}
 	
@@ -80,7 +80,7 @@ function Player:Shoot()
 	end  
 end
 
-function Player.AddScore(self, score)
+function Player:AddScore(score)
 	self.score = self.score + score
 end
 
@@ -140,6 +140,7 @@ function Player:AddHp(hp)
 
 		-- 死亡触发结束事件给UI
 		-- TODO
+		
 
 		self:Destroy()
 	end

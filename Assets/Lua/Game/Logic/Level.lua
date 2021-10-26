@@ -168,7 +168,6 @@ function Level:Update(delta)
 		if int64.__lt(0, tDelta) then
 			
 		end
-		-- body
 	elseif self.cfg.type == 2 then -- 分数
 		-- body
 	elseif self.cfg.type == 3 then -- 固定的敌人n个
@@ -179,6 +178,21 @@ function Level:Update(delta)
 		-- body
 	end
 end
+
+function Level:LimitTime()
+	local current = int64.new(int64.tonum2(socket.gettime()*1000))
+	local tDelta = int64.__sub(current, self.startTime)
+	if int64.__lt(0, tDelta) then
+		Wave:new(self.cfg.wave[i])
+	end
+
+end
+
+-- 关卡 finish condition
+function Level:FixedEnemy()
+	
+end
+
 
 return Level
 

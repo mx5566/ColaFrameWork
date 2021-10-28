@@ -7,7 +7,7 @@
 local NotifyId = {}
 
 NotifyId.Common = require "Modules.Common.NotifyId"
-NotifyId.EventId = require "Modules.Common.EventId"
+NotifyId.UiEventId = require "Modules.Common.EventId"
 
 
 return NotifyId

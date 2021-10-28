@@ -82,6 +82,9 @@ end
 
 function Player:AddScore(score)
 	self.score = self.score + score
+
+	-- update score ui
+	EventMgr.DispatchEvent(Modules.moduleId.UiEvent, Modules.notifyId.UiEventId.Ui_AddScore, self.score)
 end
 
 function Player:GetFloor()

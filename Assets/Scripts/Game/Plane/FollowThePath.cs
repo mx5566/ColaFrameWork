@@ -6,6 +6,7 @@ using System;
 
 // https://my.oschina.net/kkkkkkkkkkkkk/blog/1511638
 // https://blog.csdn.net/yu1368072332/article/details/82531891?utm_source=blogxgwz9
+// https://blog.csdn.net/czhenya/article/details/77412300
 /// <summary>
 /// This script moves the ‘Enemy’ along the defined path.
 /// </summary>
@@ -96,4 +97,50 @@ public class FollowThePath : MonoBehaviour {
         }
         return (newPathPos);
     }
+	
+	
+	Vector3 NewPositionCircle()
+	{
+		radius = 200
+		for (int i = 0; i < 361; i += 10)
+        {
+            float a = i * Mathf.PI / 180.0
+			float pos_y = radius * Mathf.Sin(a)
+			float pos_x = radius * Mathf.Cos(a)
+        }
+	}
+	
+	Vector3 NewPositionSin()
+	{
+		for (int i = 0; i < 100 /*SCENEWIDTH*/; i++)
+		{
+			float pos_x = x
+			float angle = x * Math.PI / 180
+			float pos_y = 200 * Mathf.Sin(angle)+300
+		}
+	}
+	
+	
+	/*
+		例如:圆圈
+
+		radius = 200
+		for angle in range(0,361,10):
+			a = angle*math.pi/180
+			pos_x = radius *math.sin(a)
+			pos_y = radius *math.cos(a)
+		稍微复杂点 sin函数，控制下中心点y坐标（300）和振幅（200），也能实现很多
+
+		for x in range(0,SCENEWIDTH):
+			pos_x = x
+			angle = x *math.pi/180
+			pos_y = 200*math.sin(angle)+300
+		再例如抛物线函数，螺旋曲线函数，都能实现飞机的各种花样轨迹。
+		
+	*/
+	
+	// Vectrosity 插件
+	// dotween
+	
+	
 }

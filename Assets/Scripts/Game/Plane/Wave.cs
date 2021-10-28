@@ -59,30 +59,34 @@ public class Wave : MonoBehaviour {
 
     IEnumerator CreateEnemyWave() //depending on chosed parameters generating enemies and defining their parameters
     {
-        for (int i = 0; i < count; i++) 
+        if (true)
         {
-            GameObject newEnemy;
-            newEnemy = Instantiate(enemy, enemy.transform.position, Quaternion.identity);
-            FollowThePath followComponent = newEnemy.GetComponent<FollowThePath>(); 
-            followComponent.path = pathPoints;         
-            followComponent.speed = speed;        
-            followComponent.rotationByPath = rotationByPath;
-            followComponent.loop = Loop;
-            followComponent.SetPath(); 
-            Enemy enemyComponent = newEnemy.GetComponent<Enemy>();  
-            enemyComponent.shotChance = shooting.shotChance; 
-            enemyComponent.shotTimeMin = shooting.shotTimeMin; 
-            enemyComponent.shotTimeMax = shooting.shotTimeMax;
-            newEnemy.SetActive(true);      
-            yield return new WaitForSeconds(timeBetween); 
-        }
-        if (testMode)       //if testMode is activated, waiting for 3 sec and re-generating the wave
-        {
-            yield return new WaitForSeconds(3);
-            StartCoroutine(CreateEnemyWave());
-        }
-        else if (!Loop)
-            Destroy(gameObject); 
+            for (int i = 0; i < count; i++)
+            {
+                GameObject newEnemy;
+                newEnemy = Instantiate(enemy, enemy.transform.position, Quaternion.identity);
+                FollowThePath followComponent = newEnemy.GetComponent<FollowThePath>();
+                followComponent.path = pathPoints;
+                followComponent.speed = speed;
+                followComponent.rotationByPath = rotationByPath;
+                followComponent.loop = Loop;
+                followComponent.SetPath();
+                Enemy enemyComponent = newEnemy.GetComponent<Enemy>();
+                enemyComponent.shotChance = shooting.shotChance;
+                enemyComponent.shotTimeMin = shooting.shotTimeMin;
+                enemyComponent.shotTimeMax = shooting.shotTimeMax;
+                newEnemy.SetActive(true);
+                yield return new WaitForSeconds(timeBetween);
+            }
+            if (testMode)       //if testMode is activated, waiting for 3 sec and re-generating the wave
+            {
+                yield return new WaitForSeconds(3);
+                StartCoroutine(CreateEnemyWave());
+            }
+            else if (!Loop)
+                Destroy(gameObject);
+        } 
+
     }
 
     void OnDrawGizmos()  
@@ -143,4 +147,17 @@ public class Wave : MonoBehaviour {
         }
         return (newPathPos);
     }
+    
+	
+	
+	
+	
+	
+	
+	
+    
+    
+    
+	
+	
 }

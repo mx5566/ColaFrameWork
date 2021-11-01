@@ -101,23 +101,27 @@ public class FollowThePath : MonoBehaviour {
 	
 	Vector3 NewPositionCircle()
 	{
-		radius = 200
+        int radius = 200;
 		for (int i = 0; i < 361; i += 10)
         {
-            float a = i * Mathf.PI / 180.0
-			float pos_y = radius * Mathf.Sin(a)
-			float pos_x = radius * Mathf.Cos(a)
+            float a = (float)(i * Mathf.PI / 180.0);
+            float pos_y = radius * Mathf.Sin(a);
+            float pos_x = radius * Mathf.Cos(a);
         }
+
+        return Vector3.zero;
 	}
 	
 	Vector3 NewPositionSin()
 	{
 		for (int i = 0; i < 100 /*SCENEWIDTH*/; i++)
 		{
-			float pos_x = x
-			float angle = x * Math.PI / 180
-			float pos_y = 200 * Mathf.Sin(angle)+300
+            float pos_x = i;
+            float angle = (float)(i * Math.PI / 180);
+            float pos_y = 200 * Mathf.Sin(angle) + 300;
 		}
+
+        return Vector3.zero;
 	}
 	
 	

@@ -2,9 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
 namespace ColaFramework.ToolKit
 {
+    [CreateAssetMenu(fileName = "Test.json", menuName = "ColaFramework/BuildTests", order = 4)]
+    public class Test : JsonDataWriter
+    {
+        [LabelText("测试变量")]
+        public bool TestVar;
+
+        public void Export()
+        {
+            WriteBoolean("TestVar", TestVar);
+
+
+
+            Debug.LogFormat("Hello {0}", GetDataDump());
+        }
+    }
+
     [CreateAssetMenu(fileName = "BuildRules.asset", menuName = "ColaFramework/BuildRules", order = 3)]
     public class BuildRules : SerializedScriptableObject
     {

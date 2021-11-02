@@ -51,7 +51,10 @@ namespace ColaFramework.ToolKit
 
         public override void OnInspectorGUI()
         {
-            t2.TestVar = true;
+            if (GUILayout.Button("ClickTest2"))
+            {
+                t2.TestVar = !t2.TestVar;
+            }
         }
 
         private void OnSceneGUI()

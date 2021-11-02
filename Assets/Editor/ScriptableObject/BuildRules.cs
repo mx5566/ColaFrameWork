@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using UnityEditor;
 
+// https://blog.csdn.net/wangjiangrong/article/details/100743781
+// https://www.sohu.com/a/378884846_485902
 namespace ColaFramework.ToolKit
 {
-    [CreateAssetMenu(fileName = "Test.json", menuName = "ColaFramework/BuildTests", order = 4)]
-    public class Test : JsonDataWriter
+    public class Test1 : JsonDataWriter
     {
         [LabelText("测试变量")]
         public bool TestVar;
@@ -16,11 +18,49 @@ namespace ColaFramework.ToolKit
         {
             WriteBoolean("TestVar", TestVar);
 
-
-
             Debug.LogFormat("Hello {0}", GetDataDump());
         }
     }
+
+    public class Test1Editor
+    {
+        [MenuItem("CustomEditor/TestOdinJson")]
+        public static void TestOdinJson()
+        {
+                        
+
+        }
+    }
+
+    public class Test2 : MonoBehaviour
+    {
+        [LabelText("测试变量")]
+        public bool TestVar;
+        
+
+    }
+
+    [CustomEditor(typeof(Test2))]
+    public class Test2Editor : Editor
+    {
+        private Test2 t2;
+        private void OnEnable()
+        {
+            t2 = target as Test2;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            t2.TestVar = true;
+        }
+
+        private void OnSceneGUI()
+        {
+            
+        }
+    }
+
+
 
     [CreateAssetMenu(fileName = "BuildRules.asset", menuName = "ColaFramework/BuildRules", order = 3)]
     public class BuildRules : SerializedScriptableObject

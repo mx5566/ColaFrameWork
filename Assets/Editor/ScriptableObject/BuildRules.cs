@@ -49,8 +49,12 @@ namespace ColaFramework.ToolKit
             t2 = target as Test2;
         }
 
+        int circleSize = 5;
+
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             if (GUILayout.Button("ClickTest2"))
             {
                 t2.TestVar = !t2.TestVar;
@@ -59,7 +63,20 @@ namespace ColaFramework.ToolKit
 
         private void OnSceneGUI()
         {
+
             
+            Handles.color = Color.green;
+
+            //Handles.CircleCap(0, t2.transform.position + new Vector3(10, 0, 0), t2.transform.rotation, circleSize); //画圈的方法
+
+            Handles.color = Color.red;
+            //Handles.CircleCap(0, t2.transform.position + new Vector3(0, 10, 0), t2.transform.rotation, circleSize);
+            Handles.CircleHandleCap(0, transform.position + new Vector3(0f, 0f, 3f),
+                                transform.rotation * Quaternion.LookRotation(Vector3.forward),
+                                size,
+                                EventType.Repaint
+                );
+
         }
     }
 

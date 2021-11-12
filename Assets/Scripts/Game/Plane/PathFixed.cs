@@ -4,7 +4,7 @@ using System.Collections;
 
 // https://blog.csdn.net/czhenya/article/details/77412300
 // 指定路点
-public class Path : MonoBehaviour {
+public class Path1 : MonoBehaviour {
 
     public GameObject[] gos; //获取每个目标点，，注意数组顺序不能乱
     public float speed = 1;  //用于控制移动速度

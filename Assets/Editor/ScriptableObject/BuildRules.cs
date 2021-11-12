@@ -22,12 +22,12 @@ namespace ColaFramework.ToolKit
         }
     }
 
-    public class Test1Editor
-    {
+    public class Test1Menu 
+    { 
         [MenuItem("CustomEditor/TestOdinJson")]
         public static void TestOdinJson()
         {
-                        
+            
 
         }
     }
@@ -63,19 +63,20 @@ namespace ColaFramework.ToolKit
 
         private void OnSceneGUI()
         {
-
-            
             Handles.color = Color.green;
 
-            //Handles.CircleCap(0, t2.transform.position + new Vector3(10, 0, 0), t2.transform.rotation, circleSize); //画圈的方法
+            Handles.CircleHandleCap(0, t2.transform.position + new Vector3(10, 0, 0),
+                t2.transform.rotation,
+                circleSize,
+                UnityEngine.EventType.Repaint
+            );
 
             Handles.color = Color.red;
-            //Handles.CircleCap(0, t2.transform.position + new Vector3(0, 10, 0), t2.transform.rotation, circleSize);
-            Handles.CircleHandleCap(0, transform.position + new Vector3(0f, 0f, 3f),
-                                transform.rotation * Quaternion.LookRotation(Vector3.forward),
-                                size,
-                                EventType.Repaint
-                );
+            Handles.CircleHandleCap(0, t2.transform.position + new Vector3(0, 10, 0),
+                t2.transform.rotation,
+                circleSize,
+                UnityEngine.EventType.Repaint
+            );
 
         }
     }

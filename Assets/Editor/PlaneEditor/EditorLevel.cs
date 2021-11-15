@@ -4,8 +4,18 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEditor;
+using ColaFramework.Foundation;
+using LitJson;
+using Sirenix.Utilities.Editor;
+using System.Reflection;
 
-class Level: SerializedScriptableObject
+class LevelMgr: SerializedScriptableObject
+{
+    public List<Level> Levels;
+}
+
+
+class Level
 {
     [LabelText("关卡ID")]
     public int ID;
@@ -21,8 +31,6 @@ class Stage
 
     [LabelText("触发的敌人")]
     public List<EnemyPlane> Planes;
-
-
 }
 
 class EnemyPlane
@@ -37,6 +45,14 @@ class EnemyPlane
 
 class EditorLevelWindow: EditorWindow
 {
+    LevelMgr lMgr;
+
+    Vector2 ScrollViewContentOffset = Vector2.zero;//纪录ScrollView滚动的位置
+    FieldInfo[] levelFieldInfoArray;
+
+    List<bool> toggleValues = new List<bool>();//单选框信息
+    int selectedIndex = -1;//当前选择的某行数据下标
+
     [MenuItem("CustomEditor/Plane/Level")]
     public static void GetWindow()
     {
@@ -54,12 +70,111 @@ class EditorLevelWindow: EditorWindow
 
     private void OnGUI()
     {
+        DrawLevelData();
+    }
+
+    private void DrawLevelData()
+    {
+        //EditorGUILayout.BeginHorizontal();
+        SirenixEditorGUI.BeginHorizontalToolbar();
+        ScrollViewContentOffset = EditorGUILayout.BeginScrollView(ScrollViewContentOffset, GUILayout.Width(750), GUILayout.Height(250));
+
+
+        SirenixEditorGUI.BeginHorizontalToolbar();
+        GUILayout.Space(100);
+        for(int i = 0; i < levelFieldInfoArray.Length; ++i)
+        {
+            EditorGUILayout.LabelField(levelFieldInfoArray[i].Name, GUILayout.Width(100));
+        }
+        SirenixEditorGUI.EndHorizontalToolbar();
+
+        for (int i = 0; i < lMgr.Levels.Count; i++)
+        {
+            SirenixEditorGUI.BeginHorizontalToolbar();
+
+            toggleValues.Add(false);
+            if (toggleValues[i] = EditorGUILayout.Toggle(toggleValues[i], GUILayout.Width(100)))
+            {
+                if (selectedIndex != i)
+                {
+                    ChangeSelect(i);
+                }
+            }
+
+            for (int j = 0; j < levelFieldInfoArray.Length; j++)
+            {
+                bool isArray = levelFieldInfoArray[j].FieldType.IsArray;
+                string name = levelFieldInfoArray[j].Name;
+                if (name == "Stage")
+                {
+                    //SirenixEditorGUI.MenuButton
+                    if (GUI.Button(new Rect(0, 0, 100, 20), "stage"))
+                    {
+                        //var window = EditorWindow.GetWindowWithRect(typeof(EditorLevelWindow), rect, true, "");
+                        //window.Show();
+                        
+                        GUILayout.Window(0, new Rect(0, 0, 600, 400), DoMyWindow, "编辑阶段");
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.LabelField(levelFieldInfoArray[j].GetValue(lMgr.Levels[i])?.ToString(), GUILayout.Width(100));
+                }
+            }
+
+            SirenixEditorGUI.EndHorizontalToolbar();
+        }
+
+        EditorGUILayout.EndScrollView();
+        SirenixEditorGUI.EndHorizontalToolbar();
+    }
+
+    private void DoMyWindow(int id)
+    {
         
+    }
+
+    private void DrawContentRecursion()
+    {
+
+    }
+
+    //选择某行数据
+    void ChangeSelect(int index)
+    {
+        if (selectedIndex != index)
+        {
+            if (selectedIndex != -1)
+            {
+                toggleValues[selectedIndex] = false;
+            }
+            toggleValues[index] = true;
+        }
+        selectedIndex = index;
     }
 
     private void LoadLevelData()
     {
+        levelFieldInfoArray = typeof(Level).GetFields();
 
+        bool isExist = FileHelper.IsDirectoryExist(AppConst.jsonFilePath);
+        if (!isExist)
+        {
+            FileHelper.Mkdir(AppConst.jsonFilePath);
+        }
+
+        string fileName = AppConst.jsonFilePath + "/level.json";
+        string jsonStr = "{}";
+
+        bool isExistFile = FileHelper.IsFileExist(fileName);
+        if (!isExistFile)
+        {
+            FileHelper.WriteString(fileName, jsonStr);
+        }
+
+        string strContent = FileHelper.ReadString(fileName);
+
+        lMgr = JsonMapper.ToObject<LevelMgr>(strContent);
     }
 
     private void Add()

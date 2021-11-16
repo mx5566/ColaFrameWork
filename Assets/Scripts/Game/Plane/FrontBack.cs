@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using BearGame;
+
 
 namespace Bullet
 {
@@ -45,7 +45,9 @@ namespace Bullet
                 if (transform.localPosition.y > Screen.height)
                 {
                     transform.gameObject.SetActive(false);
-                    //调用子弹出屏幕事件                   }             }
+                    //调用子弹出屏幕事件                   
+                }             
+        }
     }
 
     /// <summary>

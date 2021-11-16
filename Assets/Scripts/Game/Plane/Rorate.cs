@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using BearGame;
+
 
 // https://www.cnblogs.com/plateFace/p/4301720.html
 namespace Bullet 

@@ -8,6 +8,7 @@ using ColaFramework.Foundation;
 using LitJson;
 using Sirenix.Utilities.Editor;
 using System.Reflection;
+using Sirenix.OdinInspector.Editor;
 
 class LevelMgr: SerializedScriptableObject
 {
@@ -40,6 +41,25 @@ class EnemyPlane
     public int Type;
 
     public int Num;
+}
+
+class EditorStageWindow: EditorWindow
+{
+    public List<Stage> stages;
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnGUI()
+    {
+        SirenixEditorGUI.BeginHorizontalToolbar();
+
+
+
+        SirenixEditorGUI.EndHorizontalToolbar();
+    }
 }
 
 
@@ -88,6 +108,8 @@ class EditorLevelWindow: EditorWindow
         }
         SirenixEditorGUI.EndHorizontalToolbar();
 
+        
+
         for (int i = 0; i < lMgr.Levels.Count; i++)
         {
             SirenixEditorGUI.BeginHorizontalToolbar();
@@ -107,13 +129,14 @@ class EditorLevelWindow: EditorWindow
                 string name = levelFieldInfoArray[j].Name;
                 if (name == "Stage")
                 {
-                    //SirenixEditorGUI.MenuButton
                     if (GUI.Button(new Rect(0, 0, 100, 20), "stage"))
                     {
-                        //var window = EditorWindow.GetWindowWithRect(typeof(EditorLevelWindow), rect, true, "");
-                        //window.Show();
-                        
-                        GUILayout.Window(0, new Rect(0, 0, 600, 400), DoMyWindow, "编辑阶段");
+                        EditorWindow wTemp = EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(0, 0, 600, 400), true, "编辑阶段");
+                        EditorStageWindow esw = wTemp as EditorStageWindow;
+
+                        esw.stages = lMgr.Levels[i].Stage;
+
+                        wTemp.ShowAsDropDown(new Rect(0, 0, 100, 20), new Vector2(320, 160));
                     }
                 }
                 else
@@ -127,11 +150,6 @@ class EditorLevelWindow: EditorWindow
 
         EditorGUILayout.EndScrollView();
         SirenixEditorGUI.EndHorizontalToolbar();
-    }
-
-    private void DoMyWindow(int id)
-    {
-        
     }
 
     private void DrawContentRecursion()
@@ -164,17 +182,26 @@ class EditorLevelWindow: EditorWindow
         }
 
         string fileName = AppConst.jsonFilePath + "/level.json";
-        string jsonStr = "{}";
+        string jsonStr = "";
+
 
         bool isExistFile = FileHelper.IsFileExist(fileName);
         if (!isExistFile)
         {
+            lMgr = ScriptableObject.CreateInstance<LevelMgr>();
+
+            jsonStr = JsonMapper.ToJson(lMgr);
+
+            Debug.LogFormat("jsonstr111[{0}]", jsonStr);
+
             FileHelper.WriteString(fileName, jsonStr);
         }
 
         string strContent = FileHelper.ReadString(fileName);
 
         lMgr = JsonMapper.ToObject<LevelMgr>(strContent);
+
+        Debug.LogFormat("jsonstr[{0}]", strContent);
     }
 
     private void Add()

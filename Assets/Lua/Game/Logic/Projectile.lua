@@ -2,12 +2,13 @@ local Projectile = Class("Projectile")
 local common = require("Common.Common")
 
 
-function Projectile:initialize(isenemy, baseid)
+function Projectile:initialize(isenemy, baseid, ownerID)
     -- 根据baseid得到基础的数据
     self.baseid = baseid
     -- 根据id可以得到各种数据
     self.id = common.GenerateID()
     self.isEnemy = isenemy
+    self.ownerID = ownerID
     if isenemy then
 		self.projectileObj = CommonUtil.InstantiatePrefab("Arts/Plane/Prefabs/Projectiles/Enemy_Straight_Projetile.prefab", nil)
     else
@@ -36,7 +37,14 @@ function Projectile:OnTriggerEnter2D(collison, object)
         -- enemy 删除掉
         -- 怎么找到是哪个enemy呢？
         local id = collison:GetComponent(typeof(Enemy)).ID
-        local enemy = PlayerMgr:GetPlayer(id)
+        local enemy = EnemyMgr:GetPlayer(id)
+
+		local cfg = ConfigMgr.GetItem("Enemy", enemy.baseID)
+
+        local player = PlayerMgr:GetPlayer(self.ownerID)
+        player.AddScore(cfg.score)
+        
+        -- enemy dead add score
         enemy:AddHp(-1)
 
         -- 销毁玩家子弹

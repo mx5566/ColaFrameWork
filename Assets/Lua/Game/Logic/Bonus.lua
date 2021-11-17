@@ -27,8 +27,6 @@ function BonusLua:OnTriggerEnter2D(collison, object)
 		
 		-- destroy bonus
 		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Game_Controller.prefab", self.powerObj)
-
-		-- UnityEngine.Object.Destroy(object)
 	end
 end
 

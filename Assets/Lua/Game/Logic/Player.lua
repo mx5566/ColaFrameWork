@@ -27,7 +27,7 @@ function Player:initialize(data, ismain, id)
 	print(p)
 	p.ID = id
 	self.isActiveShoot = false
-	self.nextFire = int64.New(socket.gettime() * 1000)
+	self.nextFire = int64.new(int64.tonum2(socket.gettime() * 1000))
 	self.weaponPower = 1
 
 	-- 获取飞机身上的枪的对象
@@ -42,10 +42,10 @@ end
 
 function Player:Update(delta)
 	if self.isActiveShoot then
-		local t = int64.New(socket.gettime()*1000)
+		local t = int64.new(int64.tonum2(socket.gettime()*1000))
 		if int64.__lt(self.nextFire, t) then
 			self:Shoot()
-			self.nextFire =  int64.New(t + 100) -- delay 100ms
+			self.nextFire =  int64.__add(t, 100) -- delay 100ms
 		end
 	end
 
@@ -58,16 +58,16 @@ end
 function Player:Shoot()
 	local switch = {  
 		[1] = function()
-			project:new(false, 1)
+			project:new(false, 1, self.id)
 		end,  
 		[2] = function()
-			project:new(false, 2)
+			project:new(false, 2, self.id)
 		end,
 		[3] = function()
-			project:new(false, 3)
+			project:new(false, 3, self.id)
 		end,
 		[4] = function()
-			project:new(false, 4)
+			project:new(false, 4, self.id)
 		end,  
 	}
 	
@@ -80,8 +80,11 @@ function Player:Shoot()
 	end  
 end
 
-function Player.AddScore(self, score)
+function Player:AddScore(score)
 	self.score = self.score + score
+
+	-- update score ui
+	EventMgr.DispatchEvent(Modules.moduleId.UiEvent, Modules.notifyId.UiEventId.Ui_AddScore, self.score)
 end
 
 function Player:GetFloor()
@@ -140,6 +143,7 @@ function Player:AddHp(hp)
 
 		-- 死亡触发结束事件给UI
 		-- TODO
+		
 
 		self:Destroy()
 	end

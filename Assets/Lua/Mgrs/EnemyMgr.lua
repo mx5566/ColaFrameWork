@@ -33,4 +33,8 @@ function EnemyMgr:GetPlayer(id)
 	return self.mapEnemys[id]
 end
 
+function EnemyMgr:Delete(id)
+	self.mapEnemys[id] = nil 
+end
+
 return EnemyMgr

@@ -47,6 +47,7 @@ public class AppConst
     public const string SplashVideoName = "splash_video.mp4";
     public const string StoryVideoName = "story_video.mp4";
 
+    public static readonly string jsonFilePath = Application.dataPath + "/Lua/jsonConfigs";
     /// <summary>
     /// 沙盒目录
     /// </summary>

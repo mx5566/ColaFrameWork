@@ -24,7 +24,7 @@ function Enemy:initialize(data, id)
 	self.waveID = 0
 	-- 从表里查数据根据waveID
 	self.waveData = nil
-	self.nextFire = int64.new(ngx.now() * 1000)	
+	self.nextFire = int64.new(int64.tonum2(ngx.now() * 1000))	
 
 	self.type = ECEnumType.UnitType.ENEMY
 
@@ -34,16 +34,21 @@ function Enemy:initialize(data, id)
 	self.shotTimeMax = 5000.0
 	self.shotChance = 50.0
 	-- self.tim = timer.New(self:ActivateShooting(), 1, 1, true)
+
+	local enemyC = self.projectileObj:GetComponent("Projectile")
+	-- bind collison 
+	enemyC.OnTriggerEnter2DLua = Enemy.OnTriggerEnter2D
+
 end
 
 function Enemy:Update(delta)
 	local t = Common.Random(self.shotTimeMin, self.shotTimeMax) 
-	local tt = int64.new(ngx.now() * 1000)
+	local tt = int64.new(int64.tonum2(ngx.now() * 1000))
 	if int64.__lt(tt, self.nextFire) then
 		self:ActivateShooting()
 	end
 
-	self.nextFire = int64.new(t + tt)
+	self.nextFire = int64.__add(t, tt)
 end
 
 function Enemy:GetObj()
@@ -52,7 +57,7 @@ end
 
 function Enemy:ActivateShooting()
 	if Common.Random(0,1) < self.shotChance / 100 then
-		local pro = Projectile:new(true, 1)
+		local pro = Projectile:new(true, 1, self.id)
 		pro:SetPosition(self.enemyObj.transform.position)
 	end
 end
@@ -63,7 +68,16 @@ function Enemy:AddHp(hp)
 	if hp < 0 then
 		if self.hp == 0 then
 			self:Effect("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", false)
-			self.Destroy()
+			
+			local enemy = EnemyMgr:GetPlayer(self.id)
+
+			local cfg = ConfigMgr.GetItem("Enemy", enemy.baseID)
+	
+			local player = PlayerMgr:GetPlayer(self.ownerID)
+			player.AddScore(cfg.score)
+
+
+			self:Destroy()
 		elseif self.hp > 0 then
 			self:Effect("Arts/Plane/Prefabs/VFX/Lazer Ray Hit Effect.prefab", true)
 		end
@@ -103,6 +117,9 @@ function Enemy:Destroy()
 		CommonUtil.ReleaseGameObject("Arts/Plane/Prefabs/Enemy_straight_projectile.prefab", self.enemyObj)
 		self.enemyObj = nil
 	end
+
+	-- 从enemymgr移除玩家
+	EnemyMgr.Delete(self.id)
 end
 
 

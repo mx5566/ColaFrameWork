@@ -80,7 +80,7 @@ function Level:Start()
 	local m = PlayerMgr:GetMainPlayer()
 	m.isActiveShoot = true
 
-	self.startTime = int64.New(socket.gettime()*1000)
+	self.startTime = int64.new(int64.tonum2(socket.gettime()*1000))
 end
 
 
@@ -96,8 +96,8 @@ function Level.CreateWave(self)
 
 	-- self.cfg拿到敌群的配置
 	local ff = function ()
-		for i = 1, #self.cfg.waveids do
-			Wave:new(i)
+		for i = 1, #self.cfg.wave do
+			Wave:new(self.cfg.wave[i])
 		end	
 	end
 
@@ -163,12 +163,11 @@ end
 function Level:Update(delta)
 	-- 不同时间来产生不同数量的敌人
 	if self.cfg.type == 1 then -- 时间
-		local current = int64.New(socket.gettime()*1000)
-		local tDelta = int64.New(current - self.startTime)
+		local current = int64.new(int64.tonum2(socket.gettime()*1000))
+		local tDelta = int64.__sub(current, self.startTime)
 		if int64.__lt(0, tDelta) then
 			
 		end
-		-- body
 	elseif self.cfg.type == 2 then -- 分数
 		-- body
 	elseif self.cfg.type == 3 then -- 固定的敌人n个
@@ -179,6 +178,21 @@ function Level:Update(delta)
 		-- body
 	end
 end
+
+function Level:LimitTime()
+	local current = int64.new(int64.tonum2(socket.gettime()*1000))
+	local tDelta = int64.__sub(current, self.startTime)
+	if int64.__lt(0, tDelta) then
+		Wave:new(self.cfg.wave[i])
+	end
+
+end
+
+-- 关卡 finish condition
+function Level:FixedEnemy()
+	
+end
+
 
 return Level
 

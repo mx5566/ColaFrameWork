@@ -80,7 +80,7 @@ class EditorStageWindow: OdinEditorWindow
 
         using (var vscope = new EditorGUILayout.VerticalScope())
         {
-            GUI.Box(, new GUIContent());
+            GUI.Box(vscope.rect, new GUIContent());
         }
 
         for (int i = 0; i < stageFieldInfoArray.Length; ++i)

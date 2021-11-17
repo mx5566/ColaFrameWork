@@ -43,27 +43,102 @@ class EnemyPlane
     public int Num;
 }
 
-class EditorStageWindow: EditorWindow
+class EditorStageWindow: OdinEditorWindow
 {
     public List<Stage> stages;
+    FieldInfo[] stageFieldInfoArray;
+    List<bool> toggleValues = new List<bool>();//单选框信息
+    int selectedIndex = -1;//当前选择的某行数据下标
+
+    [Button(ButtonSizes.Large)]
+    public void SomeButton() { }
+
+    [TableList]
+    public int[] SomeTableData;
 
     private void OnEnable()
     {
-        
+        stageFieldInfoArray = typeof(Stage).GetFields();
     }
 
     private void OnGUI()
     {
+        DrawStageData();
+    }
+
+    void ChangeSelect(int index)
+    {
+        if (selectedIndex != index)
+        {
+            if (selectedIndex != -1)
+            {
+                toggleValues[selectedIndex] = false;
+            }
+            toggleValues[index] = true;
+        }
+        selectedIndex = index;
+    }
+
+    private void DrawStageData()
+    {
+        //SirenixEditorGUI.BeginHorizontalToolbar();
+
+
         SirenixEditorGUI.BeginHorizontalToolbar();
-
-
-
+        GUILayout.Space(100);
+        for (int i = 0; i < stageFieldInfoArray.Length; ++i)
+        {
+            EditorGUILayout.LabelField(stageFieldInfoArray[i].Name, GUILayout.Width(100));
+        }
         SirenixEditorGUI.EndHorizontalToolbar();
+
+
+        for (int i = 0; i < stages.Count; i++)
+        {
+            SirenixEditorGUI.BeginHorizontalToolbar();
+
+            toggleValues.Add(false);
+            if (toggleValues[i] = EditorGUILayout.Toggle(toggleValues[i], GUILayout.Width(100)))
+            {
+                if (selectedIndex != i)
+                {
+                    ChangeSelect(i);
+                }
+            }
+
+            for (int j = 0; j < stageFieldInfoArray.Length; j++)
+            {
+                bool isArray = stageFieldInfoArray[j].FieldType.IsArray;
+                string name = stageFieldInfoArray[j].Name;
+                if (name == "Stage")
+                {
+                    if (EditorGUILayout.DropdownButton(new GUIContent("stage"), FocusType.Passive, GUILayout.Width(100)))
+                    {
+
+                        Debug.LogFormat("x={0}, y={1}", Event.current.mousePosition.x, Event.current.mousePosition.y);
+                        /*EditorWindow wTemp = EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
+                        EditorStageWindow esw = wTemp as EditorStageWindow;
+
+                        esw.stages = stages[i].Planes;
+
+                        wTemp.Show();*/
+                        //wTemp.ShowAsDropDown(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 100, 20), new Vector2(320, 160));
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.LabelField(stageFieldInfoArray[j].GetValue(stages[i])?.ToString(), GUILayout.Width(100), GUILayout.MaxWidth(200));
+                }
+            }
+
+            SirenixEditorGUI.EndHorizontalToolbar();
+        }
+        //SirenixEditorGUI.EndHorizontalToolbar();
     }
 }
 
 
-class EditorLevelWindow: EditorWindow
+class EditorLevelWindow: OdinEditorWindow
 {
     LevelMgr lMgr;
 
@@ -77,7 +152,9 @@ class EditorLevelWindow: EditorWindow
     public static void GetWindow()
     {
         Rect rect = new Rect(0, 0, 800, 500);
-        var window = EditorWindow.GetWindowWithRect(typeof(EditorLevelWindow), rect, true, "关卡编辑");
+        var window = GetWindow<EditorLevelWindow>("关卡编辑");
+        //var window = EditorWindow.GetWindowWithRect(typeof(EditorLevelWindow), rect, false, "关卡编辑");
+        //window.Focus();
         window.Show();
     }
 
@@ -108,7 +185,6 @@ class EditorLevelWindow: EditorWindow
         }
         SirenixEditorGUI.EndHorizontalToolbar();
 
-        
 
         for (int i = 0; i < lMgr.Levels.Count; i++)
         {
@@ -129,14 +205,17 @@ class EditorLevelWindow: EditorWindow
                 string name = levelFieldInfoArray[j].Name;
                 if (name == "Stage")
                 {
-                    if (GUI.Button(new Rect(0, 0, 100, 20), "stage"))
+                    if (EditorGUILayout.DropdownButton(new GUIContent("stage"), FocusType.Passive, GUILayout.Width(100)))
                     {
-                        EditorWindow wTemp = EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(0, 0, 600, 400), true, "编辑阶段");
+                        
+                        Debug.LogFormat("x={0}, y={1}", Event.current.mousePosition.x, Event.current.mousePosition.y);
+                        EditorWindow wTemp = EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
                         EditorStageWindow esw = wTemp as EditorStageWindow;
 
                         esw.stages = lMgr.Levels[i].Stage;
 
-                        wTemp.ShowAsDropDown(new Rect(0, 0, 100, 20), new Vector2(320, 160));
+                        wTemp.Show();
+                        //wTemp.ShowAsDropDown(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 100, 20), new Vector2(320, 160));
                     }
                 }
                 else
@@ -189,6 +268,8 @@ class EditorLevelWindow: EditorWindow
         if (!isExistFile)
         {
             lMgr = ScriptableObject.CreateInstance<LevelMgr>();
+            lMgr.Levels = new List<Level>();
+            
 
             jsonStr = JsonMapper.ToJson(lMgr);
 
@@ -198,6 +279,9 @@ class EditorLevelWindow: EditorWindow
         }
 
         string strContent = FileHelper.ReadString(fileName);
+
+        Debug.LogFormat("jsonstrRead [{0}]", strContent);
+
 
         lMgr = JsonMapper.ToObject<LevelMgr>(strContent);
 

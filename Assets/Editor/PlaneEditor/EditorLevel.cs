@@ -50,12 +50,6 @@ class EditorStageWindow: OdinEditorWindow
     List<bool> toggleValues = new List<bool>();//单选框信息
     int selectedIndex = -1;//当前选择的某行数据下标
 
-    [Button(ButtonSizes.Large)]
-    public void SomeButton() { }
-
-    [TableList]
-    public int[] SomeTableData;
-
     private void OnEnable()
     {
         stageFieldInfoArray = typeof(Stage).GetFields();
@@ -81,11 +75,14 @@ class EditorStageWindow: OdinEditorWindow
 
     private void DrawStageData()
     {
-        //SirenixEditorGUI.BeginHorizontalToolbar();
-
-
         SirenixEditorGUI.BeginHorizontalToolbar();
         GUILayout.Space(100);
+
+        using (var vscope = new EditorGUILayout.VerticalScope())
+        {
+            GUI.Box(, new GUIContent());
+        }
+
         for (int i = 0; i < stageFieldInfoArray.Length; ++i)
         {
             EditorGUILayout.LabelField(stageFieldInfoArray[i].Name, GUILayout.Width(100));
@@ -114,15 +111,9 @@ class EditorStageWindow: OdinEditorWindow
                 {
                     if (EditorGUILayout.DropdownButton(new GUIContent("stage"), FocusType.Passive, GUILayout.Width(100)))
                     {
-
                         Debug.LogFormat("x={0}, y={1}", Event.current.mousePosition.x, Event.current.mousePosition.y);
-                        /*EditorWindow wTemp = EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
-                        EditorStageWindow esw = wTemp as EditorStageWindow;
-
-                        esw.stages = stages[i].Planes;
-
-                        wTemp.Show();*/
-                        //wTemp.ShowAsDropDown(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 100, 20), new Vector2(320, 160));
+                                                
+                        
                     }
                 }
                 else

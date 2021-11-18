@@ -43,7 +43,7 @@ class EnemyPlane
     public int Num;
 }
 
-class EditorStageWindow: OdinEditorWindow
+class EditorStageWindow: EditorWindow
 {
     public List<Stage> stages;
     FieldInfo[] stageFieldInfoArray;
@@ -78,11 +78,6 @@ class EditorStageWindow: OdinEditorWindow
         SirenixEditorGUI.BeginHorizontalToolbar();
         GUILayout.Space(100);
 
-        using (var vscope = new EditorGUILayout.VerticalScope())
-        {
-            GUI.Box(vscope.rect, new GUIContent());
-        }
-
         for (int i = 0; i < stageFieldInfoArray.Length; ++i)
         {
             EditorGUILayout.LabelField(stageFieldInfoArray[i].Name, GUILayout.Width(100));
@@ -92,44 +87,77 @@ class EditorStageWindow: OdinEditorWindow
 
         for (int i = 0; i < stages.Count; i++)
         {
-            SirenixEditorGUI.BeginHorizontalToolbar();
-
-            toggleValues.Add(false);
-            if (toggleValues[i] = EditorGUILayout.Toggle(toggleValues[i], GUILayout.Width(100)))
+            using (var stageScope = new EditorGUILayout.HorizontalScope())
             {
-                if (selectedIndex != i)
-                {
-                    ChangeSelect(i);
-                }
-            }
+                GUI.Box(stageScope.rect, new GUIContent());
 
-            for (int j = 0; j < stageFieldInfoArray.Length; j++)
-            {
-                bool isArray = stageFieldInfoArray[j].FieldType.IsArray;
-                string name = stageFieldInfoArray[j].Name;
-                if (name == "Stage")
+                toggleValues.Add(false);
+                if (toggleValues[i] = EditorGUILayout.Toggle(toggleValues[i], GUILayout.Width(100)))
                 {
-                    if (EditorGUILayout.DropdownButton(new GUIContent("stage"), FocusType.Passive, GUILayout.Width(100)))
+                    if (selectedIndex != i)
                     {
-                        Debug.LogFormat("x={0}, y={1}", Event.current.mousePosition.x, Event.current.mousePosition.y);
-                                                
-                        
+                        ChangeSelect(i);
                     }
                 }
-                else
-                {
-                    EditorGUILayout.LabelField(stageFieldInfoArray[j].GetValue(stages[i])?.ToString(), GUILayout.Width(100), GUILayout.MaxWidth(200));
-                }
-            }
 
-            SirenixEditorGUI.EndHorizontalToolbar();
+                for (int j = 0; j < stageFieldInfoArray.Length; j++)
+                {
+                    bool isArray = stageFieldInfoArray[j].FieldType.IsArray;
+                    string name = stageFieldInfoArray[j].Name;
+                    if (name == "Planes")
+                    {
+                        if (GUILayout.Button("+", GUILayout.Width(100)))
+                        {
+                            Debug.LogFormat("Button Down +");
+                            using (var vscope = new EditorGUILayout.VerticalScope())
+                            {
+                                GUI.Box(vscope.rect, new GUIContent());
+                                FieldInfo[] tempPlanesFieldInfo = typeof(EnemyPlane).GetFields();
+
+                                // 
+                                using (var planeScope = new EditorGUILayout.HorizontalScope())
+                                {
+                                    GUILayout.Space(100);
+                                    GUI.Box(planeScope.rect, new GUIContent());
+
+                                    for (int k = 0; k < tempPlanesFieldInfo.Length; ++k)
+                                    {
+                                        Debug.LogFormat("tempPlanesFieldInfo Name {0}", tempPlanesFieldInfo[k].Name);
+
+                                        EditorGUILayout.LabelField(tempPlanesFieldInfo[k].Name, GUILayout.Width(100));
+                                    }
+                                }
+
+                                // 所有的飞机数据
+                                for (int l = 0; l < stages[i].Planes.Count; l++)
+                                {
+                                    for (int m = 0; m < tempPlanesFieldInfo.Length; m++)
+                                    {
+                                        using (var vscope1 = new EditorGUILayout.HorizontalScope())
+                                        {
+                                            Debug.LogFormat("tempPlanesFieldInfo Name {0}  value{1}", tempPlanesFieldInfo[m].Name, tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l]).ToString());
+
+                                            GUI.Box(vscope1.rect, new GUIContent());
+                                            EditorGUILayout.TextField(tempPlanesFieldInfo[l].GetValue(stages[i].Planes[l])?.ToString(), GUILayout.Width(100), GUILayout.MaxWidth(200));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField(stageFieldInfoArray[j].GetValue(stages[i])?.ToString(), GUILayout.Width(100), GUILayout.MaxWidth(200));
+                    }
+                }
+            }  
         }
-        //SirenixEditorGUI.EndHorizontalToolbar();
+        
     }
 }
 
 
-class EditorLevelWindow: OdinEditorWindow
+class EditorLevelWindow: EditorWindow
 {
     LevelMgr lMgr;
 
@@ -196,11 +224,11 @@ class EditorLevelWindow: OdinEditorWindow
                 string name = levelFieldInfoArray[j].Name;
                 if (name == "Stage")
                 {
-                    if (EditorGUILayout.DropdownButton(new GUIContent("stage"), FocusType.Passive, GUILayout.Width(100)))
+                    if (EditorGUILayout.DropdownButton(new GUIContent("stage+"), FocusType.Passive, GUILayout.Width(100)))
                     {
                         
                         Debug.LogFormat("x={0}, y={1}", Event.current.mousePosition.x, Event.current.mousePosition.y);
-                        EditorWindow wTemp = EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
+                        EditorWindow wTemp = EditorWindow.GetWindow<EditorStageWindow>("编辑阶段");//EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
                         EditorStageWindow esw = wTemp as EditorStageWindow;
 
                         esw.stages = lMgr.Levels[i].Stage;

@@ -43,19 +43,21 @@ class EnemyPlane
     public int Num;
 }
 
-class EditorStageWindow: EditorWindow
+class EditorStageWindow: OdinEditorWindow
 {
     public List<Stage> stages;
     FieldInfo[] stageFieldInfoArray;
     List<bool> toggleValues = new List<bool>();//单选框信息
+    List<bool> togglePlanesValues = new List<bool>();//单选框信息
     int selectedIndex = -1;//当前选择的某行数据下标
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         stageFieldInfoArray = typeof(Stage).GetFields();
     }
 
-    private void OnGUI()
+    protected override void OnGUI()
     {
         DrawStageData();
     }
@@ -106,23 +108,34 @@ class EditorStageWindow: EditorWindow
                     string name = stageFieldInfoArray[j].Name;
                     if (name == "Planes")
                     {
-                        if (GUILayout.Button("+", GUILayout.Width(100)))
+                        if (togglePlanesValues.Count < i+1)
                         {
-                            Debug.LogFormat("Button Down +");
+                            togglePlanesValues.Add(false);
+                        }
+
+                        string str = "显示";
+                        if (togglePlanesValues[i])
+                        {
+                            str = "隐藏";
+                        }
+
+                        if (togglePlanesValues[i] = GUILayout.Toggle(togglePlanesValues[i], str, GUILayout.Width(100)))
+                        //if (GUILayout.Button("+", GUILayout.Width(100)))
+                        {
                             using (var vscope = new EditorGUILayout.VerticalScope())
                             {
+                                
                                 GUI.Box(vscope.rect, new GUIContent());
                                 FieldInfo[] tempPlanesFieldInfo = typeof(EnemyPlane).GetFields();
 
-                                // 
+                                GUILayout.Space(30);
                                 using (var planeScope = new EditorGUILayout.HorizontalScope())
                                 {
-                                    GUILayout.Space(100);
+                                    
                                     GUI.Box(planeScope.rect, new GUIContent());
-
                                     for (int k = 0; k < tempPlanesFieldInfo.Length; ++k)
                                     {
-                                        Debug.LogFormat("tempPlanesFieldInfo Name {0}", tempPlanesFieldInfo[k].Name);
+                                        //Debug.LogFormat("tempPlanesFieldInfo Name {0}", tempPlanesFieldInfo[k].Name);
 
                                         EditorGUILayout.LabelField(tempPlanesFieldInfo[k].Name, GUILayout.Width(100));
                                     }
@@ -131,14 +144,29 @@ class EditorStageWindow: EditorWindow
                                 // 所有的飞机数据
                                 for (int l = 0; l < stages[i].Planes.Count; l++)
                                 {
-                                    for (int m = 0; m < tempPlanesFieldInfo.Length; m++)
+                                    using (var vscope1 = new EditorGUILayout.HorizontalScope())
                                     {
-                                        using (var vscope1 = new EditorGUILayout.HorizontalScope())
+                                        for (int m = 0; m < tempPlanesFieldInfo.Length; m++)
                                         {
-                                            Debug.LogFormat("tempPlanesFieldInfo Name {0}  value{1}", tempPlanesFieldInfo[m].Name, tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l]).ToString());
+
+                                            //Debug.LogFormat("tempPlanesFieldInfo Name {0}  value{1}", tempPlanesFieldInfo[m].Name, tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l]).ToString());
 
                                             GUI.Box(vscope1.rect, new GUIContent());
-                                            EditorGUILayout.TextField(tempPlanesFieldInfo[l].GetValue(stages[i].Planes[l])?.ToString(), GUILayout.Width(100), GUILayout.MaxWidth(200));
+
+                                            if (tempPlanesFieldInfo[m].Name == "ID")
+                                            {
+                                                stages[i].Planes[l].ID = EditorGUILayout.IntField(stages[i].Planes[l].ID, GUILayout.Width(100));
+                                            }
+                                            else if (tempPlanesFieldInfo[m].Name == "Type")
+                                            {
+                                                stages[i].Planes[l].Type = EditorGUILayout.IntField(stages[i].Planes[l].Type, GUILayout.Width(100));
+                                            }
+                                            else if (tempPlanesFieldInfo[m].Name == "Num")
+                                            {
+                                                stages[i].Planes[l].Num = EditorGUILayout.IntField(stages[i].Planes[l].Num, GUILayout.Width(100));
+                                            }
+
+                                            //EditorGUILayout.TextArea(tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l])?.ToString(), GUILayout.Width(100));
                                         }
                                     }
                                 }
@@ -147,7 +175,7 @@ class EditorStageWindow: EditorWindow
                     }
                     else
                     {
-                        EditorGUILayout.LabelField(stageFieldInfoArray[j].GetValue(stages[i])?.ToString(), GUILayout.Width(100), GUILayout.MaxWidth(200));
+                        EditorGUILayout.LabelField(stageFieldInfoArray[j].GetValue(stages[i])?.ToString(), GUILayout.Width(100));
                     }
                 }
             }  
@@ -175,6 +203,8 @@ class EditorLevelWindow: EditorWindow
         //var window = EditorWindow.GetWindowWithRect(typeof(EditorLevelWindow), rect, false, "关卡编辑");
         //window.Focus();
         window.Show();
+
+        
     }
 
     int selectIndex = -1;
@@ -228,7 +258,7 @@ class EditorLevelWindow: EditorWindow
                     {
                         
                         Debug.LogFormat("x={0}, y={1}", Event.current.mousePosition.x, Event.current.mousePosition.y);
-                        EditorWindow wTemp = EditorWindow.GetWindow<EditorStageWindow>("编辑阶段");//EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
+                        EditorWindow wTemp = GetWindow<EditorStageWindow>("编辑阶段");//EditorWindow.GetWindowWithRect(typeof(EditorStageWindow), new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 600, 400), true, "编辑阶段");
                         EditorStageWindow esw = wTemp as EditorStageWindow;
 
                         esw.stages = lMgr.Levels[i].Stage;
@@ -250,10 +280,6 @@ class EditorLevelWindow: EditorWindow
         SirenixEditorGUI.EndHorizontalToolbar();
     }
 
-    private void DrawContentRecursion()
-    {
-
-    }
 
     //选择某行数据
     void ChangeSelect(int index)

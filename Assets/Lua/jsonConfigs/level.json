@@ -3,40 +3,26 @@
     "name" : "",
     "hideFlags" : 0,
     "Levels"    : [
-	{
-		"ID": 1, 
-		"Stage": [
-			{
-				"Time": 1000,
-				"Planes": [
-					{
-						"ID": 1001,
-						"Type": 1,
-						"Num": 10
-					},
-					{
-						"ID": 1003,
-						"Type": 2,
-						"Num": 12
-					}
-				]
-			}
-		]
-	},
-	{
-		"ID": 2, 
-		"Stage": [
-			{
-				"Time": 2000,
-				"Planes": [
-					{
-						"ID": 1002,
-						"Type": 2,
-						"Num": 11
-					}
-				]
-			}
-		]
-	}
+        {
+            "ID" : 1,
+            "Stage" : [
+                {
+                    "Time" : 1000,
+                    "Planes" : [
+                        {
+                            "ID" : 1001,
+                            "Type" : 1,
+                            "Num"  : 10
+                        },
+                        {
+                            "ID" : 1003,
+                            "Type" : 2,
+                            "Num"  : 12
+                        }
+                    ]
+                }
+            ],
+            "Test"  : "T1"
+        }
     ]
 }

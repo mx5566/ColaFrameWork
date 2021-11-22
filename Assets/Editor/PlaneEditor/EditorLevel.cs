@@ -46,147 +46,6 @@ class EnemyPlane
     public int Num;
 }
 
-class EditorStageWindow: OdinEditorWindow
-{
-    public List<Stage> stages;
-    FieldInfo[] stageFieldInfoArray;
-    List<bool> toggleValues = new List<bool>();//单选框信息
-    List<bool> togglePlanesValues = new List<bool>();//单选框信息
-    int selectedIndex = -1;//当前选择的某行数据下标
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        stageFieldInfoArray = typeof(Stage).GetFields();
-    }
-
-    protected override void OnGUI()
-    {
-        DrawStageData();
-    }
-
-    void ChangeSelect(int index)
-    {
-        if (selectedIndex != index)
-        {
-            if (selectedIndex != -1)
-            {
-                toggleValues[selectedIndex] = false;
-            }
-            toggleValues[index] = true;
-        }
-        selectedIndex = index;
-    }
-
-    private void DrawStageData()
-    {
-        SirenixEditorGUI.BeginHorizontalToolbar();
-        GUILayout.Space(100);
-
-        for (int i = 0; i < stageFieldInfoArray.Length; ++i)
-        {
-            EditorGUILayout.LabelField(stageFieldInfoArray[i].Name, GUILayout.Width(100));
-        }
-        SirenixEditorGUI.EndHorizontalToolbar();
-
-
-        for (int i = 0; i < stages.Count; i++)
-        {
-            using (var stageScope = new EditorGUILayout.HorizontalScope())
-            {
-                GUI.Box(stageScope.rect, new GUIContent());
-
-                toggleValues.Add(false);
-                if (toggleValues[i] = EditorGUILayout.Toggle(toggleValues[i], GUILayout.Width(100)))
-                {
-                    if (selectedIndex != i)
-                    {
-                        ChangeSelect(i);
-                    }
-                }
-
-                for (int j = 0; j < stageFieldInfoArray.Length; j++)
-                {
-                    bool isArray = stageFieldInfoArray[j].FieldType.IsArray;
-                    string name = stageFieldInfoArray[j].Name;
-                    if (name == "Planes")
-                    {
-                        if (togglePlanesValues.Count < i+1)
-                        {
-                            togglePlanesValues.Add(false);
-                        }
-
-                        string str = "显示";
-                        if (togglePlanesValues[i])
-                        {
-                            str = "隐藏";
-                        }
-
-                        if (togglePlanesValues[i] = GUILayout.Toggle(togglePlanesValues[i], str, GUILayout.Width(100)))
-                        //if (GUILayout.Button("+", GUILayout.Width(100)))
-                        {
-                            using (var vscope = new EditorGUILayout.VerticalScope())
-                            {
-                                
-                                GUI.Box(vscope.rect, new GUIContent());
-                                FieldInfo[] tempPlanesFieldInfo = typeof(EnemyPlane).GetFields();
-
-                                GUILayout.Space(30);
-                                using (var planeScope = new EditorGUILayout.HorizontalScope())
-                                {
-                                    
-                                    GUI.Box(planeScope.rect, new GUIContent());
-                                    for (int k = 0; k < tempPlanesFieldInfo.Length; ++k)
-                                    {
-                                        //Debug.LogFormat("tempPlanesFieldInfo Name {0}", tempPlanesFieldInfo[k].Name);
-
-                                        EditorGUILayout.LabelField(tempPlanesFieldInfo[k].Name, GUILayout.Width(100));
-                                    }
-                                }
-
-                                // 所有的飞机数据
-                                for (int l = 0; l < stages[i].Planes.Count; l++)
-                                {
-                                    using (var vscope1 = new EditorGUILayout.HorizontalScope())
-                                    {
-                                        for (int m = 0; m < tempPlanesFieldInfo.Length; m++)
-                                        {
-
-                                            //Debug.LogFormat("tempPlanesFieldInfo Name {0}  value{1}", tempPlanesFieldInfo[m].Name, tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l]).ToString());
-
-                                            GUI.Box(vscope1.rect, new GUIContent());
-
-                                            if (tempPlanesFieldInfo[m].Name == "ID")
-                                            {
-                                                stages[i].Planes[l].ID = EditorGUILayout.IntField(stages[i].Planes[l].ID, GUILayout.Width(100));
-                                            }
-                                            else if (tempPlanesFieldInfo[m].Name == "Type")
-                                            {
-                                                stages[i].Planes[l].Type = EditorGUILayout.IntField(stages[i].Planes[l].Type, GUILayout.Width(100));
-                                            }
-                                            else if (tempPlanesFieldInfo[m].Name == "Num")
-                                            {
-                                                stages[i].Planes[l].Num = EditorGUILayout.IntField(stages[i].Planes[l].Num, GUILayout.Width(100));
-                                            }
-
-                                            //EditorGUILayout.TextArea(tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l])?.ToString(), GUILayout.Width(100));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        EditorGUILayout.LabelField(stageFieldInfoArray[j].GetValue(stages[i])?.ToString(), GUILayout.Width(100));
-                    }
-                }
-            }  
-        }
-        
-    }
-}
-
 
 class EditorLevelWindow: EditorWindow
 {
@@ -199,6 +58,8 @@ class EditorLevelWindow: EditorWindow
 
     Dictionary<int, bool> mapToggleValues = new Dictionary<int, bool>();//单选框信息
     Dictionary<int, bool> mapTogglePlanes = new Dictionary<int, bool>();
+    Dictionary<int, int> mapIDToTime = new Dictionary<int, int>();
+
 
     List<bool> toggleStageValues = new List<bool>();//单选框信息
 
@@ -210,7 +71,9 @@ class EditorLevelWindow: EditorWindow
     bool isEdit = false;
     // 记录所有被选中的行的索引
     List<int> allSelectRow = new List<int>();
-
+    // id的最大值
+    int maxID = 0;
+    List<int> idList = new List<int>();
 
 
     [MenuItem("CustomEditor/Plane/Level")]
@@ -235,14 +98,26 @@ class EditorLevelWindow: EditorWindow
 
     private void DrawStageData(int id, ref List<Stage> stages)
     {
-        Debug.LogFormat("DrawStageData");
+        //Debug.LogFormat("DrawStageData");
         SirenixEditorGUI.BeginHorizontalToolbar();
-        
         
         for (int i = 0; i < stageFieldInfoArray.Length; ++i)
         {
             EditorGUILayout.LabelField(stageFieldInfoArray[i].Name, GUILayout.Width(100));
         }
+
+        // 增加添加按钮
+        if (GUILayout.Button("+", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+        {
+            var stage = new Stage();
+            stage.Time = 0;
+            stage.Planes = new List<EnemyPlane>();
+
+            stages.Add(stage);
+
+            mapTogglePlanes[stage.Time] = false;
+        }
+
         SirenixEditorGUI.EndHorizontalToolbar();
 
 
@@ -251,7 +126,6 @@ class EditorLevelWindow: EditorWindow
             using (var stageScope = new EditorGUILayout.HorizontalScope())
             {
                 GUI.Box(stageScope.rect, new GUIContent());
-                
 
                 for (int j = 0; j < stageFieldInfoArray.Length; j++)
                 {
@@ -259,14 +133,14 @@ class EditorLevelWindow: EditorWindow
                     string name = stageFieldInfoArray[j].Name;
                     if (name == "Planes")
                     {
-                        if (!mapTogglePlanes.ContainsKey(id))
+                        if (!mapTogglePlanes.ContainsKey(stages[i].Time))
                         {
-                            mapTogglePlanes[id] = false;
+                            mapTogglePlanes[stages[i].Time] = false;
                         }
 
 
                         string str = "显示";
-                        if (mapTogglePlanes[id])
+                        if (mapTogglePlanes[stages[i].Time])
                         {
                             str = "隐藏";
                         }
@@ -274,8 +148,7 @@ class EditorLevelWindow: EditorWindow
                         GUIStyle style = EditorStyles.miniPullDown;
                         style.alignment = TextAnchor.MiddleCenter;
                         style.normal.textColor = Color.white;
-                        if (mapTogglePlanes[id] = GUILayout.Toggle(mapTogglePlanes[id], str, style,GUILayout.Width(100)))
-                        //if (GUILayout.Button("+", GUILayout.Width(100)))
+                        if (mapTogglePlanes[stages[i].Time] = GUILayout.Toggle(mapTogglePlanes[stages[i].Time], str, style,GUILayout.Width(100)))
                         {
                             using (var vscope = new EditorGUILayout.VerticalScope())
                             {
@@ -286,7 +159,6 @@ class EditorLevelWindow: EditorWindow
                                 GUILayout.Space(26);
                                 using (var planeScope = new EditorGUILayout.HorizontalScope())
                                 {
-
                                     GUI.Box(planeScope.rect, new GUIContent());
                                     for (int k = 0; k < tempPlanesFieldInfo.Length; ++k)
                                     {
@@ -323,6 +195,14 @@ class EditorLevelWindow: EditorWindow
 
                                             //EditorGUILayout.TextArea(tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l])?.ToString(), GUILayout.Width(100));
                                         }
+
+                                        // 增加删除按钮
+                                        if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                                        {
+                                            stages[i].Planes.RemoveAt(l);
+                                            
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -336,9 +216,15 @@ class EditorLevelWindow: EditorWindow
                         }
                     }
                 }
+
+                // 增加阶段删除按钮
+                if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                {
+                    stages.RemoveAt(i);
+                    return;
+                }
             }
         }
-
     }
 
     private void DrawLevelData()
@@ -360,9 +246,9 @@ class EditorLevelWindow: EditorWindow
                     //
                     isAllSelect = tempSelect;
 
-                    for (int i = 0; i < lMgr.Levels.Count; i++)
+                    for (int i = 0; i < idList.Count; i++)
                     {
-                        mapToggleValues[i] = isAllSelect;
+                        mapToggleValues[idList[i]] = isAllSelect;
                     }
                 }
 
@@ -370,10 +256,7 @@ class EditorLevelWindow: EditorWindow
 
                 Save();
 
-                for (int j = 0; j < 11; j++)
-                {
-                    EditorUtility.DisplayProgressBar("Save", "--------", j * 1f / 10);
-                }
+                Reload();
             }
 
             GUILayout.Space(10);
@@ -392,6 +275,17 @@ class EditorLevelWindow: EditorWindow
                 style.normal.textColor = Color.white;
                 EditorGUILayout.LabelField(levelFieldInfoArray[i].Name, style, GUILayout.Width(100));
             }
+
+            // 增加添加按钮
+            if (GUILayout.Button("+", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+            {
+                var level = new Level();
+                level.ID = ++maxID;
+                level.Stage = new List<Stage>();
+                lMgr.Levels.Add(level);
+                mapToggleValues[level.ID] = false;
+            }
+
             SirenixEditorGUI.EndHorizontalToolbar();
 
 
@@ -399,8 +293,9 @@ class EditorLevelWindow: EditorWindow
             {
                 SirenixEditorGUI.BeginHorizontalToolbar();
 
-                mapToggleValues[i] = EditorGUILayout.Toggle(mapToggleValues[i], GUILayout.Width(100));
-                if (mapToggleValues[i])
+                var id = lMgr.Levels[i].ID;
+                mapToggleValues[id] = EditorGUILayout.Toggle(mapToggleValues[id], GUILayout.Width(100));
+                if (mapToggleValues[id])
                 {
                     // 选中的行记录下来 可以批量删除
                     if (!allSelectRow.Contains(i))
@@ -413,7 +308,6 @@ class EditorLevelWindow: EditorWindow
                     allSelectRow.Remove(i);
                 }
                 
-
 
                 for (int j = 0; j < levelFieldInfoArray.Length; j++)
                 {
@@ -463,6 +357,17 @@ class EditorLevelWindow: EditorWindow
                     }
                 }
 
+                // 增加删除按钮
+                if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                {
+                    lMgr.Levels.RemoveAt(i);
+                    mapToggleValues.Remove(id);
+                    allSelectRow.Remove(i);
+                    
+                    return;
+                }
+            
+
                 SirenixEditorGUI.EndHorizontalToolbar();
             }
 
@@ -491,7 +396,6 @@ class EditorLevelWindow: EditorWindow
         {
             lMgr = ScriptableObject.CreateInstance<LevelMgr>();
             lMgr.Levels = new List<Level>();
-            
 
             jsonStr = JsonMapper.ToJson(lMgr);
 
@@ -509,7 +413,15 @@ class EditorLevelWindow: EditorWindow
 
         for (int i = 0; i < lMgr.Levels.Count; i++)
         {
-            mapToggleValues[i] = false;
+            int id = lMgr.Levels[i].ID;
+
+            if (maxID < id)
+            {
+                maxID = id;
+            }
+
+            mapToggleValues[id] = false;
+            idList.Add(id);
         }
 
         //Debug.LogFormat("jsonstr[{0}]", strContent);
@@ -541,6 +453,7 @@ class EditorLevelWindow: EditorWindow
 
             }
             allSelectRow.Clear();
+            
         }
     }
 
@@ -549,8 +462,7 @@ class EditorLevelWindow: EditorWindow
         if (GUILayout.Button("保存", GUILayout.Width(100)))
         {
             SaveData();
-
-
+            
 
         }
     }
@@ -563,6 +475,28 @@ class EditorLevelWindow: EditorWindow
         jsonStr = JsonMapper.ToJson(lMgr);
 
         FileHelper.WriteString(fileName, jsonStr);
+    }
+
+
+    private void Reload()
+    {
+        if (GUILayout.Button("重新加载文件", GUILayout.Width(100)))
+        {
+            bool ret = EditorUtility.DisplayDialog("警告", "如果有内容修改会被覆盖掉？", "确定", "取消");
+            if (ret)
+            {
+                // 先清理
+                allSelectRow.Clear();
+                mapToggleValues.Clear();
+                mapTogglePlanes.Clear();
+                toggleStageValues.Clear();
+                isAllSelect = false;
+                
+                LoadLevelData();
+            }
+
+            return;
+        }
     }
 }
 

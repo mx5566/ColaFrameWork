@@ -1,99 +1,70 @@
-﻿using UnityEngine;
-
-using System.Collections;
-
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
 
-public class TestEditor : EditorWindow
+// Shows info of a GameObject depending on the selected option
 
+public enum OPTIONS
 {
-
-    float secs = 10.0f;
-
-    double startVal = 0;
-
-    double progress = 0;
-
-    bool isShow = false;
-
-
-    [MenuItem("Examples/Cancelable Progress Bar Usage")]
-
-    static void Init()
-
-    {
-
-        var window = GetWindow(typeof(TestEditor));
-
-        window.Show();
-
-    }
-
-
-    void OnGUI()
-
-    {
-
-        secs = EditorGUILayout.FloatField("Time to wait:", secs);
-
-        if (GUILayout.Button("Display bar"))
-
-        {
-
-            startVal = EditorApplication.timeSinceStartup; //开始编译到现在的时间
-
-            isShow = !isShow;
-
-        }
-
-
-        if (GUILayout.Button("Clear bar"))
-
-        {
-
-            EditorUtility.ClearProgressBar(); //清空进度条的值， 基本没什么用
-
-        }
-
-
-        if (progress < secs && isShow == true)
-
-        {
-
-            //使用这句代码，在进度条后边会有一个 关闭按钮，但是用这句话会直接卡死，切记不要用
-
-            // EditorUtility.DisplayCancelableProgressBar("Simple Progress Bar", "Show a progress bar for the given seconds", (float)(progress / secs));
-
-            //使用这句创建一个进度条， 参数1 为标题，参数2为提示，参数3为 进度百分比 0~1 之间
-
-            EditorUtility.DisplayProgressBar("Simple Progress Bar", "Show a progress bar for the given seconds", (float)(progress / secs));
-
-        }
-
-        else
-        {
-
-            startVal = EditorApplication.timeSinceStartup;
-
-            progress = 0.0f;
-
-            return;
-
-        }
-
-        progress = EditorApplication.timeSinceStartup - startVal;
-
-    }
-
-
-    void OnInspectorUpdate() //更新
-
-    {
-
-        Repaint(); //重新绘制
-
-    }
-
+    Position = 0,
+    Rotation = 1,
+    Scale = 2,
 }
 
+
+public class EditorGUIEnumPopup : EditorWindow
+{
+    OPTIONS display = OPTIONS.Position;
+
+    [MenuItem("Examples/Editor GUI Enum Popup usage")]
+    static void Init()
+    {
+        EditorWindow window = GetWindow(typeof(EditorGUIEnumPopup));
+        window.position = new Rect(0, 0, 220, 80);
+        window.Show();
+    }
+
+    void OnGUI()
+    {
+        Transform selectedObj = Selection.activeTransform;
+
+        display = (OPTIONS)EditorGUI.EnumPopup(
+            new Rect(3, 3, position.width - 6, 15),
+            "Show:",
+            display);
+
+        EditorGUI.LabelField(new Rect(0, 20, position.width, 15),
+            "Name:",
+            selectedObj ? selectedObj.name : "Select an Object");
+        if (selectedObj)
+        {
+            switch (display)
+            {
+                case OPTIONS.Position:
+                    EditorGUI.LabelField(new Rect(0, 40, position.width, 15),
+                        "Position:",
+                        selectedObj.position.ToString());
+                    break;
+
+                case OPTIONS.Rotation:
+                    EditorGUI.LabelField(new Rect(0, 40, position.width, 15),
+                        "Rotation:",
+                        selectedObj.rotation.ToString());
+                    break;
+
+                case OPTIONS.Scale:
+                    EditorGUI.LabelField(new Rect(0, 40, position.width, 15),
+                        "Scale:",
+                        selectedObj.localScale.ToString());
+                    break;
+
+                default:
+                    Debug.LogError("Unrecognized Option");
+                    break;
+            }
+        }
+
+        if (GUI.Button(new Rect(3, position.height - 25, position.width - 6, 24), "Close"))
+            this.Close();
+    }
+}

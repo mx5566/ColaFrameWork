@@ -1,70 +1,98 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEditor;
 
-
-// Shows info of a GameObject depending on the selected option
-
-public enum OPTIONS
+public class Aligner : EditorWindow
 {
-    Position = 0,
-    Rotation = 1,
-    Scale = 2,
-}
+    bool[] pos = new bool[3] { true, true, true };
+    bool[] rot = new bool[3] { true, true, true };
+    bool[] scale = new bool[3] { true, true, true };
 
-
-public class EditorGUIEnumPopup : EditorWindow
-{
-    OPTIONS display = OPTIONS.Position;
-
-    [MenuItem("Examples/Editor GUI Enum Popup usage")]
-    static void Init()
-    {
-        EditorWindow window = GetWindow(typeof(EditorGUIEnumPopup));
-        window.position = new Rect(0, 0, 220, 80);
-        window.Show();
-    }
+    bool posGroupEnabled = true;
+    bool rotGroupEnabled = true;
+    bool scaleGroupEnabled = false;
 
     void OnGUI()
     {
-        Transform selectedObj = Selection.activeTransform;
-
-        display = (OPTIONS)EditorGUI.EnumPopup(
-            new Rect(3, 3, position.width - 6, 15),
-            "Show:",
-            display);
-
-        EditorGUI.LabelField(new Rect(0, 20, position.width, 15),
-            "Name:",
-            selectedObj ? selectedObj.name : "Select an Object");
-        if (selectedObj)
+        using (var posGroup = new EditorGUILayout.ToggleGroupScope("Align position", posGroupEnabled))
         {
-            switch (display)
-            {
-                case OPTIONS.Position:
-                    EditorGUI.LabelField(new Rect(0, 40, position.width, 15),
-                        "Position:",
-                        selectedObj.position.ToString());
-                    break;
-
-                case OPTIONS.Rotation:
-                    EditorGUI.LabelField(new Rect(0, 40, position.width, 15),
-                        "Rotation:",
-                        selectedObj.rotation.ToString());
-                    break;
-
-                case OPTIONS.Scale:
-                    EditorGUI.LabelField(new Rect(0, 40, position.width, 15),
-                        "Scale:",
-                        selectedObj.localScale.ToString());
-                    break;
-
-                default:
-                    Debug.LogError("Unrecognized Option");
-                    break;
-            }
+            posGroupEnabled = posGroup.enabled;
+            pos[0] = EditorGUILayout.Toggle("x", pos[0]);
+            pos[1] = EditorGUILayout.Toggle("y", pos[1]);
+            pos[2] = EditorGUILayout.Toggle("z", pos[2]);
         }
 
-        if (GUI.Button(new Rect(3, position.height - 25, position.width - 6, 24), "Close"))
-            this.Close();
+        using (var rotGroup = new EditorGUILayout.ToggleGroupScope("Align rotation", rotGroupEnabled))
+        {
+            rotGroupEnabled = rotGroup.enabled;
+            rot[0] = EditorGUILayout.Toggle("x", rot[0]);
+            rot[1] = EditorGUILayout.Toggle("y", rot[1]);
+            rot[2] = EditorGUILayout.Toggle("z", rot[2]);
+        }
+
+        using (var scaleGroup = new EditorGUILayout.ToggleGroupScope("Align scale", scaleGroupEnabled))
+        {
+            scaleGroupEnabled = scaleGroup.enabled;
+            scale[0] = EditorGUILayout.Toggle("x", scale[0]);
+            scale[1] = EditorGUILayout.Toggle("y", scale[1]);
+            scale[2] = EditorGUILayout.Toggle("z", scale[2]);
+        }
+
+        GUILayout.Space(30);
+        if (GUILayout.Button("Align!"))
+            Align();
+    }
+
+    void Align()
+    {
+        Transform[] transforms = Selection.transforms;
+        Transform activeTransform = Selection.activeTransform;
+        if (transforms.Length < 2)
+        {
+            Debug.LogWarning("Aligner: select at least two objects.");
+            return;
+        }
+        for (int i = 0; i < transforms.Length; i++)
+        {
+            if (posGroupEnabled)
+            {
+                Vector3 newPos;
+                newPos.x = pos[0] ?
+                    activeTransform.position.x : transforms[i].position.x;
+                newPos.y = pos[1] ?
+                    activeTransform.position.y : transforms[i].position.y;
+                newPos.z = pos[2] ?
+                    activeTransform.position.z : transforms[i].position.z;
+                transforms[i].position = newPos;
+            }
+            if (rotGroupEnabled)
+            {
+                Vector3 newRot;
+                newRot.x = rot[0] ?
+                    activeTransform.rotation.eulerAngles.x : transforms[i].rotation.eulerAngles.x;
+                newRot.y = rot[1] ?
+                    activeTransform.rotation.eulerAngles.y : transforms[i].rotation.eulerAngles.y;
+                newRot.z = rot[2] ?
+                    activeTransform.rotation.eulerAngles.z : transforms[i].rotation.eulerAngles.z;
+                transforms[i].rotation = Quaternion.Euler(newRot);
+            }
+            if (scaleGroupEnabled)
+            {
+                Vector3 newScale;
+                newScale.x = scale[0] ?
+                    activeTransform.localScale.x : transforms[i].localScale.x;
+                newScale.y = scale[1] ?
+                    activeTransform.localScale.y : transforms[i].localScale.y;
+                newScale.z = scale[2] ?
+                    activeTransform.localScale.z : transforms[i].localScale.z;
+                transforms[i].localScale = newScale;
+            }
+        }
+    }
+
+    [MenuItem("Examples/Position-Rotation-Scale Aligner")]
+    static void Init()
+    {
+        Aligner window = (Aligner)EditorWindow.GetWindow(typeof(Aligner));
+        window.Show();
     }
 }

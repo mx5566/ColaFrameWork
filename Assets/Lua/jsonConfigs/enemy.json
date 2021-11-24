@@ -1,0 +1,32 @@
+
+{
+    "name" : "",
+    "hideFlags" : 0,
+    "Enemys"    : [
+        {
+            "ID" : 1,
+            "Name" : null,
+            "Path" : ""
+        },
+        {
+            "ID" : 2,
+            "Name" : null,
+            "Path" : null
+        },
+        {
+            "ID" : 3,
+            "Name" : null,
+            "Path" : null
+        },
+        {
+            "ID" : 4,
+            "Name" : null,
+            "Path" : null
+        },
+        {
+            "ID" : 5,
+            "Name" : null,
+            "Path" : null
+        }
+    ]
+}

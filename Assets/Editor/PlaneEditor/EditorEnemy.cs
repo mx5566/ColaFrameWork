@@ -25,6 +25,12 @@ namespace ColaFramework.ToolKit
 
         [LabelText("预制路径")]
         public string Path;
+
+        public Enemy()
+        {
+            Path = "";
+            Name = "";
+        }
     }
 
     class EditorEnemyWindow : BaseTableEditorWindow
@@ -44,6 +50,11 @@ namespace ColaFramework.ToolKit
         // id的最大值
         int maxID = 0;
         List<int> idList = new List<int>();
+
+        // 上一次选择目录对应目录下面的文件
+        List<string> files = new List<string>();
+        List<string> dirs = new List<string>();
+        Dictionary<int, int> dicIDToIndex = new Dictionary<int, int>();
 
         [MenuItem("CustomEditor/Plane/Enemy")]
         public static void GetWindow()
@@ -155,6 +166,10 @@ namespace ColaFramework.ToolKit
                 {
                     if (enemyFieldInfoArray[j].Name == "Name")
                     {
+                        if (string.IsNullOrEmpty(eMgr.Enemys[i].Name))
+                        {
+                            eMgr.Enemys[i].Name = "";
+                        }
                         eMgr.Enemys[i].Name = EditorGUILayout.TextField(eMgr.Enemys[i].Name, GUILayout.Width(100));
                     }
                     else if (enemyFieldInfoArray[j].Name == "ID")
@@ -163,11 +178,48 @@ namespace ColaFramework.ToolKit
                     }
                     else if (enemyFieldInfoArray[j].Name == "Path")
                     {
-                        //string path = EditorUtility.OpenFilePanel("Overwrite with prefab", "", "prefab");
+                        if (string.IsNullOrEmpty(eMgr.Enemys[i].Path))
+                        {
+                            eMgr.Enemys[i].Path = "";
+                        }
 
-                        //Object go;
-                        //go = EditorGUILayout.ObjectField(go, typeof(GameObject), false, GUILayout.Width(100));
-                        eMgr.Enemys[i].Path = /*path*/EditorGUILayout.TextField(eMgr.Enemys[i].Path, GUILayout.Width(100));
+                        if (GUILayout.Button("select", GUILayout.Width(50)))
+                        {
+                            string path = EditorUtility.OpenFolderPanel("选择文件夹", "Assets/GameAssets", "");
+                            FileHelper.Recursive(path, files, dirs);
+                        }
+
+                        if (!dicIDToIndex.ContainsKey(eMgr.Enemys[i].ID))
+                        {
+                            dicIDToIndex[eMgr.Enemys[i].ID] = 0;
+                        }
+
+                        if (files.Count > 0)
+                        {
+                            for (int m = files.Count - 1; m >= 0; m--)
+                            {
+
+                                int index = files[m].IndexOf(Constants.GameAssetBasePath);
+                                if (index == -1)
+                                {
+                                    files.RemoveAt(m);
+                                    continue;
+                                }
+
+                                files[m] = files[m].Substring(index + 18);
+                            }
+                        }
+
+                        dicIDToIndex[eMgr.Enemys[i].ID] = EditorGUILayout.Popup(dicIDToIndex[eMgr.Enemys[i].ID], files.ToArray(), GUILayout.Width(50));
+                        string tempPath = dicIDToIndex[eMgr.Enemys[i].ID] + 1 > files.Count ? "" : files[dicIDToIndex[eMgr.Enemys[i].ID]];
+                        if (!string.IsNullOrEmpty(tempPath))
+                        {
+                            int index = tempPath.IndexOf(Constants.GameAssetBasePath);
+                            if (index != -1)
+                            {
+                                eMgr.Enemys[i].Path = tempPath.Substring(index + 18);
+                            }
+                        }
                     }
                 }
 

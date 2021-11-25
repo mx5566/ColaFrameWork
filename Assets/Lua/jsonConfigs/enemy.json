@@ -5,28 +5,38 @@
     "Enemys"    : [
         {
             "ID" : 1,
-            "Name" : null,
-            "Path" : ""
+            "Name" : "\u50BB\u903C",
+            "Path" : "Manifest.asset"
         },
         {
             "ID" : 2,
-            "Name" : null,
-            "Path" : null
+            "Name" : "",
+            "Path" : "Manifest.asset"
         },
         {
             "ID" : 3,
-            "Name" : null,
-            "Path" : null
+            "Name" : "",
+            "Path" : "Manifest.asset"
         },
         {
             "ID" : 4,
-            "Name" : null,
-            "Path" : null
+            "Name" : "",
+            "Path" : "Manifest.asset"
         },
         {
             "ID" : 5,
-            "Name" : null,
-            "Path" : null
+            "Name" : "",
+            "Path" : "Manifest.asset"
+        },
+        {
+            "ID" : 6,
+            "Name" : "",
+            "Path" : "Manifest.asset"
+        },
+        {
+            "ID" : 7,
+            "Name" : "",
+            "Path" : "Manifest.asset"
         }
     ]
 }

@@ -64,6 +64,8 @@ namespace ColaFramework.ToolKit
         }
 
         LevelMgr lMgr;
+        // 需要额外使用的数据
+        EnemyMgr eMgr;
 
         FieldInfo[] levelFieldInfoArray;
         FieldInfo[] stageFieldInfoArray;
@@ -86,6 +88,11 @@ namespace ColaFramework.ToolKit
         protected override void OnLoad()
         {
             //SetFileName("level.json");
+            // 加载enemy.json 文件
+            eMgr = LoadJsonData<EnemyMgr>("enemy.json");
+
+            //
+
 
             levelFieldInfoArray = typeof(Level).GetFields();
             stageFieldInfoArray = typeof(Stage).GetFields();
@@ -174,7 +181,6 @@ namespace ColaFramework.ToolKit
                                 mapTogglePlanes[i] = false;
                             }
 
-
                             string str = "显示";
                             if (mapTogglePlanes[i])
                             {
@@ -198,8 +204,6 @@ namespace ColaFramework.ToolKit
                                         GUI.Box(planeScope.rect, new GUIContent());
                                         for (int k = 0; k < tempPlanesFieldInfo.Length; ++k)
                                         {
-                                            //Debug.LogFormat("tempPlanesFieldInfo Name {0}", tempPlanesFieldInfo[k].Name);
-
                                             EditorGUILayout.LabelField(tempPlanesFieldInfo[k].Name, GUILayout.Width(100));
                                         }
                                     }
@@ -211,20 +215,55 @@ namespace ColaFramework.ToolKit
                                         {
                                             for (int m = 0; m < tempPlanesFieldInfo.Length; m++)
                                             {
-
-                                                //Debug.LogFormat("tempPlanesFieldInfo Name {0}  value{1}", tempPlanesFieldInfo[m].Name, tempPlanesFieldInfo[m].GetValue(stages[i].Planes[l]).ToString());
-
                                                 GUI.Box(vscope1.rect, new GUIContent());
 
                                                 if (tempPlanesFieldInfo[m].Name == "ID")
                                                 {
-                                                    stages[i].Planes[l].ID = EditorGUILayout.IntField(stages[i].Planes[l].ID, GUILayout.Width(100));
+                                                    //GUITable
+                                                    //EditorGUILayout.SelectableLabel()
+                                                    if(GUILayout.Button("选择", GUILayout.Width(50)))
+                                                    {
+                                                        // 弹出一个editorwindow
+                                                        
+                                                        EditorTextWindow window = GetWindow<EditorTextWindow>("文本列表");
+                                                        window.Show();
+                                                        List<string> list = new List<string>();
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        list.Add("l1");
+                                                        list.Add("l2");
+                                                        list.Add("l3");
+                                                        window.SetTextList(list);
+                                                    }
+
+
+                                                    stages[i].Planes[l].ID = EditorGUILayout.IntField(stages[i].Planes[l].ID, GUILayout.Width(50));
                                                 }
                                                 else if (tempPlanesFieldInfo[m].Name == "Type")
                                                 {
                                                     stages[i].Planes[l].Type = (WaveType)EditorGUILayout.EnumPopup(stages[i].Planes[l].Type, GUILayout.Width(100));
-
-                                                    //stages[i].Planes[l].Type = (WaveType)waveType;// EditorGUILayout.IntField(stages[i].Planes[l].Type, GUILayout.Width(100));
                                                 }
                                                 else if (tempPlanesFieldInfo[m].Name == "Num")
                                                 {
@@ -403,7 +442,9 @@ namespace ColaFramework.ToolKit
             string fName = AppConst.jsonFilePath + "/" + fileName;
             string jsonStr;
 
-            jsonStr = JsonMapper.ToJson(lMgr);
+            jsonStr = ToJson<LevelMgr>(lMgr);
+
+            //jsonStr = JsonMapper.ToJson(lMgr);
 
             FileHelper.WriteString(fName, jsonStr);
         }

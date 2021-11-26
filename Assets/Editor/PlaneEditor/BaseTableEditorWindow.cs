@@ -2,7 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 using ColaFramework.Foundation;
-
+using LitJson;
+using System.Text.RegularExpressions;
 
 class BaseTableEditorWindow : EditorWindow
 {
@@ -22,12 +23,6 @@ class BaseTableEditorWindow : EditorWindow
     protected bool isEdit = false;
     // 可编辑范围变量
     protected EditorGUILayout.ToggleGroupScope toggleGroupScope;
-
-    public void SetFileName(string fName)
-    {
-        fileName = fName;
-    }
-
 
     void OnEnable()
     {
@@ -152,5 +147,19 @@ class BaseTableEditorWindow : EditorWindow
         Debug.LogFormat("OnReload...{0}", winName);
     }
 
+    protected string ToJson<T>(T t)
+    {
+        return Regex.Unescape(JsonMapper.ToJson(t));
+    }
+
+    protected T LoadJsonData<T>(string fileName)
+    {
+        string fName = AppConst.jsonFilePath + "/" + fileName;
+        string strContent = FileHelper.ReadString(fName);
+
+        T t = JsonMapper.ToObject<T>(strContent);
+
+        return t;
+    }
 }
 

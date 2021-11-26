@@ -5,37 +5,37 @@
     "Enemys"    : [
         {
             "ID" : 1,
-            "Name" : "\u50BB\u903C",
-            "Path" : "Manifest.asset"
+            "Name" : "敌机1",
+            "Path" : "Arts/Plane/Prefabs/Enemies/Enemy_straight_projectile.prefab"
         },
         {
             "ID" : 2,
-            "Name" : "",
+            "Name" : "敌机2",
             "Path" : "Manifest.asset"
         },
         {
             "ID" : 3,
-            "Name" : "",
-            "Path" : "Manifest.asset"
+            "Name" : "敌机3",
+            "Path" : "Arts/Plane/Prefabs/EnemyWaves/Wave_2.prefab"
         },
         {
             "ID" : 4,
-            "Name" : "",
+            "Name" : "敌机4",
             "Path" : "Manifest.asset"
         },
         {
             "ID" : 5,
-            "Name" : "",
+            "Name" : "敌机5",
             "Path" : "Manifest.asset"
         },
         {
             "ID" : 6,
-            "Name" : "",
+            "Name" : "敌机6",
             "Path" : "Manifest.asset"
         },
         {
             "ID" : 7,
-            "Name" : "",
+            "Name" : "敌机7",
             "Path" : "Manifest.asset"
         }
     ]

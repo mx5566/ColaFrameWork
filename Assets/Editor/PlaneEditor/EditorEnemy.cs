@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 
 
+
 namespace ColaFramework.ToolKit
 {
     class EnemyMgr : SerializedScriptableObject
@@ -56,6 +57,8 @@ namespace ColaFramework.ToolKit
         List<string> dirs = new List<string>();
         Dictionary<int, int> dicIDToIndex = new Dictionary<int, int>();
 
+        string file;
+
         [MenuItem("CustomEditor/Plane/Enemy")]
         public static void GetWindow()
         {
@@ -65,9 +68,6 @@ namespace ColaFramework.ToolKit
 
         protected override void OnLoad()
         {
-            //SetFileName("enemy.json");
-            //winName = "敌人编辑";
-
             enemyFieldInfoArray = typeof(Enemy).GetFields();
 
             string fName = AppConst.jsonFilePath + "/" + fileName;
@@ -81,14 +81,11 @@ namespace ColaFramework.ToolKit
 
                 jsonStr = JsonMapper.ToJson(eMgr);
 
-                //Debug.LogFormat("jsonstr111[{0}]", jsonStr);
-
                 FileHelper.WriteString(fName, jsonStr);
             }
 
             string strContent = FileHelper.ReadString(fName);
-
-            //Debug.LogFormat("jsonstrRead [{0}]", strContent);
+            
             eMgr = JsonMapper.ToObject<EnemyMgr>(strContent);
 
             for (int i = 0; i < eMgr.Enemys.Count; i++)
@@ -183,43 +180,64 @@ namespace ColaFramework.ToolKit
                             eMgr.Enemys[i].Path = "";
                         }
 
+                        bool isClick = false;
                         if (GUILayout.Button("select", GUILayout.Width(50)))
                         {
-                            string path = EditorUtility.OpenFolderPanel("选择文件夹", "Assets/GameAssets", "");
-                            FileHelper.Recursive(path, files, dirs);
+                            string[] strs = new string[] { "PREFAB", "prefab" };
+                            file = EditorUtility.OpenFilePanelWithFilters("选择文件", "Assets/GameAssets", strs);
+
+                            int index = file.IndexOf(Constants.GameAssetBasePath);
+                            if (index != -1)
+                            {
+                                file = file.Substring(index + 18);
+                            }
+                            else
+                            {
+                                file = "";
+                            }
+                            isClick = true;
+                            /* string path = EditorUtility.OpenFolderPanel("选择文件夹", "Assets/GameAssets", "");
+                             FileHelper.Recursive(path, files, dirs);
+
+                             if (files.Count > 0)
+                             {
+                                 for (int m = files.Count - 1; m >= 0; m--)
+                                 {
+
+                                     int index = files[m].IndexOf(Constants.GameAssetBasePath);
+                                     if (index == -1)
+                                     {
+                                         files.RemoveAt(m);
+                                         continue;
+                                     }
+
+                                     files[m] = files[m].Substring(index + 18);
+                                 }
+                             }*/
                         }
 
-                        if (!dicIDToIndex.ContainsKey(eMgr.Enemys[i].ID))
+                        if (isClick)
+                        {
+                            if (!string.IsNullOrEmpty(file))
+                            {
+                                eMgr.Enemys[i].Path = file;
+                            }
+                        }
+
+                        EditorGUILayout.LabelField(new GUIContent(eMgr.Enemys[i].Path, eMgr.Enemys[i].Path), GUILayout.Width(50));
+
+                        /*if (!dicIDToIndex.ContainsKey(eMgr.Enemys[i].ID))
                         {
                             dicIDToIndex[eMgr.Enemys[i].ID] = 0;
-                        }
-
-                        if (files.Count > 0)
-                        {
-                            for (int m = files.Count - 1; m >= 0; m--)
-                            {
-
-                                int index = files[m].IndexOf(Constants.GameAssetBasePath);
-                                if (index == -1)
-                                {
-                                    files.RemoveAt(m);
-                                    continue;
-                                }
-
-                                files[m] = files[m].Substring(index + 18);
-                            }
                         }
 
                         dicIDToIndex[eMgr.Enemys[i].ID] = EditorGUILayout.Popup(dicIDToIndex[eMgr.Enemys[i].ID], files.ToArray(), GUILayout.Width(50));
                         string tempPath = dicIDToIndex[eMgr.Enemys[i].ID] + 1 > files.Count ? "" : files[dicIDToIndex[eMgr.Enemys[i].ID]];
                         if (!string.IsNullOrEmpty(tempPath))
                         {
-                            int index = tempPath.IndexOf(Constants.GameAssetBasePath);
-                            if (index != -1)
-                            {
-                                eMgr.Enemys[i].Path = tempPath.Substring(index + 18);
-                            }
-                        }
+                            eMgr.Enemys[i].Path = tempPath;
+                            
+                        }*/
                     }
                 }
 
@@ -262,7 +280,9 @@ namespace ColaFramework.ToolKit
             string fName = AppConst.jsonFilePath + "/" + fileName;
             string jsonStr;
 
-            jsonStr = JsonMapper.ToJson(eMgr);
+            jsonStr = ToJson<EnemyMgr>(eMgr);
+
+            //jsonStr = JsonMapper.ToJson(eMgr);
 
             FileHelper.WriteString(fName, jsonStr);
         }

@@ -2,6 +2,7 @@
 using LitJson;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities.Editor;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -66,9 +67,12 @@ namespace ColaFramework.ToolKit
         LevelMgr lMgr;
         // 需要额外使用的数据
         EnemyMgr eMgr;
+        List<string> listEnemys = new List<string>();
+
 
         FieldInfo[] levelFieldInfoArray;
         FieldInfo[] stageFieldInfoArray;
+
 
         Dictionary<int, bool> mapTogglePlanes = new Dictionary<int, bool>();
         List<bool> toggleStageValues = new List<bool>();//单选框信息
@@ -90,9 +94,13 @@ namespace ColaFramework.ToolKit
             //SetFileName("level.json");
             // 加载enemy.json 文件
             eMgr = LoadJsonData<EnemyMgr>("enemy.json");
-
-            //
-
+            listEnemys.Clear();
+            for (int i = 0; i < eMgr.Enemys.Count; i++)
+            {
+                string str = eMgr.Enemys[i].ID + "|" + eMgr.Enemys[i].Name;
+                listEnemys.Add(str);
+            }
+            
 
             levelFieldInfoArray = typeof(Level).GetFields();
             stageFieldInfoArray = typeof(Stage).GetFields();
@@ -219,45 +227,37 @@ namespace ColaFramework.ToolKit
 
                                                 if (tempPlanesFieldInfo[m].Name == "ID")
                                                 {
-                                                    //GUITable
-                                                    //EditorGUILayout.SelectableLabel()
-                                                    if(GUILayout.Button("选择", GUILayout.Width(50)))
+                                                    string key = "stage|" + i.ToString() + "|" + l.ToString();
+
+                                                    if (GUILayout.Button("选择", GUILayout.Width(50)))
                                                     {
                                                         // 弹出一个editorwindow
-                                                        
                                                         EditorTextWindow window = GetWindow<EditorTextWindow>("文本列表");
+                                                        
+                                                        window.SetTextList(listEnemys);
                                                         window.Show();
-                                                        List<string> list = new List<string>();
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        list.Add("l1");
-                                                        list.Add("l2");
-                                                        list.Add("l3");
-                                                        window.SetTextList(list);
+                                                        window.ParentWin = this;
+                                                        keyValuePairs[key] = string.Empty;
+                                                        window.key = key;
                                                     }
 
+                                                    if (keyValuePairs.ContainsKey(key))
+                                                    {
+                                                        if(!string.IsNullOrEmpty(keyValuePairs[key]))
+                                                        {
+                                                            string[] sep = new string[] { "|" };
+                                                            string[] result = keyValuePairs[key].Split(sep, StringSplitOptions.None);
+                                                            int idt;
+                                                            bool ret = int.TryParse(result[0], out idt);
+                                                            if (ret)
+                                                            {
+                                                                if (stages[i].Planes[l].ID != idt)
+                                                                {
+                                                                    stages[i].Planes[l].ID = idt;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
 
                                                     stages[i].Planes[l].ID = EditorGUILayout.IntField(stages[i].Planes[l].ID, GUILayout.Width(50));
                                                 }

@@ -6,7 +6,7 @@
         {
             "ID" : 1,
             "Name" : "敌机1",
-            "Path" : "Arts/Plane/Prefabs/Enemies/Enemy_straight_projectile.prefab"
+            "Path" : "Arts/Plane/Prefabs/Planets/Red-Lines-PLanet.prefab"
         },
         {
             "ID" : 2,

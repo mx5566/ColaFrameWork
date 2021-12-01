@@ -167,6 +167,11 @@ namespace ColaFramework.ToolKit
 
             return t;
         }
+
+        protected static void GetEditorTextWindow()
+        {
+
+        }
     }
 
 

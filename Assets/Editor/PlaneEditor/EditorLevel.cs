@@ -239,6 +239,11 @@ namespace ColaFramework.ToolKit
                                                         window.ParentWin = this;
                                                         keyValuePairs[key] = string.Empty;
                                                         window.key = key;
+
+                                                        if (!editorWindows.Contains(window))
+                                                        {
+                                                            editorWindows.Add(window);
+                                                        }
                                                     }
 
                                                     if (keyValuePairs.ContainsKey(key))
@@ -424,6 +429,19 @@ namespace ColaFramework.ToolKit
         private void OnDisable()
         {
             SaveData();
+        }
+
+        private void OnDestroy()
+        {
+            for (int i = 0; i < editorWindows.Count; i++)
+            {
+                if (editorWindows[i] != null)
+                {
+                    editorWindows[i].Close();
+                }
+            }
+
+            editorWindows.Clear();
         }
 
         protected override void OnDelete()

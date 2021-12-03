@@ -2,11 +2,15 @@
 using System.Collections;
 using UnityEditor;
 
-public class NewBehaviourScript : Editor
+
+namespace ColaFramework.ToolKit
 {
-    [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.InSelectionHierarchy)]
-    static void DrawGameObjectName(Transform transform, GizmoType gizmoType)
+    public class NewBehaviourScript : Editor
     {
-        Handles.Label(transform.position, transform.gameObject.name);
+        [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.InSelectionHierarchy)]
+        static void DrawGameObjectName(Transform transform, GizmoType gizmoType)
+        {
+            Handles.Label(transform.position, transform.gameObject.name);
+        }
     }
 }

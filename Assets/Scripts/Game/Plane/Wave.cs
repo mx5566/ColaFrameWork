@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// https://zhuanlan.zhihu.com/p/109328430
 /// <summary>
 /// This script generates an enemy wave. It defines how many enemies will be emerging, their speed and emerging interval. 
 /// It also defines their shooting mode. It defines their moving path.

@@ -10,9 +10,10 @@ public class zhuan : MonoBehaviour
     public float w; //角度
     public float speed;
  
-    public float x;
-    public float y;
- 
+    public float X;
+    public float Y;
+
+    int num = 5;
     void Awake()
     {
         transform.position = new Vector3(10 * Random.value, 10 * Random.value, 0); //重置做圆周的开始位置
@@ -21,14 +22,27 @@ public class zhuan : MonoBehaviour
         r = Vector3.Distance(transform.position, sun.transform.position); //两个物品间的距离
         w = 0.3f; // ---角速度
         speed = 1 * Random.value; // 这个应该所角速度了
- 
- 
+
+        X = sun.transform.position.x;
+        Y = sun.transform.position.z;
+        
     }
  
     // Use this for initialization
     void Start()
     {
- 
+        float delta = 360.0f / num;
+        for (int i = 0; i < num; i++)
+        {
+            Renderer render;
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            // 设置位置
+            go.transform.position = new Vector3();
+
+            render = go.GetComponent<Renderer>();
+            render.material.color = Color.blue;
+        }
     }
  
     // Update is called once per frame
@@ -37,10 +51,10 @@ public class zhuan : MonoBehaviour
         //下面的概念有点模糊了
         w += speed * Time.deltaTime; // 
 
-        x = Mathf.Cos(w) * r;
-        y = Mathf.Sin(w) * r;
-
-        transform.position = new Vector3(x, y, transform.position.z);
+        float x = Mathf.Cos(w) * r;
+        float y = Mathf.Sin(w) * r;
+        
+        transform.position = new Vector3(X + x, transform.position.y, Y + y);
     }
 }
 

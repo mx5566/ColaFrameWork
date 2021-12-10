@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
  
-public class zhuan : MonoBehaviour
+public class RorateWave : MonoBehaviour
 {
  
     public Transform sun;
@@ -37,8 +37,12 @@ public class zhuan : MonoBehaviour
             Renderer render;
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
+            float t = r + i * delta;
+            float x = Mathf.Cos(w) * r;
+            float y = Mathf.Sin(w) * r;
+
             // 设置位置
-            go.transform.position = new Vector3();
+            go.transform.position = new Vector3(x, transform.position.y, y);
 
             render = go.GetComponent<Renderer>();
             render.material.color = Color.blue;

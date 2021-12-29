@@ -46,8 +46,6 @@ namespace ColaFramework.ToolKit
 
         FieldInfo[] enemyFieldInfoArray;
 
-        Dictionary<int, bool> mapTogglePlanes = new Dictionary<int, bool>();
-
         // id的最大值
         int maxID = 0;
         List<int> idList = new List<int>();
@@ -294,9 +292,6 @@ namespace ColaFramework.ToolKit
 
         protected override void OnReload()
         {
-            // 先清理
-            mapTogglePlanes.Clear();
-
             OnLoad();
         }
 

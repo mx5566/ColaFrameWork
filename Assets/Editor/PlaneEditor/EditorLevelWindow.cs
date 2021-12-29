@@ -43,6 +43,9 @@ namespace ColaFramework.ToolKit
 
         [LabelText("触发的敌人")]
         public List<EnemyPlane> Planes;
+
+        [LabelText("敌人机群id")]
+        public List<int> WaveIDs;
     }
 
     class EnemyPlane

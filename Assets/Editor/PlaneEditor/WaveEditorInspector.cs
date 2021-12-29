@@ -45,7 +45,7 @@ namespace ColaFramework.ToolKit
 
             GameObject p = Instantiate<GameObject>(GameObject.Find("__BezierTemplatePoint"));
 
-            p.transform.position = Vector3.left * (10.0f + Random.Range(1.0, 5.0));
+            p.transform.position = Vector3.left * (10.0f + Random.Range(1.0f, 5.0f));
 
             p.name = "point1";
             p.tag = "points";

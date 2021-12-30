@@ -331,7 +331,6 @@ namespace ColaFramework.ToolKit
                                             if (GUILayout.Button("+", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
                                             {
                                                 stages[i].WaveIDs.Add(0);
-                                                return;
                                             }
                                         }
 

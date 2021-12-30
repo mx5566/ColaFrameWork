@@ -41,8 +41,8 @@ namespace ColaFramework.ToolKit
         [LabelText("时间阶段")]
         public int Time;
 
-        [LabelText("触发的敌人")]
-        public List<EnemyPlane> Planes;
+        //[LabelText("触发的敌人")]
+        //public List<EnemyPlane> Planes;
 
         [LabelText("敌人机群id")]
         public List<int> WaveIDs;
@@ -72,12 +72,18 @@ namespace ColaFramework.ToolKit
         EnemyMgr eMgr;
         List<string> listEnemys = new List<string>();
 
+        // 阵型列表
+        WaveFMgr wMgr;
+        List<string> listWaves = new List<string>();
+
 
         FieldInfo[] levelFieldInfoArray;
         FieldInfo[] stageFieldInfoArray;
 
 
         Dictionary<int, bool> mapTogglePlanes = new Dictionary<int, bool>();
+        Dictionary<int, bool> mapToggleWaves = new Dictionary<int, bool>();
+
         List<bool> toggleStageValues = new List<bool>();//单选框信息
 
         // id的最大值
@@ -103,7 +109,17 @@ namespace ColaFramework.ToolKit
                 string str = eMgr.Enemys[i].ID + "|" + eMgr.Enemys[i].Name;
                 listEnemys.Add(str);
             }
-            
+
+            // 加载wave.json
+            wMgr = LoadJsonData<WaveFMgr>("wave.json");
+            listWaves.Clear();
+            for (int i = 0; i < wMgr.Waves.Count; i++)
+            {
+                string str = wMgr.Waves[i].ID + "|" + wMgr.Waves[i].Name;
+                listWaves.Add(str);
+            }
+
+
 
             levelFieldInfoArray = typeof(Level).GetFields();
             stageFieldInfoArray = typeof(Stage).GetFields();
@@ -165,11 +181,13 @@ namespace ColaFramework.ToolKit
             {
                 var stage = new Stage();
                 stage.Time = -1;
-                stage.Planes = new List<EnemyPlane>();
+                //stage.Planes = new List<EnemyPlane>();
+                stage.WaveIDs = new List<int>();
 
                 stages.Add(stage);
 
-                mapTogglePlanes[stages.Count - 1] = false;
+                //mapTogglePlanes[stages.Count - 1] = false;
+                mapToggleWaves[stages.Count - 1] = false;
             }
 
             SirenixEditorGUI.EndHorizontalToolbar();
@@ -187,7 +205,7 @@ namespace ColaFramework.ToolKit
                         string name = stageFieldInfoArray[j].Name;
                         if (name == "Planes")
                         {
-                            if (!mapTogglePlanes.ContainsKey(i))
+                        /*  if (!mapTogglePlanes.ContainsKey(i))
                             {
                                 mapTogglePlanes[i] = false;
                             }
@@ -289,7 +307,7 @@ namespace ColaFramework.ToolKit
                                         }
                                     }
                                 }
-                            }
+                            }*/
                         }
                         else
                         {
@@ -297,7 +315,92 @@ namespace ColaFramework.ToolKit
                             {
                                 stages[i].Time = EditorGUILayout.IntField(stages[i].Time, GUILayout.Width(100));
                             }
-                        }
+                            else if (stageFieldInfoArray[j].Name == "WaveIDs")
+                            {
+                                if (!mapToggleWaves.ContainsKey(i))
+                                {
+                                    mapToggleWaves[i] = false;
+                                }
+
+                                string str = "显示";
+                                if (mapToggleWaves[i])
+                                {
+                                    str = "隐藏";
+                                }
+
+                                GUIStyle style = EditorStyles.miniPullDown;
+                                style.alignment = TextAnchor.MiddleCenter;
+                                style.normal.textColor = Color.white;
+                                if (mapToggleWaves[i] = GUILayout.Toggle(mapToggleWaves[i], str, style, GUILayout.Width(100)))
+                                {
+                                    using (var vscope = new EditorGUILayout.VerticalScope())
+                                    {
+
+                                        GUI.Box(vscope.rect, new GUIContent());
+                                        GUILayout.Space(26);
+                                        using (var planeScope = new EditorGUILayout.HorizontalScope())
+                                        {
+                                            EditorGUILayout.LabelField("阵型ID", GUILayout.Width(100));
+                                        }
+
+                                        // 所有的飞机数据
+                                        for (int l = 0; l < stages[i].WaveIDs.Count; l++)
+                                        {
+                                            using (var vscope1 = new EditorGUILayout.HorizontalScope())
+                                            {
+                                                GUI.Box(vscope1.rect, new GUIContent());
+
+                                                string key = "wave|" + i.ToString() + "|" + l.ToString();
+
+                                                if (GUILayout.Button("选择", GUILayout.Width(50)))
+                                                {
+                                                    // 弹出一个editorwindow
+                                                    EditorTextWindow window = GetWindow<EditorTextWindow>("文本列表");
+
+                                                    window.SetTextList(listEnemys);
+                                                    window.Show();
+                                                    window.ParentWin = this;
+                                                    keyValuePairs[key] = string.Empty;
+                                                    window.key = key;
+
+                                                    if (!editorWindows.Contains(window))
+                                                    {
+                                                        editorWindows.Add(window);
+                                                    }
+                                                }
+
+                                                if (keyValuePairs.ContainsKey(key))
+                                                {
+                                                    if (!string.IsNullOrEmpty(keyValuePairs[key]))
+                                                    {
+                                                        string[] sep = new string[] { "|" };
+                                                        string[] result = keyValuePairs[key].Split(sep, StringSplitOptions.None);
+                                                        int idt;
+                                                        bool ret = int.TryParse(result[0], out idt);
+                                                        if (ret)
+                                                        {
+                                                            if (stages[i].WaveIDs[l] != idt)
+                                                            {
+                                                                stages[i].WaveIDs[l] = idt;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                stages[i].WaveIDs[l] = EditorGUILayout.IntField(stages[i].WaveIDs[l], GUILayout.Width(50));
+
+                                                // 增加删除按钮
+                                                if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                                                {
+                                                    stages[i].WaveIDs.RemoveAt(l);
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } 
                     }
 
                     // 增加阶段删除按钮

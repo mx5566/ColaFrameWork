@@ -40,15 +40,21 @@ namespace ColaFramework.ToolKit
         [LabelText("速度(移动速度或角速度)")]
         public float Speed;
 
-        [LabelText("中心点位置")]
-        public Vector3 Pos;
+        [LabelText("距离屏幕左边缘的百分比")]
+        public int LeftPercent;
+
+        [LabelText("距离屏幕上边缘的百分比")]
+        public int TopPercent;
+        
+        [LabelText("方向上|下|左|右")]
+        public int Direcion;
+
 
 
         public WaveF()
         {
             Path = string.Empty;
             Name = string.Empty;
-            Pos = Vector3.zero;
         }
     }
 
@@ -205,9 +211,17 @@ namespace ColaFramework.ToolKit
                     {
                         wMgr.Waves[i].Speed = EditorGUILayout.FloatField(wMgr.Waves[i].Speed, GUILayout.Width(100));
                     }
-                    else if (waveFieldInfoArray[j].Name == "Pos")
+                    else if (waveFieldInfoArray[j].Name == "LeftPercent")
                     {
-                        wMgr.Waves[i].Pos = EditorGUILayout.Vector3Field("Pos", wMgr.Waves[i].Pos, GUILayout.Width(100));
+                        wMgr.Waves[i].LeftPercent = EditorGUILayout.IntField(wMgr.Waves[i].LeftPercent, GUILayout.Width(100));
+                    }
+                    else if (waveFieldInfoArray[j].Name == "TopPercent")
+                    {
+                        wMgr.Waves[i].TopPercent = EditorGUILayout.IntField(wMgr.Waves[i].TopPercent, GUILayout.Width(100));
+                    }
+                    else if (waveFieldInfoArray[j].Name == "Direcion")
+                    {
+                        wMgr.Waves[i].Direcion = EditorGUILayout.IntField(wMgr.Waves[i].Direcion, GUILayout.Width(100));
                     }
                     else if (waveFieldInfoArray[j].Name == "Path")
                     {

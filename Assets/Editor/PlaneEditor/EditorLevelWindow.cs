@@ -68,9 +68,7 @@ namespace ColaFramework.ToolKit
         }
 
         LevelMgr lMgr;
-        // 需要额外使用的数据
-        EnemyMgr eMgr;
-        List<string> listEnemys = new List<string>();
+
 
         // 阵型列表
         WaveFMgr wMgr;
@@ -101,15 +99,6 @@ namespace ColaFramework.ToolKit
         protected override void OnLoad()
         {
             //SetFileName("level.json");
-            // 加载enemy.json 文件
-            eMgr = LoadJsonData<EnemyMgr>("enemy.json");
-            listEnemys.Clear();
-            for (int i = 0; i < eMgr.Enemys.Count; i++)
-            {
-                string str = eMgr.Enemys[i].ID + "|" + eMgr.Enemys[i].Name;
-                listEnemys.Add(str);
-            }
-
             // 加载wave.json
             wMgr = LoadJsonData<WaveFMgr>("wave.json");
             listWaves.Clear();
@@ -118,7 +107,6 @@ namespace ColaFramework.ToolKit
                 string str = wMgr.Waves[i].ID + "|" + wMgr.Waves[i].Name;
                 listWaves.Add(str);
             }
-
 
 
             levelFieldInfoArray = typeof(Level).GetFields();
@@ -168,7 +156,6 @@ namespace ColaFramework.ToolKit
 
         private void DrawStageData(int id, ref List<Stage> stages)
         {
-            //Debug.LogFormat("DrawStageData");
             SirenixEditorGUI.BeginHorizontalToolbar();
 
             for (int i = 0; i < stageFieldInfoArray.Length; ++i)
@@ -181,12 +168,10 @@ namespace ColaFramework.ToolKit
             {
                 var stage = new Stage();
                 stage.Time = -1;
-                //stage.Planes = new List<EnemyPlane>();
                 stage.WaveIDs = new List<int>();
 
                 stages.Add(stage);
 
-                //mapTogglePlanes[stages.Count - 1] = false;
                 mapToggleWaves[stages.Count - 1] = false;
             }
 
@@ -341,6 +326,13 @@ namespace ColaFramework.ToolKit
                                         using (var planeScope = new EditorGUILayout.HorizontalScope())
                                         {
                                             EditorGUILayout.LabelField("阵型ID", GUILayout.Width(100));
+
+                                            // 增加添加按钮
+                                            if (GUILayout.Button("+", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                                            {
+                                                stages[i].WaveIDs.Add(0);
+                                                return;
+                                            }
                                         }
 
                                         // 所有的飞机数据
@@ -357,7 +349,7 @@ namespace ColaFramework.ToolKit
                                                     // 弹出一个editorwindow
                                                     EditorTextWindow window = GetWindow<EditorTextWindow>("文本列表");
 
-                                                    window.SetTextList(listEnemys);
+                                                    window.SetTextList(listWaves);
                                                     window.Show();
                                                     window.ParentWin = this;
                                                     keyValuePairs[key] = string.Empty;
@@ -408,14 +400,14 @@ namespace ColaFramework.ToolKit
                     {
                         int nCount = stages.Count;
                         stages.RemoveAt(i);
-                        mapTogglePlanes.Remove(i);
+                        mapToggleWaves.Remove(i);
 
                         // 删除之前 0 1 2 3 4
                         for (int l = i + 1; l < nCount; l++)
                         {
-                            bool bOld = mapTogglePlanes[l];
-                            mapTogglePlanes[l - 1] = bOld;
-                            mapTogglePlanes.Remove(l);
+                            bool bOld = mapToggleWaves[l];
+                            mapToggleWaves[l - 1] = bOld;
+                            mapToggleWaves.Remove(l);
                         }
 
                         return;
@@ -581,7 +573,7 @@ namespace ColaFramework.ToolKit
         protected override void OnReload()
         {
             // 先清理
-            mapTogglePlanes.Clear();
+            mapToggleWaves.Clear();
             toggleStageValues.Clear();
 
             OnLoad();
